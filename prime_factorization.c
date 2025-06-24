@@ -46,7 +46,7 @@ void prime_list_push_prime(struct prime_list *l, uint64_t num, size_t *l_cap) {
                           (*l_cap + PRIME_FACTORS_BLOCK));
         *l_cap += PRIME_FACTORS_BLOCK;
     }
-    
+
     l->list[l->len] = num;
     l->len++;
 }
