@@ -75,28 +75,26 @@ int main(int argc, char **argv)
 			       &args[i]);
 	}
 
-	bool data_not_loaded = false;
+	bool data_loaded = false;
 	if (argc != 2) {
-		data_not_loaded = true;
 		printf("WARNING: No save file specified.\n");
 	} else {
 		FILE *datafile = fopen(data_filename, "rb");
 		if (datafile == NULL) {
 			printf("Could not open %s\n", data_filename);
-			data_not_loaded = true;
 		} else {
 			printf("Loading data from %s\n", data_filename);
 
-			data_not_loaded = fread(&pool.chunk_iterations,
+			data_loaded = fread(&pool.chunk_iterations,
 				     sizeof(pool.chunk_iterations),
 				     1,
-				     datafile) != 1;
-			if (!data_not_loaded)
-				data_not_loaded = fread(&pool.prime_count,
+				     datafile) == 1;
+			if (data_loaded)
+				data_loaded = fread(&pool.prime_count,
 					     sizeof(pool.prime_count),
 					     1,
-					     datafile) != 1;
-			if (data_not_loaded)
+					     datafile) == 1;
+			if (!data_loaded)
 				printf("WARNING: %s is corrupted\n",
 				       data_filename);
 
@@ -104,7 +102,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (data_not_loaded)
+	if (!data_loaded)
 		for (int i = 0; i < THREAD_COUNT; i++) {
 			pool.prime_count[i] = 0;
 			pool.chunk_iterations[i] = 0;
@@ -185,12 +183,14 @@ void *screen_thread(void *_arg)
 
 		diff_total_iterations = total_iterations;
 
-		FILE *datafile = fopen(save_filename, "wb");
+		if (save_filename != NULL) {
+			FILE *datafile = fopen(save_filename, "wb");
 
-		fwrite(&sync_chunk_iterations, sizeof(sync_chunk_iterations), 1, datafile);
-		fwrite(&sync_prime_count, sizeof(sync_prime_count), 1, datafile);
+			fwrite(&sync_chunk_iterations, sizeof(sync_chunk_iterations), 1, datafile);
+			fwrite(&sync_prime_count, sizeof(sync_prime_count), 1, datafile);
 
-		fclose(datafile);
+			fclose(datafile);
+		}
 
 		sleep(1);
 	}
