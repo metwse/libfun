@@ -1,6 +1,4 @@
 #include <math.h>
-#include <stddef.h>
-#include <stdint.h>
 #include <stdbool.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -22,19 +20,19 @@
 struct calcuation_pool {
 	pthread_mutex_t locks[THREAD_COUNT];
 	long double prime_count[THREAD_COUNT];
-	uint64_t chunk_iterations[THREAD_COUNT];
+	unsigned long long chunk_iterations[THREAD_COUNT];
 
 #ifdef SYNC_THREAD_ITERATIONS
 	pthread_mutex_t min_itearation_lock;
 	pthread_cond_t min_itearation_cv;
-	uint64_t min_itearation_owner;
+	unsigned long long min_itearation_owner;
 
-	uint64_t min_itearation;
+	unsigned long long min_itearation;
 #endif
 };
 
 struct solver_thread_args {
-	uint64_t thread_id;
+	unsigned long long thread_id;
 	struct calcuation_pool *pool;
 };
 
@@ -67,7 +65,7 @@ int main(int argc, char **argv)
 	pthread_t solver_thread_join[THREAD_COUNT];
 	pthread_t screen_thread_join;
 	struct solver_thread_args args[THREAD_COUNT];
-	for (uint64_t i = 0; i < THREAD_COUNT; i++) {
+	for (unsigned long long i = 0; i < THREAD_COUNT; i++) {
 		args[i].thread_id = i;
 		args[i].pool = &pool;
 
@@ -141,12 +139,14 @@ void *screen_thread(void *_arg)
 	const char *save_filename = args->savefile;
 
 	long double sync_prime_count[THREAD_COUNT];
-	uint64_t sync_chunk_iterations[THREAD_COUNT];
+	unsigned long long sync_chunk_iterations[THREAD_COUNT];
 	long double total_prime_count;
-	uint64_t total_iterations;
-	uint64_t diff_total_iterations = 0;
+	unsigned long long total_iterations;
+	unsigned long long diff_total_iterations = 0;
 
 	while (true) {
+		usleep(1e6);
+
 		for (int i = 0; i < THREAD_COUNT; i++) {
 			pthread_mutex_t *lock = &pool->locks[i];
 
@@ -161,7 +161,7 @@ void *screen_thread(void *_arg)
 		total_iterations = 0;
 		total_prime_count = 0;
 		for (int i = 0; i < THREAD_COUNT; i++) {
-			printf("%d\t\t%-12lu\t%.2Lf\n",
+			printf("%d\t\t%-12llu\t%.2Lf\n",
 			       i, sync_chunk_iterations[i], sync_prime_count[i]);
 			total_iterations += sync_chunk_iterations[i];
 			total_prime_count += sync_prime_count[i];
@@ -173,12 +173,12 @@ void *screen_thread(void *_arg)
 		printf("\n\tTOTAL\n");
 		printf("prime_count: %.2Lf (%.2Lf MiB)\n",
 		       total_prime_count, total_prime_count * 8 / 1024 / 1024);
-		printf("checked_numbers: %ld (%.2lfe%ld)\n", total_iterations,
+		printf("checked_numbers: %lld (%.2lfe%ld)\n", total_iterations,
 		       (total_iterations / (pow(10, iteration_digit_count - 1))) / 10.0,
 		       iteration_digit_count);
 		printf("prime_frequency: %Lf\n",
 		       total_prime_count / total_iterations);
-		printf("checks_per_second: %ld\n",
+		printf("checks_per_second: %lld\n",
 		       total_iterations - diff_total_iterations);
 
 		diff_total_iterations = total_iterations;
@@ -191,8 +191,6 @@ void *screen_thread(void *_arg)
 
 			fclose(datafile);
 		}
-
-		sleep(1);
 	}
 
 	return NULL;
@@ -202,13 +200,13 @@ void *solver_thread(void *_args)
 {
 	struct solver_thread_args *args = (struct solver_thread_args *) _args;
 	struct calcuation_pool *pool = args->pool;
-	uint64_t thread_id = args->thread_id;
+	unsigned long long thread_id = args->thread_id;
 
 	pthread_mutex_t *lock = &pool->locks[thread_id];
 	long double *prime_count = &pool->prime_count[thread_id];
-	uint64_t *chunk_iterations = &pool->chunk_iterations[thread_id];
+	unsigned long long *chunk_iterations = &pool->chunk_iterations[thread_id];
 
-	uint64_t num = 2 + thread_id * CALCULATION_CHUNK;
+	unsigned long long num = 2 + thread_id * CALCULATION_CHUNK;
 
 	long double total_nums;
 
@@ -230,7 +228,7 @@ void *solver_thread(void *_args)
 
 		total_nums = 0;
 
-		for (uint64_t i = 0; i < CALCULATION_CHUNK; i++) {
+		for (unsigned long long i = 0; i < CALCULATION_CHUNK; i++) {
 			total_nums += 1 / logl(num);
 			num++;
 		}
