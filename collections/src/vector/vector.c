@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 
 
 struct vec_result vec_init()
@@ -13,16 +14,21 @@ struct vec_result vec_with_capacity(size_t cap)
 {
 	struct vec *v = (struct vec *) malloc(sizeof(struct vec));
 
+	if (v == NULL)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_NOMEM
+		};
+
 	void **arr;
 	if (cap) {
-		arr = calloc(sizeof(void *), cap);
+		arr = malloc(sizeof(void *) * cap);
 
-		if (arr == NULL || v == NULL) {
+		if (arr == NULL)
 			return (struct vec_result) {
 				.v = VECE,
 				.d.err = VECE_NOMEM
 			};
-		}
 	} else {
 		arr = NULL;
 	}
@@ -81,15 +87,18 @@ struct vec_result vec_shrink(struct vec *v, size_t cap)
 		if (v->size <= cap)
 			goto return_resize;
 
-		void **stripped = calloc(v->size - cap, sizeof(void *));
+		void **stripped = malloc((v->size - cap) * sizeof(void *));
 
 		if (stripped == NULL)
 			goto return_resize;
 
-		for (size_t i = cap; i < v->size; i++)
-			stripped[i - cap] = v->_danger[i];
+		memcpy(
+			stripped,
+			&v->_danger[cap], (v->size - cap) * sizeof(void *)
+		);
 
 		stripped_vec = (struct vec *) malloc(sizeof(struct vec));
+
 		stripped_vec->_danger = stripped;
 		stripped_vec->cap = v->size - cap;
 		stripped_vec->size = v->size - cap;
