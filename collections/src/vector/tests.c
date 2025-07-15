@@ -99,7 +99,7 @@ void t_vec_resize()
 		vec_destroy(following_part);
 	}
 
-	free(vec);
+	vec_destroy(vec);
 }
 
 #ifdef _TEST_VEC_MAIN

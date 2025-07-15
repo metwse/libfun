@@ -217,6 +217,11 @@ struct vec_result vec_remove(struct vec *v, size_t index)
 		for (int i = index; i < v->size - 1; i++)
 			v->_danger[i] = v->_danger[i + 1];
 
+		if (v->size == 0) {
+			free(v->_danger);
+			v->_danger = NULL;
+		}
+
 		v->size--;
 	}
 
