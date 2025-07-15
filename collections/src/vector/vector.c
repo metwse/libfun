@@ -6,13 +6,11 @@
 
 struct vec_result vec_init()
 {
-	return vec_with_capacity(0);
+	return vec_with_capacity(VEC_EXPAND_DELTA);
 }
 
 struct vec_result vec_with_capacity(size_t cap)
 {
-	struct vec_result r;
-
 	struct vec *v = (struct vec *) malloc(sizeof(struct vec));
 
 	void **arr;
@@ -20,10 +18,10 @@ struct vec_result vec_with_capacity(size_t cap)
 		arr = calloc(sizeof(void *), cap);
 
 		if (arr == NULL || v == NULL) {
-			r.v = VECE;
-			r.d.err = VECE_MEM;
-
-			return r;
+			return (struct vec_result) {
+				.v = VECE,
+				.d.err = VECE_NOMEM
+			};
 		}
 	} else {
 		arr = NULL;
@@ -33,10 +31,7 @@ struct vec_result vec_with_capacity(size_t cap)
 	v->cap = cap;
 	v->size = 0;
 
-	r.v = VECOK_VEC;
-	r.d.vec = v;
-
-	return r;
+	return (struct vec_result) { .v = VECOK_VEC, .d.vec = v };
 }
 
 void vec_destroy(struct vec *v)
@@ -48,45 +43,41 @@ void vec_destroy(struct vec *v)
 
 struct vec_result vec_expand(struct vec *v, size_t cap)
 {
-	struct vec_result r;
+	if (v->cap > cap)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_CAP_IS_GREATER
+		};
+	else if (v->cap == cap)
+		return (struct vec_result) { .v = VECOK };
 
-	if (v->cap > cap) {
-		r.v = VECE;
-		r.d.err = VECE_CAP_IS_GREATER;
-	} else if (v->cap == cap) {
-		r.v = VECOK;
-	} else {
-		void **new_arr;
-		if (v->_danger)
-			new_arr = realloc(v->_danger, cap * sizeof(void *));
-		else
-			new_arr = malloc(cap * sizeof(void *));
+	void **new_arr;
+	if (v->_danger)
+		new_arr = realloc(v->_danger, cap * sizeof(void *));
+	else
+		new_arr = malloc(cap * sizeof(void *));
 
-		if (new_arr == NULL) {
-			r.v = VECE;
-			r.d.err = VECE_MEM;
-		} else {
-			r.v = VECOK;
-			v->_danger = new_arr;
-			v->cap = cap;
-		}
-	}
+	if (new_arr == NULL)
+		return (struct vec_result) { .v = VECE, .d.err = VECE_NOMEM };
 
-	return r;
+	v->_danger = new_arr;
+	v->cap = cap;
+
+	return (struct vec_result) { .v = VECOK };
 }
 
 struct vec_result vec_shrink(struct vec *v, size_t cap)
 {
-	struct vec_result r;
+	struct vec *stripped_vec = NULL;
 	void **new_arr;
-	r.v = VECOK_VEC;
-	r.d.vec = NULL;
 
 	if (v->cap < cap) {
-		r.v = VECE;
-		r.d.err = VECE_CAP_IS_LOWER;
-		return r;
-	} else if (v->cap > cap) {
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_CAP_IS_LOWER
+		};
+	}
+	if (v->cap > cap) {
 		if (v->size <= cap)
 			goto return_resize;
 
@@ -98,37 +89,36 @@ struct vec_result vec_shrink(struct vec *v, size_t cap)
 		for (size_t i = cap; i < v->size; i++)
 			stripped[i - cap] = v->_danger[i];
 
-		struct vec *stripped_vec = (struct vec *) malloc(sizeof(struct vec));
+		stripped_vec = (struct vec *) malloc(sizeof(struct vec));
 		stripped_vec->_danger = stripped;
 		stripped_vec->cap = v->size - cap;
 		stripped_vec->size = v->size - cap;
-
-		r.d.vec = stripped_vec;
 	}
 
 return_resize:
 	if (cap) {
 		new_arr = realloc(v->_danger, cap * sizeof(void *));
 		if (new_arr == NULL) {
-			if (r.d.vec)
-				vec_destroy(r.d.vec);
+			if (stripped_vec)
+				vec_destroy(stripped_vec);
 
-			r.v = VECE;
-			r.d.err = VECE_MEM;
-
-			return r;
-		} else {
-			v->_danger = new_arr;
+			return (struct vec_result) {
+				.v = VECE,
+				.d.err= VECE_NOMEM
+			};
 		}
+
+		v->_danger = new_arr;
 	} else {
 		free(v->_danger);
 		v->_danger = NULL;
 	}
+
 	v->cap = cap;
 	if (cap < v->size)
 		v->size = cap;
 
-	return r;
+	return (struct vec_result) { .v = VECOK_VEC, .d.vec = stripped_vec };
 }
 
 inline struct vec_result vec_shrink_to_fit(struct vec *v)
@@ -138,16 +128,14 @@ inline struct vec_result vec_shrink_to_fit(struct vec *v)
 
 struct vec_result vec_insert(struct vec *v, size_t index, void *e)
 {
-	struct vec_result r;
-
-	if (v->size < index) {
-		r.v = VECE;
-		r.d.err = VECE_OUT_OF_INDEX;
-		return r;
-	}
+	if (v->size < index)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_OUT_OF_BOUNDS
+		};
 
 	if (v->size == v->cap) {
-		r = vec_expand(v, v->cap + VEC_EXPAND_DELTA);
+		struct vec_result r = vec_expand(v, v->cap + VEC_EXPAND_DELTA);
 		if (r.v == VECE)
 			return r;
 	}
@@ -158,9 +146,7 @@ struct vec_result vec_insert(struct vec *v, size_t index, void *e)
 	v->_danger[index] = e;
 	v->size++;
 
-	r.v = VECOK;
-
-	return r;
+	return (struct vec_result) { .v = VECOK };
 }
 
 inline struct vec_result vec_append(struct vec *v, void *e)
@@ -171,61 +157,61 @@ inline struct vec_result vec_append(struct vec *v, void *e)
 
 struct vec_result vec_get(const struct vec *v, size_t index)
 {
-	struct vec_result r;
+	if (v->size <= index)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_OUT_OF_BOUNDS
+		};
 
-	if (v->size <= index) {
-		r.v = VECE;
-		r.d.err = VECE_OUT_OF_INDEX;
-	} else {
-		r.v = VECOK_ELEMENT;
-		r.d.element = v->_danger[index];
-	}
-
-	return r;
+	return (struct vec_result) {
+		.v = VECOK_ELEMENT,
+		.d.element = v->_danger[index]
+	};
 }
 
 struct vec_result vec_replace(struct vec *v, size_t index, void *e)
 {
-	struct vec_result r;
+	void *hold;
 
-	if (v->size <= index) {
-		r.v = VECE;
-		r.d.err = VECE_OUT_OF_INDEX;
-	} else {
-		r.v = VECOK_ELEMENT;
-		r.d.element = v->_danger[index];
-		v->_danger[index] = e;
-	}
+	if (v->size <= index)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_OUT_OF_BOUNDS
+		};
 
-	return r;
+	hold = v->_danger[index];
+	v->_danger[index] = e;
+
+	return (struct vec_result) { .v = VECOK_ELEMENT, .d.element = hold };
 }
 
 struct vec_result vec_remove(struct vec *v, size_t index)
 {
-	struct vec_result r;
+	void *hold;
 
-	if (v->size <= index) {
-		r.v = VECE;
-		r.d.err = VECE_OUT_OF_INDEX;
-	} else if (v->size == 0) {
-		r.v = VECE;
-		r.d.err = VECE_ZERO_SIZE;
-	} else {
-		r.v = VECOK_ELEMENT;
-		r.d.element = v->_danger[index];
+	if (v->size <= index)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_OUT_OF_BOUNDS
+		};
+	if (v->size == 0)
+		return (struct vec_result) {
+			.v = VECE,
+			.d.err = VECE_EMPTY
+		};
 
-		for (int i = index; i < v->size - 1; i++)
-			v->_danger[i] = v->_danger[i + 1];
+	hold = v->_danger[index];
 
-		if (v->size == 0) {
-			free(v->_danger);
-			v->_danger = NULL;
-		}
+	for (int i = index; i < v->size - 1; i++)
+		v->_danger[i] = v->_danger[i + 1];
 
-		v->size--;
+	if (v->size == 0) {
+		free(v->_danger);
+		v->_danger = NULL;
 	}
 
-	return r;
+	v->size--;
+	return (struct vec_result) { .v = VECOK_ELEMENT, .d.element = hold };
 }
 
 inline struct vec_result vec_pop(struct vec *v)

@@ -30,15 +30,15 @@ struct vec {
  */
 enum vec_error {
 	// Memory allocation error.
-	VECE_MEM,
+	VECE_NOMEM,
 	// Tried to expand the array to a smaller capacity than it already has.
 	VECE_CAP_IS_GREATER,
 	// Tried to shrink the array to a smaller capacity than it already has.
 	VECE_CAP_IS_LOWER,
 	// Size exceeded.
-	VECE_OUT_OF_INDEX,
+	VECE_OUT_OF_BOUNDS,
 	// Size of the vector is 0.
-	VECE_ZERO_SIZE,
+	VECE_EMPTY,
 };
 
 /**

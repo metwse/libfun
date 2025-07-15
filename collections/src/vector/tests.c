@@ -8,7 +8,7 @@ void t_vec_creation()
 {
 	struct vec_result init_result;
 
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 1024; i++) {
 		init_result = vec_init();
 
 		assert(init_result.v == VECOK_VEC);
@@ -17,8 +17,8 @@ void t_vec_creation()
 		vec_destroy(init_result.d.vec);
 	}
 
-	for (int i = 0; i < 1000; i++) {
-		init_result = vec_with_capacity(rand() % 100);
+	for (int i = 0; i < 1024; i++) {
+		init_result = vec_with_capacity(rand() % 96);
 
 		assert(init_result.v == VECOK_VEC);
 		assert(init_result.d.vec);
@@ -33,9 +33,13 @@ void t_vec_resize()
 	struct vec_result result;
 	struct vec *following_part;
 
-	for (int i = 0; i < 1000; i++) {
-		int new_size = rand() % 100 + 1;
+	for (int i = 0; i < 1024; i++) {
+		int new_size = rand() % 96 + VEC_EXPAND_DELTA + 1;
 		result = vec_expand(vec, new_size);
+		if (result.v == VECE && result.d.err == VECE_NOMEM) {
+			i--;
+			continue;
+		}
 		assert(result.v == VECOK);
 
 		result = vec_expand(vec, new_size - 1);
@@ -51,13 +55,17 @@ void t_vec_resize()
 		assert(result.d.err == VECE_CAP_IS_LOWER);
 	}
 
-	for (int i = 0; i < 10; i++) {
-		int list[100];
-		for (int j = 0; j < 100; j++) {
+	for (int i = 0; i < 16; i++) {
+		int list[128];
+		for (int j = 0; j < 128; j++) {
 			int *r = malloc(sizeof(int));
-			list[j] = *r = rand() % 100 + 1;
+			list[j] = *r = rand();
 
 			result = vec_append(vec, r);
+			if (result.v == VECE && result.d.err == VECE_NOMEM) {
+				i--;
+				continue;
+			}
 			assert(result.v == VECOK);
 		}
 
@@ -65,38 +73,48 @@ void t_vec_resize()
 		assert(result.v == VECOK_VEC);
 		assert(result.d.vec == NULL);
 
-		result = vec_shrink(vec, 50);
+		result = vec_shrink(vec, 64);
 		assert(result.v == VECOK_VEC);
 		assert(result.d.vec);
-		assert(result.d.vec->size == 50);
+		assert(result.d.vec->size == 64);
 		following_part = result.d.vec;
 
-
-		for (int j = 0; j < 50; j++) {
+		for (int j = 0; j < 64; j++) {
 			result = vec_get(following_part, j);
 			assert(result.v == VECOK_ELEMENT);
-			assert(list[j + 50] == *((int *) result.d.element));
+			assert(list[j + 64] == *((int *) result.d.element));
 
 			free(result.d.element);
 		}
+		vec_destroy(following_part);
 
-		for (int j = 0; j < 25; j++) {
-			result = vec_remove(vec, 49 - j);
+		for (int j = 0; j < 32; j++) {
+			result = vec_remove(vec, 63 - j);
 			assert(result.v == VECOK_ELEMENT);
-			assert(list[49 - j] == *((int *) result.d.element));
+			assert(list[63 - j] == *((int *) result.d.element));
 
 			free(result.d.element);
 		}
 
-		for (int j = 0; j < 25; j++) {
+		for (int j = 0; j < 16; j++) {
 			result = vec_pop(vec);
 			assert(result.v == VECOK_ELEMENT);
-			assert(list[24 - j] == *((int *) result.d.element));
+			assert(list[31 - j] == *((int *) result.d.element));
 
 			free(result.d.element);
 		}
 
-		vec_destroy(following_part);
+		int *dummy;
+		for (int j = 0; j < 16; j++) {
+			result = vec_replace(vec, j, dummy);
+			assert(result.v == VECOK_ELEMENT);
+			assert(list[j] == *((int *) result.d.element));
+
+			free(result.d.element);
+		}
+
+		for (int j = 0; j < 16; j++)
+			result = vec_pop(vec);
 	}
 
 	vec_destroy(vec);
