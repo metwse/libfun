@@ -2,8 +2,8 @@
  * Dynamicly resizing array, aka. vector.
  */
 
-#ifndef VECTOR_H_
-#define VECTOR_H_
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -37,8 +37,8 @@ enum vec_error {
 	VECE_CAP_IS_LOWER,
 	// Size exceeded.
 	VECE_OUT_OF_INDEX,
-	// Size exceeded.
-	VECE_INSUFFICIENT_CAP,
+	// Size of the vector is 0.
+	VECE_ZERO_SIZE,
 };
 
 /**
@@ -169,4 +169,4 @@ struct vec_result vec_remove(struct vec *v, size_t index);
 struct vec_result vec_pop(struct vec *v);
 
 
-#endif // VECTOR_H_
+#endif // VECTOR_H
