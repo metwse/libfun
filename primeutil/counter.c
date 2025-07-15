@@ -1,3 +1,7 @@
+/*!
+ * Returns an estimate of π(N), the number of primes ≤ N.
+ */
+
 #include <math.h>
 #include <stdbool.h>
 #include <pthread.h>
