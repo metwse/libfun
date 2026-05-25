@@ -17,7 +17,9 @@
 #ifndef LF_STACK_H
 #define LF_STACK_H
 
+#ifndef LF_HEADERONLY
 #include "config.h"
+#endif
 
 #include <stddef.h>
 

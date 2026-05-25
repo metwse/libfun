@@ -9,8 +9,10 @@ LIBFUN_MODE := $(MODE)
 
 include libfun.mk
 
+
 _default: $(LIBFUN) $(LIBFUN_SO)
 
+headeronly: $(LIBFUN_H)
 
 clean:
 	$(RM) $(libfun_DIST_DIR) docs-autogen
@@ -19,4 +21,4 @@ docs:
 	doxygen
 
 
-.PHONY: default _default clean docs
+.PHONY: default _default clean docs headeronly

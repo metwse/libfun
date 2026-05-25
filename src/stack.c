@@ -1,5 +1,7 @@
+#ifndef LF_HEADERONLY
 #include "../include/config.h"
 #include "../include/stack.h"
+#endif
 
 #include <assert.h>
 #include <stdlib.h>

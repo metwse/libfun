@@ -17,6 +17,7 @@ libfun_TARGET_DIR := $(libfun_DIST_DIR)/$(LIBFUN_MODE).$(LIBFUN_PREFIX)
 # Build outputs.
 LIBFUN_SO ?= $(libfun_TARGET_DIR)/libfun.so
 LIBFUN ?= $(libfun_TARGET_DIR)/libfun.a
+LIBFUN_H ?= $(libfun_DIST_DIR)/libfun.h
 
 
 # Variables below this line are private.
@@ -33,16 +34,29 @@ ifeq ($(libfun_CFLAGS),)
 $(error "WARNING: unknown mode $(LIBFUN_MODE).")
 endif
 
+libfun_HEADERS_TOPOLOGICAL_ORDERED = config.h stack.h map.h
+
 libfun_SRC_DIR := $(LIBFUN_DIR)/src
 
 libfun_OBJ_DIR := $(libfun_TARGET_DIR)/obj
 
 libfun_MKDIR := $(or $(MKDIR),mkdir -p)
 
+libfun_HEADERS := $(addprefix $(LIBFUN_INCLUDE_DIR)/,\
+		    $(libfun_HEADERS_TOPOLOGICAL_ORDERED))
+
 libfun_SRCS := $(wildcard $(libfun_SRC_DIR)/*.c)
 libfun_OBJS := $(patsubst $(libfun_SRC_DIR)/%.c,\
-		$(libfun_OBJ_DIR)/%.o,\
-		$(libfun_SRCS))
+		 $(libfun_OBJ_DIR)/%.o,\
+		 $(libfun_SRCS))
+
+
+$(LIBFUN_H): $(libfun_HEADERS) $(libfun_SRCS) | $(libfun_DIST_DIR)
+	echo '#define LF_HEADERONLY' > $(LIBFUN_H)
+	cat $(libfun_HEADERS) >> $(LIBFUN_H)
+	echo '#ifdef LF_IMPLEMENTATION' >> $(LIBFUN_H)
+	cat $(libfun_SRCS) >> $(LIBFUN_H)
+	echo '#endif' >> $(LIBFUN_H)
 
 $(LIBFUN) $(LIBFUN_SO): CFLAGS := $(libfun_CFLAGS)
 

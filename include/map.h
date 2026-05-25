@@ -10,7 +10,9 @@
 #ifndef LF_MAP_H
 #define LF_MAP_H
 
+#ifndef LF_HEADERONLY
 #include "config.h"
+#endif
 
 #include <assert.h>
 #include <stddef.h>
