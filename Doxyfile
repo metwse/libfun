@@ -1,0 +1,15 @@
+PROJECT_NAME           = "libfun"
+OUTPUT_DIRECTORY       = "docs-autogen/"
+MARKDOWN_SUPPORT       = YES
+SOURCE_BROWSER         = YES
+INPUT                  = include/ docs/ README.md
+TAB_SIZE               = 8
+RECURSIVE              = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+EXTRACT_STATIC         = YES
+QUIET                  = YES
+PREDEFINED             = lfi_wur= lf(name)="f ## name"
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES

@@ -1,1 +1,6 @@
-dist
+compile_commands.json
+.cache/
+dist/
+docs-autogen/
+*.old
+tests/.prefix
