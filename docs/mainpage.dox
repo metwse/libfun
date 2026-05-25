@@ -23,8 +23,8 @@ to the `headeronly` branch. You should grab your copy of `libfun.h` from there.
 @section public_api_sec Public API
 
 The library provides the following modules:
-- `map.h`: A hashmap implementation using open addressing and the FNV hash
-           function.
+- `hashmap.h`: A hashmap implementation using open addressing and the FNV hash
+               function.
 - `stack.h`: A standard LIFO stack.
 
 
@@ -47,9 +47,9 @@ the library like this:
 ```c
 int main(void)
 {
-        struct fmap map;
+        struct fhashmap hashmap;
 
-        fmap_xinit(&map);
+        fhashmap_xinit(&hashmap);
 
         // ...
 }

@@ -21,6 +21,7 @@ OBJS = $(wildcard $(OBJ_DIR)/*.o)
 default: $(TEST_TARGETS)
 
 PREFIX_FILE = .prefix
+SHELL = /bin/bash
 
 LIBFUN_DIR := ..
 LIBFUN_MODE := test

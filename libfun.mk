@@ -34,7 +34,7 @@ ifeq ($(libfun_CFLAGS),)
 $(error "WARNING: unknown mode $(LIBFUN_MODE).")
 endif
 
-libfun_HEADERS_TOPOLOGICAL_ORDERED = config.h stack.h map.h
+libfun_HEADERS_TOPOLOGICAL_ORDERED = config.h stack.h hashmap.h
 
 libfun_SRC_DIR := $(LIBFUN_DIR)/src
 
