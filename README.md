@@ -1,5 +1,5 @@
 # libfun
-C utilites written for fun.
+C utilities written for fun.
 
 *Check out the [online documentation](https://metwse.github.io/libfun/) for
 public API details!*

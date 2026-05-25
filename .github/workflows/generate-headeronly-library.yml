@@ -1,0 +1,39 @@
+name: Generate Header-Only Library Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Generate the Header-Only Library
+      run: make headeronly LIBFUN_H=/tmp/libfun.h
+
+    - name: Deploy to the headeronly Branch
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+        if git ls-remote --heads origin headeronly | grep -q 'refs/heads/headeronly'; then
+          git fetch origin headeronly
+          git checkout headeronly
+        else
+          git checkout --orphan headeronly
+          git rm -rf .
+        fi
+
+        cp /tmp/libfun.h ./
+        git add libfun.h
+
+        if ! git diff --staged --quiet; then
+          git commit -m 'auto-update header-only library'
+          git push origin headeronly
+        fi
