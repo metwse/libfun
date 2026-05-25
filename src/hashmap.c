@@ -11,7 +11,7 @@
 #include <string.h>
 
 
-#define LF_MAP_TOMBSTONE SIZE_MAX
+#define LF_HASHMAP_TOMBSTONE SIZE_MAX
 
 #define lf_hashmap_entry_at(entries, i) \
 	((struct lf(hashmap_entry) *) &((char *) entries) \
@@ -51,14 +51,14 @@ lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *key, size_t keylen)
 
 int lf(hashmap_init)(struct lf(hashmap) *m, size_t value_size)
 {
-	m->cap = LF_MAP_INITIAL_CAP;
+	m->cap = LF_HASHMAP_INITIAL_CAP;
 	m->used = 0;
 	/* Align value size to sizeof(size_t)-byte boundary */
 	m->value_size =
 		((value_size + sizeof(size_t) - 1) / sizeof(size_t)) *
 			sizeof(size_t);
 
-	m->entries = calloc(LF_MAP_INITIAL_CAP,
+	m->entries = calloc(LF_HASHMAP_INITIAL_CAP,
 			    m->value_size + sizeof(struct lf(hashmap_entry)));
 
 	return m->entries == NULL ? 1 : 0;
@@ -70,7 +70,7 @@ void lf(hashmap_destroy)(struct lf(hashmap) *m)
 	for (size_t i = 0; i < m->cap; i++) {
 		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
-		if (e->keylen != LF_MAP_TOMBSTONE && e->keylen != 0)
+		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			free((void *) e->key);
 	}
 
@@ -99,7 +99,7 @@ void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 	struct lf(hashmap_entry) *e = lfif(hashmap_get2_entry)(m, key, keylen);
 
 	if (e) {
-		e->keylen = LF_MAP_TOMBSTONE;
+		e->keylen = LF_HASHMAP_TOMBSTONE;
 		free((void *) e->key);
 		m->used--;
 
@@ -145,7 +145,7 @@ struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
 
 		it->i++;
 
-		if (e->keylen != LF_MAP_TOMBSTONE && e->keylen != 0)
+		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			return e;
 	}
 
@@ -211,7 +211,7 @@ lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t cap)
 	for (size_t i = 0; i < cap; i++) {
 		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
 
-		if (e->keylen != LF_MAP_TOMBSTONE && e->keylen != 0)
+		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			lfif(hashmap_insert2_nocopy)(m, e->key, e->keylen, e->value);
 	}
 
@@ -243,7 +243,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 	do {
 		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
-		if (e->keylen == 0 || e->keylen == LF_MAP_TOMBSTONE) {
+		if (e->keylen == 0 || e->keylen == LF_HASHMAP_TOMBSTONE) {
 			e->keylen = keylen;
 			e->key = key;
 

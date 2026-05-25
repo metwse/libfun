@@ -3,6 +3,11 @@
  * @brief Library-wide configuration.
  */
 
+#ifndef LF_HASHMAP_INITIAL_CAP
+/** @brief Initial capacity of the hashmap. */
+#define LF_HASHMAP_INITIAL_CAP 64
+#endif
+
 #ifndef LF_MAP_INITIAL_CAP
 /** @brief Initial capacity of the map. */
 #define LF_MAP_INITIAL_CAP 64

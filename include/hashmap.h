@@ -7,8 +7,8 @@
  * fixed-length values.
  */
 
-#ifndef LF_MAP_H
-#define LF_MAP_H
+#ifndef LF_HASHMAP_H
+#define LF_HASHMAP_H
 
 #ifndef LF_HEADERONLY
 #include "config.h"
@@ -53,7 +53,7 @@ struct lf(hashmap_entry) {
  * Allocates the necessary memory for the hashmap. The `value_size` parameter
  * specifies the maximum size of the `value`s the user will add.
  *
- * Returns non-zero if the a memory allocation failure occurs.
+ * Returns non-zero if a memory allocation failure occurs.
  */
 int lf(hashmap_init)(struct lf(hashmap) *hashmap, size_t value_size) lfi_wur;
 
@@ -82,8 +82,8 @@ void *lf(hashmap_get2)(struct lf(hashmap) *hashmap,
  *
  * @warning The `key` must not already exist in the hashmap.
  *
- * The `key` parameter must be null-terminated. Returns non-zero if the a
- * memory allocation failure occurs.
+ * The `key` parameter must be null-terminated. Returns non-zero if the memory
+ * allocation failure occurs.
  */
 int lf(hashmap_insert)(struct lf(hashmap) *hashmap,
 		       const void *key,

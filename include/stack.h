@@ -41,7 +41,7 @@ struct lf(stack) {
  * Allocates the necessary memory for the stack. The `item_size` parameter
  * specifies the size of the elements the user will add.
  *
- * Returns non-zero if the a memory allocation failure occurs.
+ * Returns non-zero if a memory allocation failure occurs.
  */
 int lf(stack_init)(struct lf(stack) *stack, size_t item_size) lfi_wur;
 
