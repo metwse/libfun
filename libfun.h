@@ -115,7 +115,7 @@ void lf(stack_xpush)(struct lf(stack) *stack, void *item);
 void *lf(stack_top)(struct lf(stack) *stack);
 
 /** @brief Returns the element at the specified `index`. */
-void *lf(stack_at)(struct lf(stack) *stack, size_t index);
+void *lf(stack_at)(struct lf(stack) *stack, ptrdiff_t index);
 
 /** @brief Returns the total number of elements. */
 size_t lf(stack_len)(const struct lf(stack) *stack);
@@ -421,7 +421,7 @@ void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
  * Raises an error if the index is larger than map size. The entry may be
  * invalidated after a remove operation.
  */
-struct lf(map_entry) lf(map_select)(struct lf(map) *map, size_t index);
+struct lf(map_entry) lf(map_select)(struct lf(map) *map, ptrdiff_t index);
 
 /**
  * @brief Determines the 0-based index of a specific key in the sorted map.
@@ -448,15 +448,13 @@ size_t lf(map_size)(const struct lf(map) *map);
 void lf(map_iter)(struct lf(map) *map, struct lf(map_it) *it);
 
 /**
- * @brief Creates a reverse iteration handle for the map.
+ * @brief Creates a reverse handle from specific index for the map.
  *
- * Initializes `it` to iterate over all entries in descending key order. The
- * first call to map_iter_prev() will return the entry with the largest key.
- *
- * @attention The iterator is invalidated by any insert or remove operation
- * on the map. Do not modify the map while iterating.
+ * See map_iter().
  */
-void lf(map_iter_rev)(struct lf(map) *map, struct lf(map_it) *it);
+void lf(map_iter_from)(struct lf(map) *map,
+		       struct lf(map_it) *it,
+		       ptrdiff_t index);
 
 /**
  * @brief Retrieves the next entry from a forward iteration handle.
@@ -477,12 +475,75 @@ struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it);
 
 #endif
 #ifdef LF_IMPLEMENTATION
+#include <stddef.h>
+#ifndef LF_COMMON_H
+
 #ifndef LF_HEADERONLY
+#include "../include/config.h"
+#endif
+
+#include <stddef.h>
+#include <stdlib.h>  // IWYU pragma: export
+
+
+/** @brief Assertion macro that prints formatted error message if failed. */
+#if (defined(__unix__) || defined(__APPLE__) || defined(__linux__)) && \
+    (defined(__GNUC__) || defined(__clang__))
+
+#include <stdio.h>  // IWYU pragma: begin_exports
+#include <signal.h>  // IWYU pragma: end_exports
+
+/** @cond */
+#define lf_assert_stringify_detail(a) #a
+#define lf_assert_stringify(a) lf_assert_stringify_detail(a)
+/** @endcond */
+
+#define lf_assert(c, ...) do { \
+		if (!(c)) { \
+			fprintf(stderr, "["  __FILE__ ":" \
+				lf_assert_stringify(__LINE__) "] " \
+				"Assertion failed for: " \
+				lf_assert_stringify(c) \
+				"\n> " __VA_ARGS__); \
+			fputc('\n', stderr); \
+			raise(SIGINT); \
+		} \
+	} while(0)
+
+#else
+
+#include <assert.h>  // IWYU pragma: export
+
+#define lf_assert(c, ...) do { assert(c); abort(); } while (0)
+
+#endif
+
+/** @brief Counterpart of the assert(), expects the condition to be false. */
+#define lf_unwrap(c) lf_assert(!(c), "discarded result indicate error")
+
+/** @brief Unreachable assertion. */
+#define lf_unreachable do { lf_assert(0, "unreachable"); abort(); } while (0)
+
+
+/* Circullar indexing, negative indexes starts from the end. */
+inline lfi_fdecl(size_t, circular_index)(ptrdiff_t index, size_t size)
+{
+	lf_assert(-(ptrdiff_t) size <= index && index < (ptrdiff_t) size, "overflow");
+
+	if (index < 0)
+		index += size;
+
+	return index;
+}
+
+
+#endif
+#ifndef LF_HEADERONLY
+#include "common.h"
 #include "../include/config.h"
 #include "../include/hashmap.h"
 #endif
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -633,14 +694,14 @@ struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
 
 void lf(hashmap_xinit)(struct lf(hashmap) *m, size_t value_size)
 {
-	assert(lf(hashmap_init)(m, value_size) == 0);
+	lf_unwrap(lf(hashmap_init)(m, value_size));
 }
 
 void lf(hashmap_xinsert)(struct lf(hashmap) *m,
 			 const void *key,
 			 const void *value)
 {
-	assert(lf(hashmap_insert)(m, key, value) == 0);
+	lf_unwrap(lf(hashmap_insert)(m, key, value));
 }
 
 void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
@@ -648,7 +709,7 @@ void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
 			  size_t keylen,
 			  const void *value)
 {
-	assert(lf(hashmap_insert2)(m, key, keylen, value) == 0);
+	lf_unwrap(lf(hashmap_insert2)(m, key, keylen, value));
 }
 
 lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
@@ -713,7 +774,8 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 			return 1;
 	}
 
-	assert(!lf(hashmap_get2)(m, key, keylen) && "hashmap contains the element");
+	lf_assert(!lf(hashmap_get2)(m, key, keylen),
+		  "hashmap contains the element");
 
 	uint64_t hash = lfi(hashmap_fnv_hash)(key, keylen);
 	size_t start_i = hash % m->cap;
@@ -739,13 +801,13 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 		i %= m->cap;
 	} while (i != start_i);
 
-	assert(0);  // GCOVR_EXCL_LINE: unreachable
+	lf_unreachable;  // GCOVR_EXCL_LINE: unreachable
 }
 #ifndef LF_HEADERONLY
+#include "common.h"
 #include "../include/map.h"
 #endif
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -1034,6 +1096,28 @@ lfi_fdecl(struct lfi(map_node) *, map_get2_node)(struct lf(map) *m,
 	return NULL;
 }
 
+lfi_fdecl(struct lfi(map_node) *, map_select_node)(struct lf(map) *m,
+						   ptrdiff_t i_)
+{
+	size_t i = lfi(circular_index)(i_, lf(map_size)(m));
+
+	struct lfi(map_node) *cur = m->root;
+
+	while (true) {
+		if (lf_map_node_size(cur->left) == i)
+			break;
+
+		if (lf_map_node_size(cur->left) > i) {
+			cur = cur->left;
+		} else {
+			i -= lf_map_node_size(cur->left) + 1;
+			cur = cur->right;
+		}
+	}
+
+	return cur;
+}
+
 /* Returns the leftmost node in the subtree rooted at n. */
 lfi_fdecl(struct lfi(map_node) *, map_leftmost)(struct lfi(map_node) *n)
 {
@@ -1128,7 +1212,7 @@ void lf(map_xinit)(struct lf(map) *m,
 		   size_t value_size,
 		   int (*cmp)(const void *, const void *, size_t, size_t))
 {
-	assert(lf(map_init)(m, value_size, cmp) == 0);
+	lf_unwrap(lf(map_init)(m, value_size, cmp));
 }
 
 void lf(map_destroy)(struct lf(map) *m)
@@ -1158,7 +1242,7 @@ int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
 
 void lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
 {
-	assert(lf(map_insert)(m, key, value) == 0);
+	lf_unwrap(lf(map_insert)(m, key, value));
 }
 
 int lf(map_insert2)(struct lf(map) *m,
@@ -1186,14 +1270,12 @@ int lf(map_insert2)(struct lf(map) *m,
 
 			cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
 
-			assert(cmp != 0 && "map already contains the element");
+			lf_assert(cmp != 0, "map already contains the element");
 
 			if (cmp < 0)
 				cur = cur->right;
 			else if (cmp > 0)
 				cur = cur->left;
-			else
-				abort();
 		}
 
 		if (cmp < 0)
@@ -1214,7 +1296,7 @@ void lf(map_xinsert2)(struct lf(map) *m,
 		      size_t keylen,
 		      const void *value)
 {
-	assert(lf(map_insert2)(m, key, keylen, value) == 0);
+	lf_unwrap(lf(map_insert2)(m, key, keylen, value));
 }
 
 void *lf(map_remove)(struct lf(map) *m, const void *key)
@@ -1291,25 +1373,9 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 	return m->hold_value;
 }
 
-struct lf(map_entry) lf(map_select)(struct lf(map) *m, size_t i)
+struct lf(map_entry) lf(map_select)(struct lf(map) *m, ptrdiff_t i)
 {
-	assert(i < lf(map_size)(m) && "map overflow");
-
-	struct lfi(map_node) *cur = m->root;
-
-	while (true) {
-		if (lf_map_node_size(cur->left) == i)
-			break;
-
-		if (lf_map_node_size(cur->left) > i) {
-			cur = cur->left;
-		} else {
-			i -= lf_map_node_size(cur->left) + 1;
-			cur = cur->right;
-		}
-	}
-
-	return lfi(map_entry_of)(cur);
+	return lfi(map_entry_of)(lfi(map_select_node)(m, i));
 }
 
 size_t lf(map_size)(const struct lf(map) *m)
@@ -1349,14 +1415,15 @@ size_t lf(map_rank2)(const struct lf(map) *m, const void *key, size_t keylen)
 
 void lf(map_iter)(struct lf(map) *m, struct lf(map_it) *it)
 {
-	it->m = m;
-	it->n = lfi(map_leftmost)(m->root);
+	lf(map_iter_from)(m, it, 0);
 }
 
-void lf(map_iter_rev)(struct lf(map) *m, struct lf(map_it) *it)
+void lf(map_iter_from)(struct lf(map) *m,
+		       struct lf(map_it) *it,
+		       ptrdiff_t i)
 {
 	it->m = m;
-	it->n = lfi(map_rightmost)(m->root);
+	it->n = lfi(map_select_node)(m, i);
 }
 
 struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)
@@ -1378,12 +1445,13 @@ struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it)
 
 	return lfi(map_entry_of)(cur);
 }
+#include <stddef.h>
 #ifndef LF_HEADERONLY
+#include "common.h"
 #include "../include/config.h"
 #include "../include/stack.h"
 #endif
 
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -1400,7 +1468,7 @@ int lf(stack_init)(struct lf(stack) *s, size_t item_size)
 
 void lf(stack_xinit)(struct lf(stack) *s, size_t item_size)
 {
-	assert(lf(stack_init)(s, item_size) == 0);
+	lf_unwrap(lf(stack_init)(s, item_size));
 }
 
 void lf(stack_destroy)(struct lf(stack) *s)
@@ -1410,7 +1478,7 @@ void lf(stack_destroy)(struct lf(stack) *s)
 
 void *lf(stack_pop)(struct lf(stack) *s)
 {
-	assert(s->len && "stack underflow");
+	lf_assert(s->len, "stack underflow");
 
 	void *item = lf(stack_at)(s, s->len - 1);
 
@@ -1441,19 +1509,19 @@ int lf(stack_push)(struct lf(stack) *s, void *item)
 
 void lf(stack_xpush)(struct lf(stack) *s, void *item)
 {
-	assert(lf(stack_push)(s, item) == 0);
+	lf_unwrap(lf(stack_push)(s, item));
 }
 
 void *lf(stack_top)(struct lf(stack) *s)
 {
-	assert(s->len && "stack underflow");
+	lf_assert(s->len, "stack underflow");
 
 	return lf(stack_at)(s, s->len - 1);
 }
 
-void *lf(stack_at)(struct lf(stack) *s, size_t index)
+void *lf(stack_at)(struct lf(stack) *s, ptrdiff_t index)
 {
-	return &s->data[index * s->item_size];
+	return &s->data[lfi(circular_index)(index, s->len) * s->item_size];
 }
 
 size_t lf(stack_len)(const struct lf(stack) *s)
