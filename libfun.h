@@ -192,7 +192,9 @@ void lf(hashmap_destroy)(struct lf(hashmap) *hashmap);
  * @brief Returns a pointer to the value matching the key, returns `NULL` if
  * the key is not found.
  *
- * The `key` parameter must be null-terminated.
+ * The `key` parameter must be null-terminated. Returned pointer will be a
+ * sentinel if the map's `value_size` is zero, and it should not be
+ * dereferenced.
  */
 void *lf(hashmap_get)(struct lf(hashmap) *hashmap, const void *key);
 
@@ -338,7 +340,9 @@ void lf(map_destroy)(struct lf(map) *map);
  * @brief Returns a pointer to the value matching the key, returns `NULL` if
  * the key is not found.
  *
- * The `key` parameter must be null-terminated.
+ * The `key` parameter must be null-terminated. Returned pointer will be a
+ * sentinel if the map's `value_size` is zero, and it should not be
+ * dereferenced.
  */
 void *lf(map_get)(struct lf(map) *map, const void *key);
 
@@ -386,7 +390,8 @@ void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen) lfi_w
 /**
  * @brief Retrieves the map entry at a specific sorted index.
  *
- * Raises an error if the index is larger than map size.
+ * Raises an error if the index is larger than map size. The entry may be
+ * invalidated after a remove operation.
  */
 struct lf(map_entry) lf(map_select)(struct lf(map) *map, size_t index);
 
@@ -1064,6 +1069,8 @@ int lf(map_insert2)(struct lf(map) *m,
 				cur = cur->right;
 			else if (cmp > 0)
 				cur = cur->left;
+			else
+				abort();
 		}
 
 		if (cmp < 0)
