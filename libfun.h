@@ -296,6 +296,14 @@ struct lf(map) {
 	/** @endcond */
 };
 
+/** @brief Iteration handle to retrieve map entries one by one. */
+struct lf(map_it) {
+	/** @cond */
+	struct lf(map) *m;
+	struct lfi(map_node) *n;
+	/** @endcond */
+};
+
 /** @brief Map entry. */
 struct lf(map_entry) {
 	/** Key, the unique identifier pointing to the value. */
@@ -305,6 +313,26 @@ struct lf(map_entry) {
 	/** The value assigned to the key by the user. */
 	const void *value;
 };
+
+/** @cond */
+struct lfi(map_node) {
+	size_t keylen;
+
+	struct lfi(map_node) *p;
+	struct lfi(map_node) *left;
+	struct lfi(map_node) *right;
+
+	/* Number of nodes in the subtree rooted at this node *including*
+	 * this node. */
+	size_t size;
+
+	/* 1 if red, 0 if black. */
+	char color;
+
+	/* Key and value. */
+	char kv[];
+};
+/** @endcond */
 
 
 /**
@@ -382,10 +410,10 @@ void lf(map_xinsert2)(struct lf(map) *map,
  * valid until the next remove operation. The user must copy the underlying
  * data if they wish to retain it.
  */
-void *lf(map_remove)(struct lf(map) *map, const void *key) lfi_wur;
+void *lf(map_remove)(struct lf(map) *map, const void *key);
 
 /** @brief Identical to map_remove(), but accepts a non-null-terminated key. */
-void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen) lfi_wur;
+void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
 
 /**
  * @brief Retrieves the map entry at a specific sorted index.
@@ -407,6 +435,44 @@ size_t lf(map_rank2)(const struct lf(map) *map, const void *key, size_t keylen);
 
 /** @brief Returns the total number of elements currently stored in the map. */
 size_t lf(map_size)(const struct lf(map) *map);
+
+/**
+ * @brief Creates a forward iteration handle for the map.
+ *
+ * Initializes `it` to iterate over all entries in ascending key order. The
+ * first call to map_iter_next() will return the entry with the smallest key.
+ *
+ * @attention The iterator is invalidated by any insert or remove operation
+ * on the map. Do not modify the map while iterating.
+ */
+void lf(map_iter)(struct lf(map) *map, struct lf(map_it) *it);
+
+/**
+ * @brief Creates a reverse iteration handle for the map.
+ *
+ * Initializes `it` to iterate over all entries in descending key order. The
+ * first call to map_iter_prev() will return the entry with the largest key.
+ *
+ * @attention The iterator is invalidated by any insert or remove operation
+ * on the map. Do not modify the map while iterating.
+ */
+void lf(map_iter_rev)(struct lf(map) *map, struct lf(map_it) *it);
+
+/**
+ * @brief Retrieves the next entry from a forward iteration handle.
+ *
+ * Returns entries in ascending key order. When all entries have been
+ * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
+ */
+struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);
+
+/**
+ * @brief Retrieves the next entry from a reverse iteration handle.
+ *
+ * Returns entries in descending key order. When all entries have been
+ * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
+ */
+struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it);
 
 
 #endif
@@ -695,25 +761,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 #define lf_map_node_value(n) (&(n)->kv[lf_map_align((n)->keylen)])
 
 
-struct lfi(map_node) {
-	size_t keylen;
-
-	struct lfi(map_node) *p;
-	struct lfi(map_node) *left;
-	struct lfi(map_node) *right;
-
-	/* Number of nodes in the subtree rooted at this node *including*
-	 * this node. */
-	size_t size;
-
-	/* 1 if red, 0 if black. */
-	char color;
-
-	/* Key and value. */
-	char kv[];
-};
-
-
+/* Allocates a new node. */
 lfi_fdecl(struct lfi(map_node) *, map_new_node)(const void *key,
 						size_t keylen,
 						const void *value,
@@ -936,6 +984,8 @@ lfi_fdecl(void, map_transplant)(struct lf(map) *m,
 		v->p = u->p;
 }
 
+/* Default comparator used if no comparatasion function is given to the
+ * map_init(). */
 lfi_fdecl(int, map_default_comparator)(const void *key1, const void *key2,
 				       size_t keylen1, size_t keylen2)
 {
@@ -982,6 +1032,79 @@ lfi_fdecl(struct lfi(map_node) *, map_get2_node)(struct lf(map) *m,
 	}
 
 	return NULL;
+}
+
+/* Returns the leftmost node in the subtree rooted at n. */
+lfi_fdecl(struct lfi(map_node) *, map_leftmost)(struct lfi(map_node) *n)
+{
+	if (n == NULL)
+		return NULL;
+
+	while (n->left)
+		n = n->left;
+
+	return n;
+}
+
+/* Returns the rightmost node in the subtree rooted at n. */
+lfi_fdecl(struct lfi(map_node) *, map_rightmost)(struct lfi(map_node) *n)
+{
+	if (n == NULL)
+		return NULL;
+
+	while (n->right)
+		n = n->right;
+
+	return n;
+}
+
+/* Returns the in-order successor of n, or NULL if n is the maximum. */
+lfi_fdecl(struct lfi(map_node) *, map_successor)(struct lfi(map_node) *n)
+{
+	if (n->right)
+		return lfi(map_leftmost)(n->right);
+
+	struct lfi(map_node) *y = n->p;
+
+	while (y != NULL && n == y->right) {
+		n = y;
+		y = y->p;
+	}
+
+	return y;
+}
+
+/* Returns the in-order predecessor of n, or NULL if n is the minimum. */
+lfi_fdecl(struct lfi(map_node) *, map_predecessor)(struct lfi(map_node) *n)
+{
+	if (n->left)
+		return lfi(map_rightmost)(n->left);
+
+	struct lfi(map_node) *y = n->p;
+
+	while (y != NULL && n == y->left) {
+		n = y;
+		y = y->p;
+	}
+
+	return y;
+}
+
+/* Constructs a map_entry from a node, or the exhaustion sentinel if NULL. */
+lfi_fdecl(struct lf(map_entry), map_entry_of)(struct lfi(map_node) *n)
+{
+	if (n == NULL)
+		return (struct lf(map_entry)) {
+			.key = NULL,
+			.keylen = 0,
+			.value = NULL
+		};
+
+	return (struct lf(map_entry)) {
+		.key = n->kv,
+		.keylen = n->keylen,
+		.value = lf_map_node_value(n),
+	};
 }
 
 
@@ -1186,11 +1309,7 @@ struct lf(map_entry) lf(map_select)(struct lf(map) *m, size_t i)
 		}
 	}
 
-	return (struct lf(map_entry)) {
-		.key = cur->kv,
-		.keylen = cur->keylen,
-		.value = &cur->kv[lf_map_align(cur->keylen)],
-	};
+	return lfi(map_entry_of)(cur);
 }
 
 size_t lf(map_size)(const struct lf(map) *m)
@@ -1226,6 +1345,38 @@ size_t lf(map_rank2)(const struct lf(map) *m, const void *key, size_t keylen)
 	}
 
 	return -1;
+}
+
+void lf(map_iter)(struct lf(map) *m, struct lf(map_it) *it)
+{
+	it->m = m;
+	it->n = lfi(map_leftmost)(m->root);
+}
+
+void lf(map_iter_rev)(struct lf(map) *m, struct lf(map_it) *it)
+{
+	it->m = m;
+	it->n = lfi(map_rightmost)(m->root);
+}
+
+struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)
+{
+	struct lfi(map_node) *cur = it->n;
+
+	if (cur != NULL)
+		it->n = lfi(map_successor)(cur);
+
+	return lfi(map_entry_of)(cur);
+}
+
+struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it)
+{
+	struct lfi(map_node) *cur = it->n;
+
+	if (cur != NULL)
+		it->n = lfi(map_predecessor)(cur);
+
+	return lfi(map_entry_of)(cur);
 }
 #ifndef LF_HEADERONLY
 #include "../include/config.h"
