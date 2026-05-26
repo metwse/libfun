@@ -186,7 +186,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_size</b> (cons
 </div><div class="memdoc">
 
 <p>Returns a pointer to the value matching the key, returns <code>NULL</code> if the key is not found. </p>
-<p>The <code>key</code> parameter must be null-terminated. </p>
+<p>The <code>key</code> parameter must be null-terminated. Returned pointer will be a sentinel if the map's <code>value_size</code> is zero, and it should not be dereferenced. </p>
 
 </div>
 </div>
@@ -354,7 +354,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_size</b> (cons
 </div><div class="memdoc">
 
 <p>Retrieves the map entry at a specific sorted index. </p>
-<p>Raises an error if the index is larger than map size. </p>
+<p>Raises an error if the index is larger than map size. The entry may be invalidated after a remove operation. </p>
 
 </div>
 </div>

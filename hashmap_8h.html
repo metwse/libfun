@@ -183,7 +183,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_iter</b> (st
 </div><div class="memdoc">
 
 <p>Returns a pointer to the value matching the key, returns <code>NULL</code> if the key is not found. </p>
-<p>The <code>key</code> parameter must be null-terminated. </p>
+<p>The <code>key</code> parameter must be null-terminated. Returned pointer will be a sentinel if the map's <code>value_size</code> is zero, and it should not be dereferenced. </p>
 
 </div>
 </div>
