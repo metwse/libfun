@@ -1,9 +1,9 @@
 #ifndef LF_HEADERONLY
+#include "common.h"
 #include "../include/config.h"
 #include "../include/stack.h"
 #endif
 
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -20,7 +20,7 @@ int lf(stack_init)(struct lf(stack) *s, size_t item_size)
 
 void lf(stack_xinit)(struct lf(stack) *s, size_t item_size)
 {
-	assert(lf(stack_init)(s, item_size) == 0);
+	lf_unwrap(lf(stack_init)(s, item_size));
 }
 
 void lf(stack_destroy)(struct lf(stack) *s)
@@ -30,7 +30,7 @@ void lf(stack_destroy)(struct lf(stack) *s)
 
 void *lf(stack_pop)(struct lf(stack) *s)
 {
-	assert(s->len && "stack underflow");
+	lf_assert(s->len, "stack underflow");
 
 	void *item = lf(stack_at)(s, s->len - 1);
 
@@ -61,12 +61,12 @@ int lf(stack_push)(struct lf(stack) *s, void *item)
 
 void lf(stack_xpush)(struct lf(stack) *s, void *item)
 {
-	assert(lf(stack_push)(s, item) == 0);
+	lf_unwrap(lf(stack_push)(s, item));
 }
 
 void *lf(stack_top)(struct lf(stack) *s)
 {
-	assert(s->len && "stack underflow");
+	lf_assert(s->len, "stack underflow");
 
 	return lf(stack_at)(s, s->len - 1);
 }

@@ -51,10 +51,11 @@ libfun_OBJS := $(patsubst $(libfun_SRC_DIR)/%.c,\
 		 $(libfun_SRCS))
 
 
-$(LIBFUN_H): $(libfun_HEADERS) $(libfun_SRCS) | $(libfun_DIST_DIR)
+$(LIBFUN_H): $(libfun_HEADERS) $(libfun_SRCS) $(libfun_SRC_DIR)/common.h | $(libfun_DIST_DIR)
 	echo '#define LF_HEADERONLY' > $(LIBFUN_H)
 	cat $(libfun_HEADERS) >> $(LIBFUN_H)
 	echo '#ifdef LF_IMPLEMENTATION' >> $(LIBFUN_H)
+	cat $(libfun_SRC_DIR)/common.h >> $(LIBFUN_H)
 	cat $(libfun_SRCS) >> $(LIBFUN_H)
 	echo '#endif' >> $(LIBFUN_H)
 

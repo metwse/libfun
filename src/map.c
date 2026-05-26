@@ -1,8 +1,8 @@
 #ifndef LF_HEADERONLY
+#include "common.h"
 #include "../include/map.h"
 #endif
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -385,7 +385,7 @@ void lf(map_xinit)(struct lf(map) *m,
 		   size_t value_size,
 		   int (*cmp)(const void *, const void *, size_t, size_t))
 {
-	assert(lf(map_init)(m, value_size, cmp) == 0);
+	lf_unwrap(lf(map_init)(m, value_size, cmp));
 }
 
 void lf(map_destroy)(struct lf(map) *m)
@@ -415,7 +415,7 @@ int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
 
 void lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
 {
-	assert(lf(map_insert)(m, key, value) == 0);
+	lf_unwrap(lf(map_insert)(m, key, value));
 }
 
 int lf(map_insert2)(struct lf(map) *m,
@@ -443,14 +443,12 @@ int lf(map_insert2)(struct lf(map) *m,
 
 			cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
 
-			assert(cmp != 0 && "map already contains the element");
+			lf_assert(cmp != 0, "map already contains the element");
 
 			if (cmp < 0)
 				cur = cur->right;
 			else if (cmp > 0)
 				cur = cur->left;
-			else
-				abort();
 		}
 
 		if (cmp < 0)
@@ -471,7 +469,7 @@ void lf(map_xinsert2)(struct lf(map) *m,
 		      size_t keylen,
 		      const void *value)
 {
-	assert(lf(map_insert2)(m, key, keylen, value) == 0);
+	lf_unwrap(lf(map_insert2)(m, key, keylen, value));
 }
 
 void *lf(map_remove)(struct lf(map) *m, const void *key)
@@ -550,7 +548,7 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 
 struct lf(map_entry) lf(map_select)(struct lf(map) *m, size_t i)
 {
-	assert(i < lf(map_size)(m) && "map overflow");
+	lf_assert(i < lf(map_size)(m), "map overflow");
 
 	struct lfi(map_node) *cur = m->root;
 

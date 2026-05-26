@@ -1,9 +1,9 @@
 #ifndef LF_HEADERONLY
+#include "common.h"
 #include "../include/config.h"
 #include "../include/hashmap.h"
 #endif
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -154,14 +154,14 @@ struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
 
 void lf(hashmap_xinit)(struct lf(hashmap) *m, size_t value_size)
 {
-	assert(lf(hashmap_init)(m, value_size) == 0);
+	lf_unwrap(lf(hashmap_init)(m, value_size));
 }
 
 void lf(hashmap_xinsert)(struct lf(hashmap) *m,
 			 const void *key,
 			 const void *value)
 {
-	assert(lf(hashmap_insert)(m, key, value) == 0);
+	lf_unwrap(lf(hashmap_insert)(m, key, value));
 }
 
 void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
@@ -169,7 +169,7 @@ void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
 			  size_t keylen,
 			  const void *value)
 {
-	assert(lf(hashmap_insert2)(m, key, keylen, value) == 0);
+	lf_unwrap(lf(hashmap_insert2)(m, key, keylen, value));
 }
 
 lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
@@ -234,7 +234,8 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 			return 1;
 	}
 
-	assert(!lf(hashmap_get2)(m, key, keylen) && "hashmap contains the element");
+	lf_assert(!lf(hashmap_get2)(m, key, keylen),
+		  "hashmap contains the element");
 
 	uint64_t hash = lfi(hashmap_fnv_hash)(key, keylen);
 	size_t start_i = hash % m->cap;
@@ -260,5 +261,5 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 		i %= m->cap;
 	} while (i != start_i);
 
-	assert(0);  // GCOVR_EXCL_LINE: unreachable
+	lf_unreachable();  // GCOVR_EXCL_LINE: unreachable
 }
