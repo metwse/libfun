@@ -68,7 +68,9 @@ void lf(hashmap_destroy)(struct lf(hashmap) *hashmap);
  * @brief Returns a pointer to the value matching the key, returns `NULL` if
  * the key is not found.
  *
- * The `key` parameter must be null-terminated.
+ * The `key` parameter must be null-terminated. Returned pointer will be a
+ * sentinel if the map's `value_size` is zero, and it should not be
+ * dereferenced.
  */
 void *lf(hashmap_get)(struct lf(hashmap) *hashmap, const void *key);
 

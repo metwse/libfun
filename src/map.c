@@ -392,6 +392,8 @@ int lf(map_insert2)(struct lf(map) *m,
 				cur = cur->right;
 			else if (cmp > 0)
 				cur = cur->left;
+			else
+				abort();
 		}
 
 		if (cmp < 0)
