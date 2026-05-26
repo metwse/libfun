@@ -261,5 +261,5 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 		i %= m->cap;
 	} while (i != start_i);
 
-	lf_unreachable();  // GCOVR_EXCL_LINE: unreachable
+	lf_unreachable;  // GCOVR_EXCL_LINE: unreachable
 }

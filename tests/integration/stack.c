@@ -18,7 +18,11 @@ int main(void)
 		for (int i = 0; i < limit; i++) {
 			lf(stack_xpush)(&s, &i);
 			assert(*(int *) lf(stack_at)(&s, i) == i);
+			assert(*(int *) lf(stack_at)(&s, -1) == i);
 			assert(lf(stack_len)(&s) == (size_t) i + 1);
+		}
+		for (int i = 1; i <= limit; i++) {
+			assert(*(int *) lf(stack_at)(&s, -i) == limit - i);
 		}
 
 		for (int i = limit; i > 0; i--) {

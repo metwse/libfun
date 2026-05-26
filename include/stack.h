@@ -66,7 +66,7 @@ void lf(stack_xpush)(struct lf(stack) *stack, void *item);
 void *lf(stack_top)(struct lf(stack) *stack);
 
 /** @brief Returns the element at the specified `index`. */
-void *lf(stack_at)(struct lf(stack) *stack, size_t index);
+void *lf(stack_at)(struct lf(stack) *stack, ptrdiff_t index);
 
 /** @brief Returns the total number of elements. */
 size_t lf(stack_len)(const struct lf(stack) *stack);

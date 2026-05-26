@@ -291,6 +291,28 @@ lfi_fdecl(struct lfi(map_node) *, map_get2_node)(struct lf(map) *m,
 	return NULL;
 }
 
+lfi_fdecl(struct lfi(map_node) *, map_select_node)(struct lf(map) *m,
+						   ptrdiff_t i_)
+{
+	size_t i = lfi(circular_index)(i_, lf(map_size)(m));
+
+	struct lfi(map_node) *cur = m->root;
+
+	while (true) {
+		if (lf_map_node_size(cur->left) == i)
+			break;
+
+		if (lf_map_node_size(cur->left) > i) {
+			cur = cur->left;
+		} else {
+			i -= lf_map_node_size(cur->left) + 1;
+			cur = cur->right;
+		}
+	}
+
+	return cur;
+}
+
 /* Returns the leftmost node in the subtree rooted at n. */
 lfi_fdecl(struct lfi(map_node) *, map_leftmost)(struct lfi(map_node) *n)
 {
@@ -546,25 +568,9 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 	return m->hold_value;
 }
 
-struct lf(map_entry) lf(map_select)(struct lf(map) *m, size_t i)
+struct lf(map_entry) lf(map_select)(struct lf(map) *m, ptrdiff_t i)
 {
-	lf_assert(i < lf(map_size)(m), "map overflow");
-
-	struct lfi(map_node) *cur = m->root;
-
-	while (true) {
-		if (lf_map_node_size(cur->left) == i)
-			break;
-
-		if (lf_map_node_size(cur->left) > i) {
-			cur = cur->left;
-		} else {
-			i -= lf_map_node_size(cur->left) + 1;
-			cur = cur->right;
-		}
-	}
-
-	return lfi(map_entry_of)(cur);
+	return lfi(map_entry_of)(lfi(map_select_node)(m, i));
 }
 
 size_t lf(map_size)(const struct lf(map) *m)
@@ -604,14 +610,15 @@ size_t lf(map_rank2)(const struct lf(map) *m, const void *key, size_t keylen)
 
 void lf(map_iter)(struct lf(map) *m, struct lf(map_it) *it)
 {
-	it->m = m;
-	it->n = lfi(map_leftmost)(m->root);
+	lf(map_iter_from)(m, it, 0);
 }
 
-void lf(map_iter_rev)(struct lf(map) *m, struct lf(map_it) *it)
+void lf(map_iter_from)(struct lf(map) *m,
+		       struct lf(map_it) *it,
+		       ptrdiff_t i)
 {
 	it->m = m;
-	it->n = lfi(map_rightmost)(m->root);
+	it->n = lfi(map_select_node)(m, i);
 }
 
 struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)

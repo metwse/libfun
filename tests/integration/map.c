@@ -74,9 +74,13 @@ int main(void)
 		}
 
 		for (int i = 0; i < 1000; i++) {
+			int rev_i = 999 - i;
+
 			struct lf(map_entry) e = lf(map_select)(&m, i);
+			struct lf(map_entry) rev_e = lf(map_select)(&m, -(i + 1));
 
 			assert(memcmp(&i, e.value, sizeof(int)) == 0);
+			assert(memcmp(&rev_i, rev_e.value, sizeof(int)) == 0);
 
 			memcpy(str, e.key, 3);
 

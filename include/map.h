@@ -153,7 +153,7 @@ void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
  * Raises an error if the index is larger than map size. The entry may be
  * invalidated after a remove operation.
  */
-struct lf(map_entry) lf(map_select)(struct lf(map) *map, size_t index);
+struct lf(map_entry) lf(map_select)(struct lf(map) *map, ptrdiff_t index);
 
 /**
  * @brief Determines the 0-based index of a specific key in the sorted map.
@@ -180,15 +180,13 @@ size_t lf(map_size)(const struct lf(map) *map);
 void lf(map_iter)(struct lf(map) *map, struct lf(map_it) *it);
 
 /**
- * @brief Creates a reverse iteration handle for the map.
+ * @brief Creates a reverse handle from specific index for the map.
  *
- * Initializes `it` to iterate over all entries in descending key order. The
- * first call to map_iter_prev() will return the entry with the largest key.
- *
- * @attention The iterator is invalidated by any insert or remove operation
- * on the map. Do not modify the map while iterating.
+ * See map_iter().
  */
-void lf(map_iter_rev)(struct lf(map) *map, struct lf(map_it) *it);
+void lf(map_iter_from)(struct lf(map) *map,
+		       struct lf(map_it) *it,
+		       ptrdiff_t index);
 
 /**
  * @brief Retrieves the next entry from a forward iteration handle.

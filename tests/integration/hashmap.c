@@ -60,7 +60,7 @@ int main(void)
 			assert(iter_values_total == values_total);
 		}
 
-		int limit2 = limit % (rand() % 2024);
+		int limit2 = limit % ((rand() % 2024) + 1);
 		// remove all even-numbered keys
 		for (int i = 0; i < limit2; i += 2) {
 			value[0] = values[i];
@@ -77,7 +77,7 @@ int main(void)
 			assert(!lf(hashmap_get2)(&m, &i, sizeof(int)));
 		}
 
-		int limit3 = limit2 % (rand() % 2024);
+		int limit3 = limit2 % ((rand() % 2024) + 1);
 		// now insert size_t keyed elements
 		for (size_t i = 0; i < (size_t) limit3; i += 4)
 			lf(hashmap_xinsert2)(&m, &i, sizeof(size_t), &i);

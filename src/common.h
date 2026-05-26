@@ -1,5 +1,11 @@
+#include <stddef.h>
 #ifndef LF_COMMON_H
 
+#ifndef LF_HEADERONLY
+#include "../include/config.h"
+#endif
+
+#include <stddef.h>
 #include <stdlib.h>  // IWYU pragma: export
 
 
@@ -39,7 +45,19 @@
 #define lf_unwrap(c) lf_assert(!(c), "discarded result indicate error")
 
 /** @brief Unreachable assertion. */
-#define lf_unreachable(c) do { lf_assert(0, "unreachable"); abort(); } while (0)
+#define lf_unreachable do { lf_assert(0, "unreachable"); abort(); } while (0)
+
+
+/* Circullar indexing, negative indexes starts from the end. */
+inline lfi_fdecl(size_t, circular_index)(ptrdiff_t index, size_t size)
+{
+	lf_assert(-(ptrdiff_t) size <= index && index < (ptrdiff_t) size, "overflow");
+
+	if (index < 0)
+		index += size;
+
+	return index;
+}
 
 
 #endif

@@ -53,7 +53,7 @@ int main(void)
 	for (int i = 0; i < 4096; i += 3)
 		assert(lf(map_remove2)(&m, &i, sizeof(int)));
 
-	lf(map_iter_rev)(&m, &it);
+	lf(map_iter_from)(&m, &it, -1);
 
 	for (int i = 4095; i > -1; i--) {
 		if (i % 3 == 0) {
@@ -61,6 +61,16 @@ int main(void)
 			assert(lf(map_rank2(&m, &i, sizeof(int)) == (size_t) -1));
 		} else {
 			struct lf(map_entry) e = lf(map_iter_prev)(&it);
+
+			assert(memcmp(&e.key, &i, sizeof(int)));
+		}
+	}
+
+	lf(map_iter_from)(&m, &it, 100);
+
+	for (int i = 100; i < 200; i++) {
+		if (i % 3 != 0) {
+			struct lf(map_entry) e = lf(map_iter_next)(&it);
 
 			assert(memcmp(&e.key, &i, sizeof(int)));
 		}

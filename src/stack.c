@@ -1,3 +1,4 @@
+#include <stddef.h>
 #ifndef LF_HEADERONLY
 #include "common.h"
 #include "../include/config.h"
@@ -71,9 +72,9 @@ void *lf(stack_top)(struct lf(stack) *s)
 	return lf(stack_at)(s, s->len - 1);
 }
 
-void *lf(stack_at)(struct lf(stack) *s, size_t index)
+void *lf(stack_at)(struct lf(stack) *s, ptrdiff_t index)
 {
-	return &s->data[index * s->item_size];
+	return &s->data[lfi(circular_index)(index, s->len) * s->item_size];
 }
 
 size_t lf(stack_len)(const struct lf(stack) *s)
