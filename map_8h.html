@@ -141,9 +141,8 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_remove2</b> (s
 <tr class="memitem:a5787c255fd105e06bf294aac61fe92e4" id="r_a5787c255fd105e06bf294aac61fe92e4"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfmap__entry.html">fmap_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="map_8h.html#a5787c255fd105e06bf294aac61fe92e4">fmap_select</a> (struct <a class="el" href="structfmap.html">fmap</a> *map, size_t index)</td></tr>
 <tr class="memdesc:a5787c255fd105e06bf294aac61fe92e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the map entry at a specific sorted index.  <br /></td></tr>
 <tr class="separator:a5787c255fd105e06bf294aac61fe92e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaad2671672b6b9f737245322d3fb14d9" id="r_aaad2671672b6b9f737245322d3fb14d9"><td class="memItemLeft" align="right" valign="top"><a id="aaad2671672b6b9f737245322d3fb14d9" name="aaad2671672b6b9f737245322d3fb14d9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_rank</b> (const struct <a class="el" href="structfmap.html">fmap</a> *map, const void *key)</td></tr>
-<tr class="memdesc:aaad2671672b6b9f737245322d3fb14d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the 0-based index of a specific key in the sorted map. <br /></td></tr>
+<tr class="memitem:aaad2671672b6b9f737245322d3fb14d9" id="r_aaad2671672b6b9f737245322d3fb14d9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="map_8h.html#aaad2671672b6b9f737245322d3fb14d9">fmap_rank</a> (const struct <a class="el" href="structfmap.html">fmap</a> *map, const void *key)</td></tr>
+<tr class="memdesc:aaad2671672b6b9f737245322d3fb14d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the 0-based index of a specific key in the sorted map.  <br /></td></tr>
 <tr class="separator:aaad2671672b6b9f737245322d3fb14d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e96bc6df56f5a9945987c8d8240e108" id="r_a7e96bc6df56f5a9945987c8d8240e108"><td class="memItemLeft" align="right" valign="top"><a id="a7e96bc6df56f5a9945987c8d8240e108" name="a7e96bc6df56f5a9945987c8d8240e108"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_rank2</b> (const struct <a class="el" href="structfmap.html">fmap</a> *map, const void *key, size_t keylen)</td></tr>
@@ -263,6 +262,37 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_size</b> (cons
 
 <p>Inserts a key-value pair into the map. </p>
 <dl class="section warning"><dt>Warning</dt><dd>The key must not already exist in the map. </dd></dl>
+
+</div>
+</div>
+<a id="aaad2671672b6b9f737245322d3fb14d9" name="aaad2671672b6b9f737245322d3fb14d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaad2671672b6b9f737245322d3fb14d9">&#9670;&#160;</a></span>fmap_rank()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t fmap_rank </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structfmap.html">fmap</a> *&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines the 0-based index of a specific key in the sorted map. </p>
+<p>Returns -1 casted to size_t if the key is not found. </p>
 
 </div>
 </div>
