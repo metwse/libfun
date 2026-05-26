@@ -13,6 +13,8 @@
 
 #define lf_map_node_size(n) ((n) == NULL ? 0 : (n)->size)
 
+#define lf_map_node_color(n) ((n) == NULL ? 0 : (n)->color)
+
 
 struct lfi(map_node) {
 	size_t keylen;
@@ -110,7 +112,88 @@ lfi_fdecl(void, map_right_rotate)(struct lf(map) *m, struct lfi(map_node) *x)
 	x->size = lf_map_node_size(x->left) + lf_map_node_size(x->right) + 1;
 }
 
-lfi_fdecl(void, map_fixup)(struct lf(map) *m, struct lfi(map_node) *z)
+lfi_fdecl(void, map_delete_fixup)(struct lf(map) *m,
+				  struct lfi(map_node) *x,
+				  struct lfi(map_node) *x_parent)
+{
+	while (x != m->root && lf_map_node_color(x) == 0) {
+		if (x == x_parent->left) {
+			struct lfi(map_node) *w = x_parent->right;
+
+			if (lf_map_node_color(w) == 1) {
+				/* case 1 */
+				w->color = 0;
+				x_parent->color = 1;
+				lfi(map_left_rotate)(m, x_parent);
+				w = x_parent->right;
+			}
+
+			if (lf_map_node_color(w->left) == 0 &&
+				lf_map_node_color(w->right) == 0) {
+				/* case 2 */
+				w->color = 1;
+				x = x_parent;
+				x_parent = x->p;
+			} else {
+				if (lf_map_node_color(w->right) == 0) {
+					/* case 3 */
+					if (w->left) w->left->color = 0;
+					w->color = 1;
+					lfi(map_right_rotate)(m, w);
+					w = x_parent->right;
+				}
+
+				/* case 4 */
+				w->color = x_parent->color;
+				x_parent->color = 0;
+				if (w->right)
+					w->right->color = 0;
+				lfi(map_left_rotate)(m, x_parent);
+				x = m->root;
+			}
+		} else {
+			struct lfi(map_node) *w = x_parent->left;
+
+			if (lf_map_node_color(w) == 1) {
+				/* case 1 */
+				w->color = 0;
+				x_parent->color = 1;
+				lfi(map_right_rotate)(m, x_parent);
+				w = x_parent->left;
+			}
+
+			if (lf_map_node_color(w->right) == 0 &&
+				lf_map_node_color(w->left) == 0) {
+				/* case 2 */
+				w->color = 1;
+				x = x_parent;
+				x_parent = x->p;
+			} else {
+				if (lf_map_node_color(w->left) == 0) {
+					/* case 3 */
+					if (w->right)
+						w->right->color = 0;
+					w->color = 1;
+					lfi(map_left_rotate)(m, w);
+					w = x_parent->left;
+				}
+
+				/* case 4 */
+				w->color = x_parent->color;
+				x_parent->color = 0;
+				if (w->left)
+					w->left->color = 0;
+				lfi(map_right_rotate)(m, x_parent);
+				x = m->root;
+			}
+		}
+	}
+
+	if (x != NULL)
+		x->color = 0;
+}
+
+lfi_fdecl(void, map_insert_fixup)(struct lf(map) *m, struct lfi(map_node) *z)
 {
 	while (z->p != NULL && z->p->color == 1) {
 		if (z->p == z->p->p->left) {
@@ -159,6 +242,21 @@ lfi_fdecl(void, map_fixup)(struct lf(map) *m, struct lfi(map_node) *z)
 	m->root->color = 0;
 }
 
+lfi_fdecl(void, map_transplant)(struct lf(map) *m,
+			    struct lfi(map_node) *u,
+			    struct lfi(map_node) *v)
+{
+	if (u->p == NULL)
+		m->root = v;
+	else if (u == u->p->left)
+		u->p->left = v;
+	else
+		u->p->right = v;
+
+	if (v != NULL)
+		v->p = u->p;
+}
+
 lfi_fdecl(int, map_default_comparator)(const void *key1, const void *key2,
 				       size_t keylen1, size_t keylen2)
 {
@@ -187,6 +285,26 @@ lfi_fdecl(void, map_destroy_recursive)(struct lf(map) *m,
 	}
 }
 
+lfi_fdecl(struct lfi(map_node) *, map_get2_node)(struct lf(map) *m,
+						 const void *key,
+						 size_t keylen)
+{
+	struct lfi(map_node) *cur = m->root;
+
+	while (cur != NULL) {
+		int cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
+
+		if (cmp < 0)
+			cur = cur->right;
+		else if (cmp > 0)
+			cur = cur->left;
+		else
+			return cur;
+	}
+
+	return NULL;
+}
+
 
 int lf(map_init)(struct lf(map) *m,
 		 size_t value_size,
@@ -195,7 +313,11 @@ int lf(map_init)(struct lf(map) *m,
 	m->root = NULL;
 	m->value_size = value_size;
 	m->cmp = cmp == NULL ? lfi(map_default_comparator) : cmp;
-	m->hold_value = malloc(value_size);
+
+	if (m->value_size)
+		m->hold_value = malloc(value_size);
+	else
+		m->hold_value = (void *) 1;
 
 	return m->hold_value == NULL ? 1 : 0;
 }
@@ -211,7 +333,8 @@ void lf(map_destroy)(struct lf(map) *m)
 {
 	lfi(map_destroy_recursive)(m, m->root);
 
-	free(m->hold_value);
+	if (m->value_size)
+		free(m->hold_value);
 }
 
 void *lf(map_get)(struct lf(map) *m, const void *key)
@@ -221,20 +344,9 @@ void *lf(map_get)(struct lf(map) *m, const void *key)
 
 void *lf(map_get2)(struct lf(map) *m, const void *key, size_t keylen)
 {
-	struct lfi(map_node) *cur = m->root;
+	struct lfi(map_node) *n = lfi(map_get2_node)(m, key, keylen);
 
-	while (cur != NULL) {
-		int cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
-
-		if (cmp < 0)
-			cur = cur->right;
-		else if (cmp > 0)
-			cur = cur->left;
-		else
-			return &cur->kv[lf_map_align(keylen)];
-	}
-
-	return NULL;
+	return n != NULL ? &n->kv[lf_map_align(keylen)] : NULL;
 }
 
 int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
@@ -291,7 +403,7 @@ int lf(map_insert2)(struct lf(map) *m,
 	n->p = p;
 
 return_fixup:
-	lfi(map_fixup)(m, n);
+	lfi(map_insert_fixup)(m, n);
 
 	return 0;
 }
@@ -311,8 +423,71 @@ void *lf(map_remove)(struct lf(map) *m, const void *key)
 
 void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 {
-	(void) m; (void) key; (void) keylen;
-	assert(0);
+	struct lfi(map_node) *z = lfi(map_get2_node)(m, key, keylen);
+
+	if (z == NULL)
+		return NULL;
+
+	if (m->value_size)
+		memcpy(m->hold_value, &z->kv[lf_map_align(keylen)], m->value_size);
+
+	struct lfi(map_node) *y = z;
+
+	char orig_color = y->color;
+
+	struct lfi(map_node) *x, *x_parent = NULL;
+
+	if (z->left == NULL) {
+		/* case 1 */
+		x = z->right;
+		x_parent = z->p;
+		lfi(map_transplant)(m, z, z->right);
+	} else if (z->right == NULL) {
+		/* case 2 */
+		x = z->left;
+		x_parent = z->p;
+		lfi(map_transplant)(m, z, z->left);
+	} else {
+		/* case 3 */
+		y = z->right;
+
+		while (y->left)
+			y = y->left;
+
+		orig_color = y->color;
+		x = y->right;
+
+		if (y->p == z) {
+			x_parent = y;
+			if (x != NULL)
+				x->p = y;
+		} else {
+			x_parent = y->p;
+			lfi(map_transplant)(m, y, y->right);
+			y->right = z->right;
+			y->right->p = y;
+		}
+
+		lfi(map_transplant)(m, z, y);
+		y->left = z->left;
+		y->left->p = y;
+		y->color = z->color;
+
+		y->size = z->size;
+	}
+
+	struct lfi(map_node) *cur = x_parent;
+	while (cur != NULL) {
+		cur->size--;
+		cur = cur->p;
+	}
+
+	if (orig_color == 0)
+		lfi(map_delete_fixup)(m, x, x_parent);
+
+	free(z);
+
+	return m->hold_value;
 }
 
 struct lf(map_entry) lf(map_select)(struct lf(map) *m, size_t i)

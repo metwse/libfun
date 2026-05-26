@@ -86,6 +86,41 @@ int main(void)
 
 		assert(lf(map_rank(&m, "1000")) == (size_t) -1);
 
+		str[0] = '0'; str[1] = '0'; str[2] = '0';
+		for (int i = 0; i < 10; i++) {
+			int *value = lf(map_remove(&m, str));
+
+			int key = strtod(str, NULL);
+
+			assert(memcmp(&key, value, sizeof(int)) == 0);
+
+			str[0]++; str[1]++; str[2]++;
+		}
+
+		str[2] = '9';
+		for (int i = 0; i < 10; i++) {
+			str[0] = '0';
+			for (int j = 0; j < 10; j++) {
+				str[1] = '0';
+				for (int k = 0; k < 10; k++) {
+					int d = strtod(str, NULL);
+
+					if (str[1] == str[2] && str[2] == str[0]) {
+						assert(lf(map_get)(&m, str) == NULL);
+					} else {
+						int key = strtod(str, NULL);
+						assert(memcmp(&key,
+						       lf(map_get)(&m, str),
+						       sizeof(int)) == 0);
+					}
+
+					str[1]++;
+				}
+				str[0]++;
+			}
+			str[2]--;
+		}
+
 		lf(map_destroy)(&m);
 	}
 
