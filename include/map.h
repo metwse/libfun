@@ -28,6 +28,14 @@ struct lf(map) {
 	/** @endcond */
 };
 
+/** @brief Iteration handle to retrieve map entries one by one. */
+struct lf(map_it) {
+	/** @cond */
+	struct lf(map) *m;
+	struct lfi(map_node) *n;
+	/** @endcond */
+};
+
 /** @brief Map entry. */
 struct lf(map_entry) {
 	/** Key, the unique identifier pointing to the value. */
@@ -37,6 +45,26 @@ struct lf(map_entry) {
 	/** The value assigned to the key by the user. */
 	const void *value;
 };
+
+/** @cond */
+struct lfi(map_node) {
+	size_t keylen;
+
+	struct lfi(map_node) *p;
+	struct lfi(map_node) *left;
+	struct lfi(map_node) *right;
+
+	/* Number of nodes in the subtree rooted at this node *including*
+	 * this node. */
+	size_t size;
+
+	/* 1 if red, 0 if black. */
+	char color;
+
+	/* Key and value. */
+	char kv[];
+};
+/** @endcond */
 
 
 /**
@@ -114,10 +142,10 @@ void lf(map_xinsert2)(struct lf(map) *map,
  * valid until the next remove operation. The user must copy the underlying
  * data if they wish to retain it.
  */
-void *lf(map_remove)(struct lf(map) *map, const void *key) lfi_wur;
+void *lf(map_remove)(struct lf(map) *map, const void *key);
 
 /** @brief Identical to map_remove(), but accepts a non-null-terminated key. */
-void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen) lfi_wur;
+void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
 
 /**
  * @brief Retrieves the map entry at a specific sorted index.
@@ -139,6 +167,44 @@ size_t lf(map_rank2)(const struct lf(map) *map, const void *key, size_t keylen);
 
 /** @brief Returns the total number of elements currently stored in the map. */
 size_t lf(map_size)(const struct lf(map) *map);
+
+/**
+ * @brief Creates a forward iteration handle for the map.
+ *
+ * Initializes `it` to iterate over all entries in ascending key order. The
+ * first call to map_iter_next() will return the entry with the smallest key.
+ *
+ * @attention The iterator is invalidated by any insert or remove operation
+ * on the map. Do not modify the map while iterating.
+ */
+void lf(map_iter)(struct lf(map) *map, struct lf(map_it) *it);
+
+/**
+ * @brief Creates a reverse iteration handle for the map.
+ *
+ * Initializes `it` to iterate over all entries in descending key order. The
+ * first call to map_iter_prev() will return the entry with the largest key.
+ *
+ * @attention The iterator is invalidated by any insert or remove operation
+ * on the map. Do not modify the map while iterating.
+ */
+void lf(map_iter_rev)(struct lf(map) *map, struct lf(map_it) *it);
+
+/**
+ * @brief Retrieves the next entry from a forward iteration handle.
+ *
+ * Returns entries in ascending key order. When all entries have been
+ * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
+ */
+struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);
+
+/**
+ * @brief Retrieves the next entry from a reverse iteration handle.
+ *
+ * Returns entries in descending key order. When all entries have been
+ * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
+ */
+struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it);
 
 
 #endif
