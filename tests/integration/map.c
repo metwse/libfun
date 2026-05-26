@@ -103,8 +103,6 @@ int main(void)
 			for (int j = 0; j < 10; j++) {
 				str[1] = '0';
 				for (int k = 0; k < 10; k++) {
-					int d = strtod(str, NULL);
-
 					if (str[1] == str[2] && str[2] == str[0]) {
 						assert(lf(map_get)(&m, str) == NULL);
 					} else {

@@ -66,6 +66,8 @@ void lf(stack_xpush)(struct lf(stack) *s, void *item)
 
 void *lf(stack_top)(struct lf(stack) *s)
 {
+	assert(s->len && "stack underflow");
+
 	return lf(stack_at)(s, s->len - 1);
 }
 

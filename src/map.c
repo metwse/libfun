@@ -15,6 +15,8 @@
 
 #define lf_map_node_color(n) ((n) == NULL ? 0 : (n)->color)
 
+#define lf_map_node_value(n) (&(n)->kv[lf_map_align((n)->keylen)])
+
 
 struct lfi(map_node) {
 	size_t keylen;
@@ -55,13 +57,13 @@ lfi_fdecl(struct lfi(map_node) *, map_new_node)(const void *key,
 
 	memcpy(n->kv, key, keylen);
 
-	if (value_size > 0)
-		memcpy(&n->kv[aligned_keylen], value, value_size);
-
 	n->keylen = keylen;
 	n->p = n->left = n->right = NULL;
 	n->size = 1;
 	n->color = 1;
+
+	if (value_size > 0)
+		memcpy(lf_map_node_value(n), value, value_size);
 
 	return n;
 }
@@ -346,7 +348,7 @@ void *lf(map_get2)(struct lf(map) *m, const void *key, size_t keylen)
 {
 	struct lfi(map_node) *n = lfi(map_get2_node)(m, key, keylen);
 
-	return n != NULL ? &n->kv[lf_map_align(keylen)] : NULL;
+	return n != NULL ? lf_map_node_value(n) : NULL;
 }
 
 int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
@@ -372,37 +374,34 @@ int lf(map_insert2)(struct lf(map) *m,
 
 	if (m->root == NULL) {
 		m->root = n;
+	} else {
+		struct lfi(map_node) *p;
+		struct lfi(map_node) *cur = m->root;
 
-		goto return_fixup;
-	}
+		int cmp = 0;
 
-	struct lfi(map_node) *p;
-	struct lfi(map_node) *cur = m->root;
+		while (cur != NULL) {
+			p = cur;
+			cur->size++;
 
-	int cmp;
+			cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
 
-	while (cur != NULL) {
-		p = cur;
-		cur->size++;
+			assert(cmp != 0 && "map already contains the element");
 
-		cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
-
-		assert(cmp != 0 && "map already contains the element");
+			if (cmp < 0)
+				cur = cur->right;
+			else if (cmp > 0)
+				cur = cur->left;
+		}
 
 		if (cmp < 0)
-			cur = cur->right;
+			p->right = n;
 		else if (cmp > 0)
-			cur = cur->left;
+			p->left = n;
+
+		n->p = p;
 	}
 
-	if (cmp < 0)
-		p->right = n;
-	else
-		p->left = n;
-
-	n->p = p;
-
-return_fixup:
 	lfi(map_insert_fixup)(m, n);
 
 	return 0;
@@ -429,7 +428,7 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 		return NULL;
 
 	if (m->value_size)
-		memcpy(m->hold_value, &z->kv[lf_map_align(keylen)], m->value_size);
+		memcpy(m->hold_value, lf_map_node_value(z), m->value_size);
 
 	struct lfi(map_node) *y = z;
 

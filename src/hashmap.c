@@ -197,7 +197,7 @@ lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
 	return NULL;
 }
 
-lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t cap)
+lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t old_cap)
 {
 	struct lf(hashmap_entry) *old_entries = m->entries;
 
@@ -208,7 +208,7 @@ lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t cap)
 	if (m->entries == NULL)
 		return 1;
 
-	for (size_t i = 0; i < cap; i++) {
+	for (size_t i = 0; i < old_cap; i++) {
 		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)

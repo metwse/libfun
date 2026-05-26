@@ -112,10 +112,10 @@ void lf(map_xinsert2)(struct lf(map) *map,
  * valid until the next remove operation. The user must copy the underlying
  * data if they wish to retain it.
  */
-void *lf(map_remove)(struct lf(map) *map, const void *key);
+void *lf(map_remove)(struct lf(map) *map, const void *key) lfi_wur;
 
 /** @brief Identical to map_remove(), but accepts a non-null-terminated key. */
-void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
+void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen) lfi_wur;
 
 /**
  * @brief Retrieves the map entry at a specific sorted index.
@@ -124,7 +124,11 @@ void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
  */
 struct lf(map_entry) lf(map_select)(struct lf(map) *map, size_t index);
 
-/** @brief Determines the 0-based index of a specific key in the sorted map. */
+/**
+ * @brief Determines the 0-based index of a specific key in the sorted map.
+ *
+ * Returns -1 casted to size_t if the key is not found.
+ */
 size_t lf(map_rank)(const struct lf(map) *map, const void *key);
 
 /** @brief Identical to map_rank(), but accepts a non-null-terminated key. */
