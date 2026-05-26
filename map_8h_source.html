@@ -105,68 +105,99 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="structfmap__entry.html">   32</a></span><span class="keyword">struct </span>lf(map_entry) {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structfmap__entry.html#a587e3ffa21dc18c8c766737574a28099">   34</a></span>        <span class="keyword">const</span> <span class="keywordtype">void</span> *<a class="code hl_variable" href="structfmap__entry.html#a587e3ffa21dc18c8c766737574a28099">key</a>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structfmap__entry.html#a98739de96699d09eaf500d8b4bfc2ded">   36</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structfmap__entry.html#a98739de96699d09eaf500d8b4bfc2ded">keylen</a>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structfmap__entry.html#a31d2fc23a2d939d19286c0258f03eee0">   38</a></span>        <span class="keyword">const</span> <span class="keywordtype">void</span> *<a class="code hl_variable" href="structfmap__entry.html#a31d2fc23a2d939d19286c0258f03eee0">value</a>;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>};</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="structfmap__it.html">   32</a></span><span class="keyword">struct </span>lf(map_it) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keyword">struct </span>lf(map) *m;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keyword">struct </span>lfi(map_node) *n;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
 </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="map_8h.html#a2e3f180961d59ddb648342e3c1ab8455">   52</a></span><span class="keywordtype">int</span> lf(map_init)(<span class="keyword">struct </span>lf(map) *map,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                 <span class="keywordtype">size_t</span> value_size,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                 int (*comparator)(<span class="keyword">const</span> <span class="keywordtype">void</span> *key1,</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                                   <span class="keyword">const</span> <span class="keywordtype">void</span> *key2,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                                   <span class="keywordtype">size_t</span> keylen1,</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                                   <span class="keywordtype">size_t</span> keylen2)) lfi_wur;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="map_8h.html#aab46dae0f60c8796a1c3c36f4fb508be">   61</a></span><span class="keywordtype">void</span> lf(map_xinit)(<span class="keyword">struct </span>lf(map) *map,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                   <span class="keywordtype">size_t</span> value_size,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                   int (*comparator)(<span class="keyword">const</span> <span class="keywordtype">void</span> *key1,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                                     <span class="keyword">const</span> <span class="keywordtype">void</span> *key2,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                                     <span class="keywordtype">size_t</span> keylen1,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                                     <span class="keywordtype">size_t</span> keylen2));</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="map_8h.html#a1373aa426cc4a820b0499d727ef389b5">   69</a></span><span class="keywordtype">void</span> lf(map_destroy)(<span class="keyword">struct </span>lf(map) *map);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="map_8h.html#ac08e32b91313ee0805a1530892337315">   79</a></span><span class="keywordtype">void</span> *lf(map_get)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="map_8h.html#a9e20a66f9554aff7a79f6de84f567694">   82</a></span><span class="keywordtype">void</span> *lf(map_get2)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keylen);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="map_8h.html#ac98435fe8c529ae7e241507f306b11f8">   89</a></span><span class="keywordtype">int</span> lf(map_insert)(<span class="keyword">struct </span>lf(map) *map,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                   <span class="keyword">const</span> <span class="keywordtype">void</span> *key,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                   <span class="keyword">const</span> <span class="keywordtype">void</span> *value) lfi_wur;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="map_8h.html#a9c5ffbb465ac0e359314579f38bc4537">   95</a></span><span class="keywordtype">void</span> lf(map_xinsert)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keyword">const</span> <span class="keywordtype">void</span> *value);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="map_8h.html#a4c9ad73e679e9af755e7520c96e2136e">   98</a></span><span class="keywordtype">int</span> lf(map_insert2)(<span class="keyword">struct </span>lf(map) *map,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    <span class="keyword">const</span> <span class="keywordtype">void</span> *key,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    <span class="keywordtype">size_t</span> keylen,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    <span class="keyword">const</span> <span class="keywordtype">void</span> *value);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="map_8h.html#a552370e8fdba7b9c227be1bbae9e36d5">  105</a></span><span class="keywordtype">void</span> lf(map_xinsert2)(<span class="keyword">struct </span>lf(map) *map,</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                      <span class="keyword">const</span> <span class="keywordtype">void</span> *key,</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                      <span class="keywordtype">size_t</span> keylen,</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                      <span class="keyword">const</span> <span class="keywordtype">void</span> *value);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="map_8h.html#ab7d731e02475b880b4616c76b4867248">  117</a></span><span class="keywordtype">void</span> *lf(map_remove)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key) lfi_wur;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="map_8h.html#a316e0489bd0a6ee7726656e2156ecc11">  120</a></span><span class="keywordtype">void</span> *lf(map_remove2)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keylen) lfi_wur;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="map_8h.html#a5787c255fd105e06bf294aac61fe92e4">  128</a></span><span class="keyword">struct </span>lf(map_entry) lf(map_select)(struct lf(map) *map, <span class="keywordtype">size_t</span> index);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="map_8h.html#aaad2671672b6b9f737245322d3fb14d9">  135</a></span><span class="keywordtype">size_t</span> lf(map_rank)(<span class="keyword">const</span> <span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="map_8h.html#a7e96bc6df56f5a9945987c8d8240e108">  138</a></span><span class="keywordtype">size_t</span> lf(map_rank2)(<span class="keyword">const</span> <span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keylen);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="map_8h.html#a1337fbacb72fa5b24e75a04607a4109b">  141</a></span><span class="keywordtype">size_t</span> lf(map_size)(<span class="keyword">const</span> <span class="keyword">struct </span>lf(map) *map);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="};">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structfmap__entry.html">   40</a></span><span class="keyword">struct </span>lf(map_entry) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structfmap__entry.html#a587e3ffa21dc18c8c766737574a28099">   42</a></span>        <span class="keyword">const</span> <span class="keywordtype">void</span> *<a class="code hl_variable" href="structfmap__entry.html#a587e3ffa21dc18c8c766737574a28099">key</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structfmap__entry.html#a98739de96699d09eaf500d8b4bfc2ded">   44</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structfmap__entry.html#a98739de96699d09eaf500d8b4bfc2ded">keylen</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structfmap__entry.html#a31d2fc23a2d939d19286c0258f03eee0">   46</a></span>        <span class="keyword">const</span> <span class="keywordtype">void</span> *<a class="code hl_variable" href="structfmap__entry.html#a31d2fc23a2d939d19286c0258f03eee0">value</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">struct </span>lfi(map_node) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordtype">size_t</span> keylen;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keyword">struct </span>lfi(map_node) *p;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keyword">struct </span>lfi(map_node) *left;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keyword">struct </span>lfi(map_node) *right;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment">/* Number of nodes in the subtree rooted at this node *including*</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">         * this node. */</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordtype">size_t</span> size;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="comment">/* 1 if red, 0 if black. */</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordtype">char</span> color;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="comment">/* Key and value. */</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordtype">char</span> kv[];</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="map_8h.html#a2e3f180961d59ddb648342e3c1ab8455">   80</a></span><span class="keywordtype">int</span> lf(map_init)(<span class="keyword">struct </span>lf(map) *map,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                 <span class="keywordtype">size_t</span> value_size,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                 int (*comparator)(<span class="keyword">const</span> <span class="keywordtype">void</span> *key1,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                                   <span class="keyword">const</span> <span class="keywordtype">void</span> *key2,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                                   <span class="keywordtype">size_t</span> keylen1,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                                   <span class="keywordtype">size_t</span> keylen2)) lfi_wur;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="map_8h.html#aab46dae0f60c8796a1c3c36f4fb508be">   89</a></span><span class="keywordtype">void</span> lf(map_xinit)(<span class="keyword">struct </span>lf(map) *map,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                   <span class="keywordtype">size_t</span> value_size,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                   int (*comparator)(<span class="keyword">const</span> <span class="keywordtype">void</span> *key1,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                     <span class="keyword">const</span> <span class="keywordtype">void</span> *key2,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                                     <span class="keywordtype">size_t</span> keylen1,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                     <span class="keywordtype">size_t</span> keylen2));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="map_8h.html#a1373aa426cc4a820b0499d727ef389b5">   97</a></span><span class="keywordtype">void</span> lf(map_destroy)(<span class="keyword">struct </span>lf(map) *map);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="map_8h.html#ac08e32b91313ee0805a1530892337315">  107</a></span><span class="keywordtype">void</span> *lf(map_get)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="map_8h.html#a9e20a66f9554aff7a79f6de84f567694">  110</a></span><span class="keywordtype">void</span> *lf(map_get2)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keylen);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="map_8h.html#ac98435fe8c529ae7e241507f306b11f8">  117</a></span><span class="keywordtype">int</span> lf(map_insert)(<span class="keyword">struct </span>lf(map) *map,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                   <span class="keyword">const</span> <span class="keywordtype">void</span> *key,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                   <span class="keyword">const</span> <span class="keywordtype">void</span> *value) lfi_wur;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="map_8h.html#a9c5ffbb465ac0e359314579f38bc4537">  123</a></span><span class="keywordtype">void</span> lf(map_xinsert)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keyword">const</span> <span class="keywordtype">void</span> *value);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="map_8h.html#a4c9ad73e679e9af755e7520c96e2136e">  126</a></span><span class="keywordtype">int</span> lf(map_insert2)(<span class="keyword">struct </span>lf(map) *map,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                    <span class="keyword">const</span> <span class="keywordtype">void</span> *key,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                    <span class="keywordtype">size_t</span> keylen,</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                    <span class="keyword">const</span> <span class="keywordtype">void</span> *value);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="map_8h.html#a552370e8fdba7b9c227be1bbae9e36d5">  133</a></span><span class="keywordtype">void</span> lf(map_xinsert2)(<span class="keyword">struct </span>lf(map) *map,</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                      <span class="keyword">const</span> <span class="keywordtype">void</span> *key,</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                      <span class="keywordtype">size_t</span> keylen,</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                      <span class="keyword">const</span> <span class="keywordtype">void</span> *value);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="map_8h.html#ab7d731e02475b880b4616c76b4867248">  145</a></span><span class="keywordtype">void</span> *lf(map_remove)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="map_8h.html#a316e0489bd0a6ee7726656e2156ecc11">  148</a></span><span class="keywordtype">void</span> *lf(map_remove2)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keylen);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="map_8h.html#a5787c255fd105e06bf294aac61fe92e4">  156</a></span><span class="keyword">struct </span>lf(map_entry) lf(map_select)(struct lf(map) *map, <span class="keywordtype">size_t</span> index);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="map_8h.html#aaad2671672b6b9f737245322d3fb14d9">  163</a></span><span class="keywordtype">size_t</span> lf(map_rank)(<span class="keyword">const</span> <span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="map_8h.html#a7e96bc6df56f5a9945987c8d8240e108">  166</a></span><span class="keywordtype">size_t</span> lf(map_rank2)(<span class="keyword">const</span> <span class="keyword">struct </span>lf(map) *map, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keylen);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="map_8h.html#a1337fbacb72fa5b24e75a04607a4109b">  169</a></span><span class="keywordtype">size_t</span> lf(map_size)(<span class="keyword">const</span> <span class="keyword">struct </span>lf(map) *map);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="map_8h.html#a3757e4c8220549f2d00b564cbe6b01ad">  180</a></span><span class="keywordtype">void</span> lf(map_iter)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">struct </span>lf(map_it) *it);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="map_8h.html#aa3af77f3ef634eb2b7698c9ccf4e2dc2">  191</a></span><span class="keywordtype">void</span> lf(map_iter_rev)(<span class="keyword">struct </span>lf(map) *map, <span class="keyword">struct </span>lf(map_it) *it);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a class="line" href="map_8h.html#a5582a29421df5bac884058480c07cbe4">  199</a></span><span class="keyword">struct </span>lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="map_8h.html#ac4f2ba165dbc3e8409a64519f128cba7">  207</a></span><span class="keyword">struct </span>lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div><div class="ttdoc">Library-wide configuration.</div></div>
-<div class="ttc" id="astructfmap__entry_html_a31d2fc23a2d939d19286c0258f03eee0"><div class="ttname"><a href="structfmap__entry.html#a31d2fc23a2d939d19286c0258f03eee0">fmap_entry::value</a></div><div class="ttdeci">const void * value</div><div class="ttdef"><b>Definition</b> <a href="map_8h_source.html#l00038">map.h:38</a></div></div>
-<div class="ttc" id="astructfmap__entry_html_a587e3ffa21dc18c8c766737574a28099"><div class="ttname"><a href="structfmap__entry.html#a587e3ffa21dc18c8c766737574a28099">fmap_entry::key</a></div><div class="ttdeci">const void * key</div><div class="ttdef"><b>Definition</b> <a href="map_8h_source.html#l00034">map.h:34</a></div></div>
-<div class="ttc" id="astructfmap__entry_html_a98739de96699d09eaf500d8b4bfc2ded"><div class="ttname"><a href="structfmap__entry.html#a98739de96699d09eaf500d8b4bfc2ded">fmap_entry::keylen</a></div><div class="ttdeci">size_t keylen</div><div class="ttdef"><b>Definition</b> <a href="map_8h_source.html#l00036">map.h:36</a></div></div>
+<div class="ttc" id="astructfmap__entry_html_a31d2fc23a2d939d19286c0258f03eee0"><div class="ttname"><a href="structfmap__entry.html#a31d2fc23a2d939d19286c0258f03eee0">fmap_entry::value</a></div><div class="ttdeci">const void * value</div><div class="ttdef"><b>Definition</b> <a href="map_8h_source.html#l00046">map.h:46</a></div></div>
+<div class="ttc" id="astructfmap__entry_html_a587e3ffa21dc18c8c766737574a28099"><div class="ttname"><a href="structfmap__entry.html#a587e3ffa21dc18c8c766737574a28099">fmap_entry::key</a></div><div class="ttdeci">const void * key</div><div class="ttdef"><b>Definition</b> <a href="map_8h_source.html#l00042">map.h:42</a></div></div>
+<div class="ttc" id="astructfmap__entry_html_a98739de96699d09eaf500d8b4bfc2ded"><div class="ttname"><a href="structfmap__entry.html#a98739de96699d09eaf500d8b4bfc2ded">fmap_entry::keylen</a></div><div class="ttdeci">size_t keylen</div><div class="ttdef"><b>Definition</b> <a href="map_8h_source.html#l00044">map.h:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -5,5 +5,6 @@ var searchData=
   ['fhashmap_5fit_2',['fhashmap_it',['../structfhashmap__it.html',1,'']]],
   ['fmap_3',['fmap',['../structfmap.html',1,'']]],
   ['fmap_5fentry_4',['fmap_entry',['../structfmap__entry.html',1,'']]],
-  ['fstack_5',['fstack',['../structfstack.html',1,'']]]
+  ['fmap_5fit_5',['fmap_it',['../structfmap__it.html',1,'']]],
+  ['fstack_6',['fstack',['../structfstack.html',1,'']]]
 ];

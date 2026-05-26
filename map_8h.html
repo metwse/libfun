@@ -92,6 +92,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfmap.html">fmap</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">map.  <a href="structfmap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfmap__it.html">fmap_it</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iteration handle to retrieve map entries one by one.  <a href="structfmap__it.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfmap__entry.html">fmap_entry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map entry.  <a href="structfmap__entry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,6 +155,18 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_rank2</b> (con
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_size</b> (const struct <a class="el" href="structfmap.html">fmap</a> *map)</td></tr>
 <tr class="memdesc:a1337fbacb72fa5b24e75a04607a4109b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total number of elements currently stored in the map. <br /></td></tr>
 <tr class="separator:a1337fbacb72fa5b24e75a04607a4109b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3757e4c8220549f2d00b564cbe6b01ad" id="r_a3757e4c8220549f2d00b564cbe6b01ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="map_8h.html#a3757e4c8220549f2d00b564cbe6b01ad">fmap_iter</a> (struct <a class="el" href="structfmap.html">fmap</a> *map, struct <a class="el" href="structfmap__it.html">fmap_it</a> *it)</td></tr>
+<tr class="memdesc:a3757e4c8220549f2d00b564cbe6b01ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a forward iteration handle for the map.  <br /></td></tr>
+<tr class="separator:a3757e4c8220549f2d00b564cbe6b01ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3af77f3ef634eb2b7698c9ccf4e2dc2" id="r_aa3af77f3ef634eb2b7698c9ccf4e2dc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="map_8h.html#aa3af77f3ef634eb2b7698c9ccf4e2dc2">fmap_iter_rev</a> (struct <a class="el" href="structfmap.html">fmap</a> *map, struct <a class="el" href="structfmap__it.html">fmap_it</a> *it)</td></tr>
+<tr class="memdesc:aa3af77f3ef634eb2b7698c9ccf4e2dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a reverse iteration handle for the map.  <br /></td></tr>
+<tr class="separator:aa3af77f3ef634eb2b7698c9ccf4e2dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5582a29421df5bac884058480c07cbe4" id="r_a5582a29421df5bac884058480c07cbe4"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfmap__entry.html">fmap_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="map_8h.html#a5582a29421df5bac884058480c07cbe4">fmap_iter_next</a> (struct <a class="el" href="structfmap__it.html">fmap_it</a> *it)</td></tr>
+<tr class="memdesc:a5582a29421df5bac884058480c07cbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next entry from a forward iteration handle.  <br /></td></tr>
+<tr class="separator:a5582a29421df5bac884058480c07cbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f2ba165dbc3e8409a64519f128cba7" id="r_ac4f2ba165dbc3e8409a64519f128cba7"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfmap__entry.html">fmap_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="map_8h.html#ac4f2ba165dbc3e8409a64519f128cba7">fmap_iter_prev</a> (struct <a class="el" href="structfmap__it.html">fmap_it</a> *it)</td></tr>
+<tr class="memdesc:ac4f2ba165dbc3e8409a64519f128cba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next entry from a reverse iteration handle.  <br /></td></tr>
+<tr class="separator:ac4f2ba165dbc3e8409a64519f128cba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic map. </p>
@@ -262,6 +277,112 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_size</b> (cons
 
 <p>Inserts a key-value pair into the map. </p>
 <dl class="section warning"><dt>Warning</dt><dd>The key must not already exist in the map. </dd></dl>
+
+</div>
+</div>
+<a id="a3757e4c8220549f2d00b564cbe6b01ad" name="a3757e4c8220549f2d00b564cbe6b01ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3757e4c8220549f2d00b564cbe6b01ad">&#9670;&#160;</a></span>fmap_iter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fmap_iter </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfmap.html">fmap</a> *&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfmap__it.html">fmap_it</a> *&#160;</td>
+          <td class="paramname"><em>it</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a forward iteration handle for the map. </p>
+<p>Initializes <code>it</code> to iterate over all entries in ascending key order. The first call to map_iter_next() will return the entry with the smallest key.</p>
+<dl class="section attention"><dt>Attention</dt><dd>The iterator is invalidated by any insert or remove operation on the map. Do not modify the map while iterating. </dd></dl>
+
+</div>
+</div>
+<a id="a5582a29421df5bac884058480c07cbe4" name="a5582a29421df5bac884058480c07cbe4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5582a29421df5bac884058480c07cbe4">&#9670;&#160;</a></span>fmap_iter_next()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structfmap__entry.html">fmap_entry</a> fmap_iter_next </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfmap__it.html">fmap_it</a> *&#160;</td>
+          <td class="paramname"><em>it</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the next entry from a forward iteration handle. </p>
+<p>Returns entries in ascending key order. When all entries have been retrieved, returns a sentinel entry with <code>.key == NULL</code> and <code>.keylen == 0</code>. </p>
+
+</div>
+</div>
+<a id="ac4f2ba165dbc3e8409a64519f128cba7" name="ac4f2ba165dbc3e8409a64519f128cba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4f2ba165dbc3e8409a64519f128cba7">&#9670;&#160;</a></span>fmap_iter_prev()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structfmap__entry.html">fmap_entry</a> fmap_iter_prev </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfmap__it.html">fmap_it</a> *&#160;</td>
+          <td class="paramname"><em>it</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the next entry from a reverse iteration handle. </p>
+<p>Returns entries in descending key order. When all entries have been retrieved, returns a sentinel entry with <code>.key == NULL</code> and <code>.keylen == 0</code>. </p>
+
+</div>
+</div>
+<a id="aa3af77f3ef634eb2b7698c9ccf4e2dc2" name="aa3af77f3ef634eb2b7698c9ccf4e2dc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3af77f3ef634eb2b7698c9ccf4e2dc2">&#9670;&#160;</a></span>fmap_iter_rev()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fmap_iter_rev </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfmap.html">fmap</a> *&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfmap__it.html">fmap_it</a> *&#160;</td>
+          <td class="paramname"><em>it</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a reverse iteration handle for the map. </p>
+<p>Initializes <code>it</code> to iterate over all entries in descending key order. The first call to map_iter_prev() will return the entry with the largest key.</p>
+<dl class="section attention"><dt>Attention</dt><dd>The iterator is invalidated by any insert or remove operation on the map. Do not modify the map while iterating. </dd></dl>
 
 </div>
 </div>
