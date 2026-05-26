@@ -8,11 +8,6 @@
 #define LF_HASHMAP_INITIAL_CAP 64
 #endif
 
-#ifndef LF_MAP_INITIAL_CAP
-/** @brief Initial capacity of the map. */
-#define LF_MAP_INITIAL_CAP 64
-#endif
-
 #ifndef LF_STACK_INITIAL_CAP
 /** @brief Initial capacity of the stack. */
 #define LF_STACK_INITIAL_CAP 64
@@ -44,10 +39,10 @@
 #endif
 #endif
 
-#ifndef lfif
+#ifndef lfi
 /* Internal function declaration & name prefixing. */
-#define lfif(name) lf(_libfun_internal_func_ ## name)
+#define lfi(name) lf(_libfun_internal_ ## name)
 
-#define lfi_fdecl(ret_ty, name) static ret_ty lfif(name)
+#define lfi_fdecl(ret_ty, name) static ret_ty lfi(name)
 #endif
 /** @endcond */

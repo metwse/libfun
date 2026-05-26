@@ -25,6 +25,7 @@ to the `headeronly` branch. You should grab your copy of `libfun.h` from there.
 The library provides the following modules:
 - `hashmap.h`: A hashmap implementation using open addressing and the FNV hash
                function.
+- `map.h`: An ordered map implementation using augmented Red-Black trees.
 - `stack.h`: A standard LIFO stack.
 
 

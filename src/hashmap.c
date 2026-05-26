@@ -18,7 +18,6 @@
 	 [i * (sizeof(struct lf(hashmap_entry)) + m->value_size)])
 
 
-
 /* https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function */
 lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *, size_t);
 
@@ -48,6 +47,7 @@ lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *key, size_t keylen)
 
 	return hash;
 }
+
 
 int lf(hashmap_init)(struct lf(hashmap) *m, size_t value_size)
 {
@@ -84,7 +84,7 @@ void *lf(hashmap_get)(struct lf(hashmap) *m, const void *key)
 
 void *lf(hashmap_get2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 {
-	struct lf(hashmap_entry) *e = lfif(hashmap_get2_entry)(m, key, keylen);
+	struct lf(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
 	return e ? e->value : NULL;
 }
@@ -96,7 +96,7 @@ void *lf(hashmap_remove)(struct lf(hashmap) *m, const void *key)
 
 void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 {
-	struct lf(hashmap_entry) *e = lfif(hashmap_get2_entry)(m, key, keylen);
+	struct lf(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
 	if (e) {
 		e->keylen = LF_HASHMAP_TOMBSTONE;
@@ -126,7 +126,7 @@ int lf(hashmap_insert2)(struct lf(hashmap) *m,
 
 	memcpy(new_key, key, keylen);
 
-	return lfif(hashmap_insert2_nocopy)(m, new_key, keylen, value);
+	return lfi(hashmap_insert2_nocopy)(m, new_key, keylen, value);
 }
 
 void lf(hashmap_iter)(struct lf(hashmap) *m, struct lf(hashmap_it) *it)
@@ -176,7 +176,7 @@ lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
 							  const void *key,
 							  size_t keylen)
 {
-	uint64_t hash = lfif(hashmap_fnv_hash)(key, keylen);
+	uint64_t hash = lfi(hashmap_fnv_hash)(key, keylen);
 	size_t start_i = hash % m->cap;
 	size_t i = start_i;
 
@@ -212,7 +212,7 @@ lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t cap)
 		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
-			lfif(hashmap_insert2_nocopy)(m, e->key, e->keylen, e->value);
+			lfi(hashmap_insert2_nocopy)(m, e->key, e->keylen, e->value);
 	}
 
 	free(old_entries);
@@ -230,13 +230,13 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 
 		m->cap *= 2;
 
-		if (lfif(hashmap_rehash)(m, old_cap))
+		if (lfi(hashmap_rehash)(m, old_cap))
 			return 1;
 	}
 
 	assert(!lf(hashmap_get2)(m, key, keylen) && "hashmap contains the element");
 
-	uint64_t hash = lfif(hashmap_fnv_hash)(key, keylen);
+	uint64_t hash = lfi(hashmap_fnv_hash)(key, keylen);
 	size_t start_i = hash % m->cap;
 	size_t i = start_i;
 

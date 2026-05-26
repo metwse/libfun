@@ -1,61 +1,106 @@
 #include "../../include/map.h"
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 
 int main(void)
 {
-	struct map m;
+	struct lf(map) m;
 
-	map_init(&m, sizeof(int), NULL);
+	for (int dir = 0; dir < 2; dir++) {
+		lf(map_xinit)(&m, sizeof(int), NULL);
 
-	char str[4] = { '0', '0', '0', '\0' };
+		char str[4] = { '0', '0', '0', '\0' };
 
-	for (int i = 0; i < 10; i++) {
+		int dir3 = dir;
+
+		for (int dir2 = 0; dir2 < 2; dir2++) {
+			if (dir3) {
+				str[2] = '0';
+				for (int i = 0; i < 5; i++) {
+					str[0] = '0';
+					for (int j = 0; j < 10; j++) {
+						str[1] = '0';
+						for (int k = 0; k < 10; k++) {
+							int d = strtod(str, NULL);
+
+							lf(map_xinsert)(&m, str, &d);
+							str[1]++;
+						}
+						str[0]++;
+					}
+					str[2]++;
+				}
+			} else {
+				str[2] = '9';
+				for (int i = 10; i > 5; i--) {
+					str[0] = '0';
+					for (int j = 0; j < 10; j++) {
+						str[1] = '0';
+						for (int k = 0; k < 10; k++) {
+							int d = strtod(str, NULL);
+
+							lf(map_xinsert)(&m, str, &d);
+							str[1]++;
+						}
+						str[0]++;
+					}
+					str[2]--;
+				}
+			}
+
+			dir3 = !dir3;
+		}
+
 		str[0] = '0';
-		for (int j = 0; j < 10; j++) {
-			str[1] = '0';
-			for (int k = 0; k < 10; k++) {
-				int i = strtod(str, NULL);
 
-				map_insert2(&m, str, 3, &i);
+		for (int i = 0; i < 10; i++) {
+			str[1] = '0';
+			for (int j = 0; j < 10; j++) {
+				str[2] = '0';
+				for (int k = 0; k < 10; k++) {
+					int i = strtod(str, NULL);
+
+					assert(memcmp(&i, lf(map_get)(&m, str),
+		   sizeof(int)) == 0);
+
+					str[2]++;
+				}
 				str[1]++;
 			}
 			str[0]++;
 		}
-		str[2]++;
-	}
 
-	str[0] = '0';
+		for (int i = 0; i < 1000; i++) {
+			struct lf(map_entry) e = lf(map_select)(&m, i);
 
-	for (int i = 0; i < 10; i++) {
-		str[1] = '0';
-		for (int j = 0; j < 10; j++) {
-			str[2] = '0';
-			for (int k = 0; k < 10; k++) {
-				int i = strtod(str, NULL);
+			assert(memcmp(&i, e.value, sizeof(int)) == 0);
 
-				assert(memcmp(&i, map_get2(&m, str, 3),
-					      sizeof(int)) == 0);
+			memcpy(str, e.key, 3);
 
-				str[2]++;
-			}
-			str[1]++;
+			assert(lf(map_rank)(&m, str) == (size_t) i);
 		}
-		str[0]++;
+
+		assert(lf(map_rank(&m, "1000")) == (size_t) -1);
+
+		lf(map_destroy)(&m);
 	}
 
-	for (int i = 0; i < 1000; i++) {
-		struct map_entry e = map_select(&m, i);
+	for (int _fuzz = 0; _fuzz < 256; _fuzz++) {
+		int elem_size = rand() % 32;
 
-		assert(memcmp(&i, e.value, sizeof(int)) == 0);
+		lf(map_xinit)(&m, elem_size, NULL);
 
-		assert(map_rank(&m, e.key, e.keylen) == (size_t) i);
+		for (int i = 0; i < 1024; i++) {
+			if (lf(map_get2)(&m, &i, sizeof(int)) == NULL)
+				lf(map_xinsert2)(&m, &i, sizeof(int), &i);
+		}
+
+		lf(map_destroy)(&m);
 	}
-
-	map_destroy(&m);
 
 	return EXIT_SUCCESS;
 }

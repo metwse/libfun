@@ -8,7 +8,6 @@
 #include <string.h>
 
 
-
 int lf(stack_init)(struct lf(stack) *s, size_t item_size)
 {
 	s->cap = LF_STACK_INITIAL_CAP;

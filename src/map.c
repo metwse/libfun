@@ -1,12 +1,12 @@
-#include <assert.h>
-#include <string.h>
 #ifndef LF_HEADERONLY
 #include "../include/map.h"
 #endif
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 #define lf_map_align(i) ((i + sizeof(size_t) - 1) / sizeof(size_t) * sizeof(size_t))
@@ -14,12 +14,12 @@
 #define lf_map_node_size(n) ((n) == NULL ? 0 : (n)->size)
 
 
-struct map_node {
+struct lfi(map_node) {
 	size_t keylen;
 
-	struct map_node *parent;
-	struct map_node *left;
-	struct map_node *right;
+	struct lfi(map_node) *p;
+	struct lfi(map_node) *left;
+	struct lfi(map_node) *right;
 
 	/* Number of nodes in the subtree rooted at this node *including*
 	 * this node. */
@@ -32,10 +32,13 @@ struct map_node {
 	char kv[];
 };
 
-static struct map_node *map_new_node(const void *key, size_t keylen,
-				     const void *value, size_t value_size)
+
+lfi_fdecl(struct lfi(map_node) *, map_new_node)(const void *key,
+						size_t keylen,
+						const void *value,
+						size_t value_size)
 {
-	size_t size = lf_map_align(sizeof(struct map_node));
+	size_t size = lf_map_align(sizeof(struct lfi(map_node)));
 	size_t aligned_keylen = lf_map_align(keylen);
 
 	if (value_size > 0)
@@ -43,7 +46,7 @@ static struct map_node *map_new_node(const void *key, size_t keylen,
 	else
 		size += keylen;
 
-	struct map_node *n = malloc(size);
+	struct lfi(map_node) *n = malloc(size);
 
 	if (n == NULL)
 		return NULL;
@@ -54,100 +57,100 @@ static struct map_node *map_new_node(const void *key, size_t keylen,
 		memcpy(&n->kv[aligned_keylen], value, value_size);
 
 	n->keylen = keylen;
-	n->parent = n->left = n->right = NULL;
+	n->p = n->left = n->right = NULL;
 	n->size = 1;
 	n->color = 1;
 
 	return n;
 }
 
-static void map_left_rotate(struct map *m, struct map_node *x)
+lfi_fdecl(void, map_left_rotate)(struct lf(map) *m, struct lfi(map_node) *x)
 {
-	struct map_node *y = x->right;
+	struct lfi(map_node) *y = x->right;
 	x->right = y->left;
 
 	if (y->left != NULL)
-		y->left->parent = x;
+		y->left->p = x;
 
-	y->parent = x->parent;
-	if (x->parent == NULL)
+	y->p = x->p;
+	if (x->p == NULL)
 		m->root = y;
-	else if (x == x->parent->left)
-		x->parent->left = y;
+	else if (x == x->p->left)
+		x->p->left = y;
 	else
-		x->parent->right = y;
+		x->p->right = y;
 
 	y->left = x;
-	x->parent = y;
+	x->p = y;
 
 	y->size = x->size;
 	x->size = lf_map_node_size(x->left) + lf_map_node_size(x->right) + 1;
 }
 
-static void map_right_rotate(struct map *m, struct map_node *x)
+lfi_fdecl(void, map_right_rotate)(struct lf(map) *m, struct lfi(map_node) *x)
 {
-	struct map_node *y = x->left;
+	struct lfi(map_node) *y = x->left;
 	x->left = y->right;
 
 	if (y->right != NULL)
-		y->right->parent = x;
+		y->right->p = x;
 
-	y->parent = x->parent;
-	if (x->parent == NULL)
+	y->p = x->p;
+	if (x->p == NULL)
 		m->root = y;
-	else if (x == x->parent->right)
-		x->parent->right = y;
+	else if (x == x->p->right)
+		x->p->right = y;
 	else
-		x->parent->left = y;
+		x->p->left = y;
 
 	y->right = x;
-	x->parent = y;
+	x->p = y;
 
 	y->size = x->size;
 	x->size = lf_map_node_size(x->left) + lf_map_node_size(x->right) + 1;
 }
 
-static void map_fixup(struct map *m, struct map_node *z)
+lfi_fdecl(void, map_fixup)(struct lf(map) *m, struct lfi(map_node) *z)
 {
-	while (z->parent != NULL && z->parent->color == 1) {
-		if (z->parent == z->parent->parent->left) {
-			struct map_node *y = z->parent->parent->right;  // Uncle
+	while (z->p != NULL && z->p->color == 1) {
+		if (z->p == z->p->p->left) {
+			struct lfi(map_node) *y = z->p->p->right;  // Uncle
 
 			if (y != NULL && y->color == 1) {
 				/* case 1 */
-				z->parent->color = 0;
+				z->p->color = 0;
 				y->color = 0;
-				z->parent->parent->color = 1;
-				z = z->parent->parent;
+				z->p->p->color = 1;
+				z = z->p->p;
 			} else {
-				if (z == z->parent->right) {
+				if (z == z->p->right) {
 					/* case 2 */
-					z = z->parent;
-					map_left_rotate(m, z);
+					z = z->p;
+					lfi(map_left_rotate)(m, z);
 				}
 
 				/* case 3 */
-				z->parent->color = 0;
-				z->parent->parent->color = 1;
-				map_right_rotate(m, z->parent->parent);
+				z->p->color = 0;
+				z->p->p->color = 1;
+				lfi(map_right_rotate)(m, z->p->p);
 			}
 		} else {
-			struct map_node *y = z->parent->parent->left;  // Uncle
+			struct lfi(map_node) *y = z->p->p->left;  // Uncle
 
 			if (y != NULL && y->color == 1) {
-				z->parent->color = 0;
+				z->p->color = 0;
 				y->color = 0;
-				z->parent->parent->color = 1;
-				z = z->parent->parent;
+				z->p->p->color = 1;
+				z = z->p->p;
 			} else {
-				if (z == z->parent->left) {
-					z = z->parent;
-					map_right_rotate(m, z);
+				if (z == z->p->left) {
+					z = z->p;
+					lfi(map_right_rotate)(m, z);
 				}
 
-				z->parent->color = 0;
-				z->parent->parent->color = 1;
-				map_left_rotate(m, z->parent->parent);
+				z->p->color = 0;
+				z->p->p->color = 1;
+				lfi(map_left_rotate)(m, z->p->p);
 			}
 		}
 	}
@@ -156,42 +159,69 @@ static void map_fixup(struct map *m, struct map_node *z)
 	m->root->color = 0;
 }
 
-static int default_comparator(const void *key1, const void *key2,
-			      size_t keylen1, size_t keylen2)
+lfi_fdecl(int, map_default_comparator)(const void *key1, const void *key2,
+				       size_t keylen1, size_t keylen2)
 {
-	return memcmp(key1, key2, keylen1 < keylen2 ? keylen1 : keylen2);
+	int res = memcmp(key1, key2, keylen1 < keylen2 ? keylen1 : keylen2);
+
+	if (res == 0) {
+		if (keylen1 == keylen2)
+			return 0;
+		else if (keylen1 < keylen2)
+			return -1;
+		else
+			return 1;
+	}
+
+	return res;
 }
 
-static void map_destroy_recursive(struct map *m, struct map_node *n)
+lfi_fdecl(void, map_destroy_recursive)(struct lf(map) *m,
+				       struct lfi(map_node) *n)
 {
 	if (n != NULL) {
-		map_destroy_recursive(m, n->left);
-		map_destroy_recursive(m, n->right);
+		lfi(map_destroy_recursive)(m, n->left);
+		lfi(map_destroy_recursive)(m, n->right);
 
 		free(n);
 	}
 }
 
-int map_init(struct map *m, size_t value_size,
-	     int (*cmp)(const void *, const void *, size_t, size_t))
+
+int lf(map_init)(struct lf(map) *m,
+		 size_t value_size,
+		 int (*cmp)(const void *, const void *, size_t, size_t))
 {
 	m->root = NULL;
 	m->value_size = value_size;
-	m->cmp = cmp == NULL ? default_comparator : cmp;
+	m->cmp = cmp == NULL ? lfi(map_default_comparator) : cmp;
 	m->hold_value = malloc(value_size);
 
 	return m->hold_value == NULL ? 1 : 0;
 }
 
-void map_destroy(struct map *m)
+void lf(map_xinit)(struct lf(map) *m,
+		   size_t value_size,
+		   int (*cmp)(const void *, const void *, size_t, size_t))
 {
-	map_destroy_recursive(m, m->root);
+	assert(lf(map_init)(m, value_size, cmp) == 0);
+}
+
+void lf(map_destroy)(struct lf(map) *m)
+{
+	lfi(map_destroy_recursive)(m, m->root);
+
 	free(m->hold_value);
 }
 
-void *map_get2(struct map *m, const void *key, size_t keylen)
+void *lf(map_get)(struct lf(map) *m, const void *key)
 {
-	struct map_node *cur = m->root;
+	return lf(map_get2)(m, key, strlen(key));
+}
+
+void *lf(map_get2)(struct lf(map) *m, const void *key, size_t keylen)
+{
+	struct lfi(map_node) *cur = m->root;
 
 	while (cur != NULL) {
 		int cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
@@ -207,12 +237,23 @@ void *map_get2(struct map *m, const void *key, size_t keylen)
 	return NULL;
 }
 
-int map_insert2(struct map *m,
-		const void *key,
-		size_t keylen,
-		const void *value)
+int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
 {
-	struct map_node *n = map_new_node(key, keylen, value, m->value_size);
+	return lf(map_insert2)(m, key, strlen(key), value);
+}
+
+void lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
+{
+	assert(lf(map_insert)(m, key, value) == 0);
+}
+
+int lf(map_insert2)(struct lf(map) *m,
+		    const void *key,
+		    size_t keylen,
+		    const void *value)
+{
+	struct lfi(map_node) *n =
+		lfi(map_new_node)(key, keylen, value, m->value_size);
 
 	if (n == NULL)
 		return 1;
@@ -223,8 +264,8 @@ int map_insert2(struct map *m,
 		goto return_fixup;
 	}
 
-	struct map_node *p;
-	struct map_node *cur = m->root;
+	struct lfi(map_node) *p;
+	struct lfi(map_node) *cur = m->root;
 
 	int cmp;
 
@@ -234,12 +275,12 @@ int map_insert2(struct map *m,
 
 		cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
 
+		assert(cmp != 0 && "map already contains the element");
+
 		if (cmp < 0)
 			cur = cur->right;
 		else if (cmp > 0)
 			cur = cur->left;
-		else
-			assert(0 && "map already contains the element");
 	}
 
 	if (cmp < 0)
@@ -247,19 +288,38 @@ int map_insert2(struct map *m,
 	else
 		p->left = n;
 
-	n->parent = p;
+	n->p = p;
 
 return_fixup:
-	map_fixup(m, n);
+	lfi(map_fixup)(m, n);
 
 	return 0;
 }
 
-struct map_entry map_select(struct map *m, size_t i)
+void lf(map_xinsert2)(struct lf(map) *m,
+		      const void *key,
+		      size_t keylen,
+		      const void *value)
 {
-	assert(i < map_size(m) && "map overflow");
+	assert(lf(map_insert2)(m, key, keylen, value) == 0);
+}
 
-	struct map_node *cur = m->root;
+void *lf(map_remove)(struct lf(map) *m, const void *key)
+{
+	return lf(map_remove2)(m, key, strlen(key));
+}
+
+void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
+{
+	(void) m; (void) key; (void) keylen;
+	assert(0);
+}
+
+struct lf(map_entry) lf(map_select)(struct lf(map) *m, size_t i)
+{
+	assert(i < lf(map_size)(m) && "map overflow");
+
+	struct lfi(map_node) *cur = m->root;
 
 	while (true) {
 		if (lf_map_node_size(cur->left) == i)
@@ -273,21 +333,26 @@ struct map_entry map_select(struct map *m, size_t i)
 		}
 	}
 
-	return (struct map_entry) {
+	return (struct lf(map_entry)) {
 		.key = cur->kv,
 		.keylen = cur->keylen,
 		.value = &cur->kv[lf_map_align(cur->keylen)],
 	};
 }
 
-size_t map_size(const struct map *m)
+size_t lf(map_size)(const struct lf(map) *m)
 {
 	return lf_map_node_size(m->root);
 }
 
-size_t map_rank(const struct map *m, const void *key, size_t keylen)
+size_t lf(map_rank)(const struct lf(map) *m, const void *key)
 {
-	struct map_node *cur = m->root;
+	return lf(map_rank2)(m, key, strlen(key));
+}
+
+size_t lf(map_rank2)(const struct lf(map) *m, const void *key, size_t keylen)
+{
+	struct lfi(map_node) *cur = m->root;
 
 	size_t rank = 0;
 
