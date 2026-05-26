@@ -264,6 +264,147 @@ struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
 
 
 #endif
+/**
+ * @file map.h
+ * @brief Basic map.
+ *
+ * map is an order-statistics tree implemented augmenting Red-Black tree.
+ */
+
+#ifndef LF_MAP_H
+#define LF_MAP_H
+
+#ifndef LF_HEADERONLY
+#include "config.h"
+#endif
+
+#include <stddef.h>
+
+
+/** @brief map. */
+struct lf(map) {
+	/** @cond */
+	struct lfi(map_node) *root;
+
+	void *hold_value;
+
+	size_t value_size;
+
+	int (*cmp)(const void *, const void *, size_t, size_t);
+	/** @endcond */
+};
+
+/** @brief Map entry. */
+struct lf(map_entry) {
+	/** Key, the unique identifier pointing to the value. */
+	const void *key;
+	/** Length of the data stored in the key. */
+	size_t keylen;
+	/** The value assigned to the key by the user. */
+	const void *value;
+};
+
+
+/**
+ * @brief Creates a new map.
+ *
+ * Comparator is a function pointer used to compare keys. It should return an
+ * integer less than, equal to, or greater than zero if key1 is found,
+ * respectively, to be less than, to match, or be greater than key2. Defaults
+ * to memcmp(key1, key2, min(keylen1, keylen2)) if `NULL`.
+ *
+ * Returns non-zero if a memory allocation failure occurs.
+ */
+int lf(map_init)(struct lf(map) *map,
+		 size_t value_size,
+		 int (*comparator)(const void *key1,
+				   const void *key2,
+				   size_t keylen1,
+				   size_t keylen2)) lfi_wur;
+
+/** @brief Identical to map_init(), but raises an error if memory allocation
+ * fails. */
+void lf(map_xinit)(struct lf(map) *map,
+		   size_t value_size,
+		   int (*comparator)(const void *key1,
+				     const void *key2,
+				     size_t keylen1,
+				     size_t keylen2));
+
+/** @brief Clears the memory allocated by the map. */
+void lf(map_destroy)(struct lf(map) *map);
+
+/**
+ * @brief Returns a pointer to the value matching the key, returns `NULL` if
+ * the key is not found.
+ *
+ * The `key` parameter must be null-terminated.
+ */
+void *lf(map_get)(struct lf(map) *map, const void *key);
+
+/** @brief Identical to map_get(), but accepts a non-null-terminated key. */
+void *lf(map_get2)(struct lf(map) *map, const void *key, size_t keylen);
+
+/**
+ * @brief Inserts a key-value pair into the map.
+ *
+ * @warning The key must not already exist in the map.
+ */
+int lf(map_insert)(struct lf(map) *map,
+		   const void *key,
+		   const void *value) lfi_wur;
+
+/** @brief Identical to map_insert(), but raises an error if memory allocation
+ * fails. */
+void lf(map_xinsert)(struct lf(map) *map, const void *key, const void *value);
+
+/** @brief Identical to map_insert(), but accepts a non-null-terminated key. */
+int lf(map_insert2)(struct lf(map) *map,
+		    const void *key,
+		    size_t keylen,
+		    const void *value);
+
+/** @brief Identical to map_insert2(), but raises an error if memory allocation
+ * fails. */
+void lf(map_xinsert2)(struct lf(map) *map,
+		      const void *key,
+		      size_t keylen,
+		      const void *value);
+
+/**
+ * @brief Removes a key-value pair from the map and returns a pointer to the value.
+ *
+ * @attention The returned value pointer points to internal memory that is only
+ * valid until the next remove operation. The user must copy the underlying
+ * data if they wish to retain it.
+ */
+void *lf(map_remove)(struct lf(map) *map, const void *key) lfi_wur;
+
+/** @brief Identical to map_remove(), but accepts a non-null-terminated key. */
+void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen) lfi_wur;
+
+/**
+ * @brief Retrieves the map entry at a specific sorted index.
+ *
+ * Raises an error if the index is larger than map size.
+ */
+struct lf(map_entry) lf(map_select)(struct lf(map) *map, size_t index);
+
+/**
+ * @brief Determines the 0-based index of a specific key in the sorted map.
+ *
+ * Returns -1 casted to size_t if the key is not found.
+ */
+size_t lf(map_rank)(const struct lf(map) *map, const void *key);
+
+/** @brief Identical to map_rank(), but accepts a non-null-terminated key. */
+size_t lf(map_rank2)(const struct lf(map) *map, const void *key, size_t keylen);
+
+/** @brief Returns the total number of elements currently stored in the map. */
+size_t lf(map_size)(const struct lf(map) *map);
+
+
+#endif
 #ifdef LF_IMPLEMENTATION
 #ifndef LF_HEADERONLY
 #include "../include/config.h"
@@ -464,7 +605,7 @@ lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
 	return NULL;
 }
 
-lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t cap)
+lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t old_cap)
 {
 	struct lf(hashmap_entry) *old_entries = m->entries;
 
@@ -475,7 +616,7 @@ lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t cap)
 	if (m->entries == NULL)
 		return 1;
 
-	for (size_t i = 0; i < cap; i++) {
+	for (size_t i = 0; i < old_cap; i++) {
 		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
@@ -546,6 +687,8 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 
 #define lf_map_node_color(n) ((n) == NULL ? 0 : (n)->color)
 
+#define lf_map_node_value(n) (&(n)->kv[lf_map_align((n)->keylen)])
+
 
 struct lfi(map_node) {
 	size_t keylen;
@@ -586,13 +729,13 @@ lfi_fdecl(struct lfi(map_node) *, map_new_node)(const void *key,
 
 	memcpy(n->kv, key, keylen);
 
-	if (value_size > 0)
-		memcpy(&n->kv[aligned_keylen], value, value_size);
-
 	n->keylen = keylen;
 	n->p = n->left = n->right = NULL;
 	n->size = 1;
 	n->color = 1;
+
+	if (value_size > 0)
+		memcpy(lf_map_node_value(n), value, value_size);
 
 	return n;
 }
@@ -877,7 +1020,7 @@ void *lf(map_get2)(struct lf(map) *m, const void *key, size_t keylen)
 {
 	struct lfi(map_node) *n = lfi(map_get2_node)(m, key, keylen);
 
-	return n != NULL ? &n->kv[lf_map_align(keylen)] : NULL;
+	return n != NULL ? lf_map_node_value(n) : NULL;
 }
 
 int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
@@ -903,37 +1046,34 @@ int lf(map_insert2)(struct lf(map) *m,
 
 	if (m->root == NULL) {
 		m->root = n;
+	} else {
+		struct lfi(map_node) *p;
+		struct lfi(map_node) *cur = m->root;
 
-		goto return_fixup;
-	}
+		int cmp = 0;
 
-	struct lfi(map_node) *p;
-	struct lfi(map_node) *cur = m->root;
+		while (cur != NULL) {
+			p = cur;
+			cur->size++;
 
-	int cmp;
+			cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
 
-	while (cur != NULL) {
-		p = cur;
-		cur->size++;
+			assert(cmp != 0 && "map already contains the element");
 
-		cmp = m->cmp(cur->kv, key, cur->keylen, keylen);
-
-		assert(cmp != 0 && "map already contains the element");
+			if (cmp < 0)
+				cur = cur->right;
+			else if (cmp > 0)
+				cur = cur->left;
+		}
 
 		if (cmp < 0)
-			cur = cur->right;
+			p->right = n;
 		else if (cmp > 0)
-			cur = cur->left;
+			p->left = n;
+
+		n->p = p;
 	}
 
-	if (cmp < 0)
-		p->right = n;
-	else
-		p->left = n;
-
-	n->p = p;
-
-return_fixup:
 	lfi(map_insert_fixup)(m, n);
 
 	return 0;
@@ -960,7 +1100,7 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 		return NULL;
 
 	if (m->value_size)
-		memcpy(m->hold_value, &z->kv[lf_map_align(keylen)], m->value_size);
+		memcpy(m->hold_value, lf_map_node_value(z), m->value_size);
 
 	struct lfi(map_node) *y = z;
 
@@ -1148,6 +1288,8 @@ void lf(stack_xpush)(struct lf(stack) *s, void *item)
 
 void *lf(stack_top)(struct lf(stack) *s)
 {
+	assert(s->len && "stack underflow");
+
 	return lf(stack_at)(s, s->len - 1);
 }
 
