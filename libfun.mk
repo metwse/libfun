@@ -34,7 +34,7 @@ ifeq ($(libfun_CFLAGS),)
 $(error "WARNING: unknown mode $(LIBFUN_MODE).")
 endif
 
-libfun_HEADERS_TOPOLOGICAL_ORDERED = config.h stack.h hashmap.h map.h
+libfun_HEADERS_TOPOLOGICAL_ORDERED = config.h common.h stack.h hashmap.h map.h
 
 libfun_SRC_DIR := $(LIBFUN_DIR)/src
 
@@ -51,11 +51,11 @@ libfun_OBJS := $(patsubst $(libfun_SRC_DIR)/%.c,\
 		 $(libfun_SRCS))
 
 
-$(LIBFUN_H): $(libfun_HEADERS) $(libfun_SRCS) $(libfun_SRC_DIR)/common.h | $(libfun_DIST_DIR)
+$(LIBFUN_H): $(libfun_HEADERS) $(libfun_SRCS) $(libfun_SRC_DIR)/util.h | $(libfun_DIST_DIR)
 	echo '#define LF_HEADERONLY' > $(LIBFUN_H)
 	cat $(libfun_HEADERS) >> $(LIBFUN_H)
 	echo '#ifdef LF_IMPLEMENTATION' >> $(LIBFUN_H)
-	cat $(libfun_SRC_DIR)/common.h >> $(LIBFUN_H)
+	cat $(libfun_SRC_DIR)/util.h >> $(LIBFUN_H)
 	cat $(libfun_SRCS) >> $(LIBFUN_H)
 	echo '#endif' >> $(LIBFUN_H)
 

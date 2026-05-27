@@ -18,7 +18,7 @@
 #define LF_STACK_H
 
 #ifndef LF_HEADERONLY
-#include "config.h"
+#include "common.h"
 #endif
 
 #include <stddef.h>
@@ -47,20 +47,20 @@ int lf(stack_init)(struct lf(stack) *stack, size_t item_size) lfi_wur;
 
 /** @brief Identical to stack_init(), but raises an error if memory allocation
  * fails. */
-void lf(stack_xinit)(struct lf(stack) *map, size_t value_size);
+void lf(stack_xinit)(struct lf(stack) *stack, size_t value_size);
 
 /** @brief Clears the memory allocated by the stack. */
 void lf(stack_destroy)(struct lf(stack) *stack);
 
 /** @brief Removes and returns the top element from the stack. */
-void *lf(stack_pop)(struct lf(stack) *stack);
+const void *lf(stack_pop)(struct lf(stack) *stack);
 
 /** @brief Pushes an element to the top of the stack. */
-int lf(stack_push)(struct lf(stack) *stack, void *item) lfi_wur;
+void *lf(stack_push)(struct lf(stack) *stack, const void *item) lfi_wur;
 
 /** @brief Identical to stack_push(), but raises an error if memory allocation
  * fails. */
-void lf(stack_xpush)(struct lf(stack) *stack, void *item);
+void lf(stack_xpush)(struct lf(stack) *stack, const void *item);
 
 /** @brief Returns the top element of the stack. */
 void *lf(stack_top)(struct lf(stack) *stack);

@@ -39,13 +39,13 @@ int main(void)
 	lf(map_iter)(&m, &it);
 
 	for (int i = 0; i < 3072; i++) {
-		struct lf(map_entry) e = lf(map_iter_next)(&it);
+		struct lf(entry) e = lf(map_iter_next)(&it);
 
 		assert(memcmp(&e.key, &i, sizeof(int)));
 	}
 
 	for (int i = 3072; i > 1024; i--) {
-		struct lf(map_entry) e = lf(map_iter_prev)(&it);
+		struct lf(entry) e = lf(map_iter_prev)(&it);
 
 		assert(memcmp(&e.key, &i, sizeof(int)));
 	}
@@ -60,7 +60,7 @@ int main(void)
 			assert(lf(map_get2(&m, &i, sizeof(int)) == NULL));
 			assert(lf(map_rank2(&m, &i, sizeof(int)) == (size_t) -1));
 		} else {
-			struct lf(map_entry) e = lf(map_iter_prev)(&it);
+			struct lf(entry) e = lf(map_iter_prev)(&it);
 
 			assert(memcmp(&e.key, &i, sizeof(int)));
 		}
@@ -70,7 +70,7 @@ int main(void)
 
 	for (int i = 100; i < 200; i++) {
 		if (i % 3 != 0) {
-			struct lf(map_entry) e = lf(map_iter_next)(&it);
+			struct lf(entry) e = lf(map_iter_next)(&it);
 
 			assert(memcmp(&e.key, &i, sizeof(int)));
 		}

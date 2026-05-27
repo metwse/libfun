@@ -1,5 +1,5 @@
 #ifndef LF_HEADERONLY
-#include "common.h"
+#include "util.h"
 #include "../include/config.h"
 #include "../include/hashmap.h"
 #endif
@@ -14,8 +14,8 @@
 #define LF_HASHMAP_TOMBSTONE SIZE_MAX
 
 #define lf_hashmap_entry_at(entries, i) \
-	((struct lf(hashmap_entry) *) &((char *) entries) \
-	 [i * (sizeof(struct lf(hashmap_entry)) + m->value_size)])
+	((struct lfi(hashmap_entry) *) &((char *) entries) \
+	 [i * (sizeof(struct lfi(hashmap_entry)) + m->value_size)])
 
 
 /* https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function */
@@ -23,17 +23,17 @@ lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *, size_t);
 
 /* Normally, insert copies the key. But for rehashing, this function is
  * used. */
-lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *,
-				       const void *,
-				       size_t, const void *);
+lfi_fdecl(void *, hashmap_insert2_nocopy)(struct lf(hashmap) *,
+					  const void *,
+					  size_t, const void *);
 
 /* Rehash the hashmap to a bigger hash bucket. */
 lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *, size_t);
 
 /* Get an entry, key-value pair. */
-lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *,
-							  const void *,
-							  size_t);
+lfi_fdecl(struct lfi(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *,
+							   const void *,
+							   size_t);
 
 
 lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *key, size_t keylen)
@@ -59,7 +59,7 @@ int lf(hashmap_init)(struct lf(hashmap) *m, size_t value_size)
 			sizeof(size_t);
 
 	m->entries = calloc(LF_HASHMAP_INITIAL_CAP,
-			    m->value_size + sizeof(struct lf(hashmap_entry)));
+			    m->value_size + sizeof(struct lfi(hashmap_entry)));
 
 	return m->entries == NULL ? 1 : 0;
 
@@ -68,7 +68,7 @@ int lf(hashmap_init)(struct lf(hashmap) *m, size_t value_size)
 void lf(hashmap_destroy)(struct lf(hashmap) *m)
 {
 	for (size_t i = 0; i < m->cap; i++) {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			free((void *) e->key);
@@ -84,7 +84,7 @@ void *lf(hashmap_get)(struct lf(hashmap) *m, const void *key)
 
 void *lf(hashmap_get2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 {
-	struct lf(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
+	struct lfi(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
 	return e ? e->value : NULL;
 }
@@ -96,7 +96,7 @@ void *lf(hashmap_remove)(struct lf(hashmap) *m, const void *key)
 
 void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 {
-	struct lf(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
+	struct lfi(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
 	if (e) {
 		e->keylen = LF_HASHMAP_TOMBSTONE;
@@ -109,20 +109,20 @@ void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 	}
 }
 
-int lf(hashmap_insert)(struct lf(hashmap) *m, const void *key, const void *value)
+void *lf(hashmap_insert)(struct lf(hashmap) *m, const void *key, const void *value)
 {
 	return lf(hashmap_insert2)(m, key, strlen(key), value);
 }
 
-int lf(hashmap_insert2)(struct lf(hashmap) *m,
-			const void *key,
-			size_t keylen,
-			const void *value)
+void *lf(hashmap_insert2)(struct lf(hashmap) *m,
+			  const void *key,
+			  size_t keylen,
+			  const void *value)
 {
 	void *new_key = malloc(keylen);
 
 	if (new_key == NULL)
-		return 1;
+		return NULL;
 
 	memcpy(new_key, key, keylen);
 
@@ -135,21 +135,25 @@ void lf(hashmap_iter)(struct lf(hashmap) *m, struct lf(hashmap_it) *it)
 	it->i = 0;
 }
 
-struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
+struct lf(entry) lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
 {
 	struct lf(hashmap) *m = it->m;
 
 	while (it->i != m->cap) {
-		struct lf(hashmap_entry) *e =
+		struct lfi(hashmap_entry) *e =
 			lf_hashmap_entry_at(m->entries, it->i);
 
 		it->i++;
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
-			return e;
+			return (struct lf(entry)) {
+				.key = e->key,
+				.keylen = e->keylen,
+				.value = e->value
+			};
 	}
 
-	return NULL;
+	return lfi_sentinel_entry;
 }
 
 void lf(hashmap_xinit)(struct lf(hashmap) *m, size_t value_size)
@@ -161,7 +165,7 @@ void lf(hashmap_xinsert)(struct lf(hashmap) *m,
 			 const void *key,
 			 const void *value)
 {
-	lf_unwrap(lf(hashmap_insert)(m, key, value));
+	lf_assert(lf(hashmap_insert)(m, key, value),);
 }
 
 void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
@@ -169,19 +173,19 @@ void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
 			  size_t keylen,
 			  const void *value)
 {
-	lf_unwrap(lf(hashmap_insert2)(m, key, keylen, value));
+	lf_assert(lf(hashmap_insert2)(m, key, keylen, value),);
 }
 
-lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
-							  const void *key,
-							  size_t keylen)
+lfi_fdecl(struct lfi(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
+							   const void *key,
+							   size_t keylen)
 {
 	uint64_t hash = lfi(hashmap_fnv_hash)(key, keylen);
 	size_t start_i = hash % m->cap;
 	size_t i = start_i;
 
 	do {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
 		if (e->keylen == 0)
 			return NULL;
@@ -199,17 +203,17 @@ lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
 
 lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t old_cap)
 {
-	struct lf(hashmap_entry) *old_entries = m->entries;
+	struct lfi(hashmap_entry) *old_entries = m->entries;
 
 	m->used = 0;
 	m->entries = calloc(m->cap,
-			    m->value_size + sizeof(struct lf(hashmap_entry)));
+			    m->value_size + sizeof(struct lfi(hashmap_entry)));
 
 	if (m->entries == NULL)
 		return 1;
 
 	for (size_t i = 0; i < old_cap; i++) {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			lfi(hashmap_insert2_nocopy)(m, e->key, e->keylen, e->value);
@@ -220,10 +224,10 @@ lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t old_cap)
 	return 0;
 }
 
-lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
-				       const void *key,
-				       size_t keylen,
-				       const void *value)
+lfi_fdecl(void *, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
+					  const void *key,
+					  size_t keylen,
+					  const void *value)
 {
 	if (m->cap * 3 < m->used * 4) {
 		size_t old_cap = m->cap;
@@ -231,7 +235,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 		m->cap *= 2;
 
 		if (lfi(hashmap_rehash)(m, old_cap))
-			return 1;
+			return NULL;
 	}
 
 	lf_assert(!lf(hashmap_get2)(m, key, keylen),
@@ -242,7 +246,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 	size_t i = start_i;
 
 	do {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
 		if (e->keylen == 0 || e->keylen == LF_HASHMAP_TOMBSTONE) {
 			e->keylen = keylen;
@@ -253,7 +257,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 
 			m->used++;
 
-			return 0;
+			return e->value;
 		} else {
 			i++;
 		}

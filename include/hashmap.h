@@ -11,17 +11,16 @@
 #define LF_HASHMAP_H
 
 #ifndef LF_HEADERONLY
-#include "config.h"
+#include "common.h"
 #endif
 
-#include <assert.h>
 #include <stddef.h>
 
 
 /** @brief hashmap. */
 struct lf(hashmap) {
 	/** @cond */
-	struct lf(hashmap_entry) *entries;
+	struct lfi(hashmap_entry) *entries;
 	size_t cap;
 	size_t used;
 	size_t value_size;
@@ -36,15 +35,13 @@ struct lf(hashmap_it) {
 	/** @endcond */
 };
 
-/** @brief Key-value pair stored in the hashmap, entry. */
-struct lf(hashmap_entry) {
-	/** Key, the unique identifier pointing to the value. */
+/** @cond */
+struct lfi(hashmap_entry) {
 	const void *key;
-	/** Length of the data stored in the key. */
 	size_t keylen;
-	/** The value assigned to the key by the user. */
 	char value[];
 };
+/** @endcond */
 
 
 /**
@@ -84,12 +81,12 @@ void *lf(hashmap_get2)(struct lf(hashmap) *hashmap,
  *
  * @warning The `key` must not already exist in the hashmap.
  *
- * The `key` parameter must be null-terminated. Returns non-zero if the memory
+ * The `key` parameter must be null-terminated. Returns `NULL` if a memory
  * allocation failure occurs.
  */
-int lf(hashmap_insert)(struct lf(hashmap) *hashmap,
-		       const void *key,
-		       const void *value) lfi_wur;
+void *lf(hashmap_insert)(struct lf(hashmap) *hashmap,
+			 const void *key,
+			 const void *value) lfi_wur;
 
 /** @brief Identical to hashmap_insert(), but raises an error if memory
  * allocation fails. */
@@ -99,10 +96,10 @@ void lf(hashmap_xinsert)(struct lf(hashmap) *hashmap,
 
 /** @brief Identical to hashmap_insert(), but accepts a non-null-terminated
  * key. */
-int lf(hashmap_insert2)(struct lf(hashmap) *hashmap,
-			const void *key,
-			size_t keylen,
-			const void *value) lfi_wur;
+void *lf(hashmap_insert2)(struct lf(hashmap) *hashmap,
+			  const void *key,
+			  size_t keylen,
+			  const void *value) lfi_wur;
 
 /** @brief Identical to hashmap_insert2(), but raises an error if memory
  * allocation fails. */
@@ -138,7 +135,7 @@ void lf(hashmap_iter)(struct lf(hashmap) *hashmap, struct lf(hashmap_it) *it);
  *
  * If all entries have been retrieved, it returns `NULL`.
  */
-struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
+struct lf(entry) lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
 
 
 #endif

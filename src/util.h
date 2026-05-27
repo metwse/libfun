@@ -1,7 +1,7 @@
-#include <stddef.h>
-#ifndef LF_COMMON_H
+#ifndef LF_UTIL_H
 
 #ifndef LF_HEADERONLY
+#include "../include/common.h"
 #include "../include/config.h"
 #endif
 
@@ -58,6 +58,8 @@ inline lfi_fdecl(size_t, circular_index)(ptrdiff_t index, size_t size)
 
 	return index;
 }
+
+#define lfi_sentinel_entry ((struct lf(entry)) { .key = NULL, })
 
 
 #endif

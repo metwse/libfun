@@ -53,14 +53,14 @@ int main(void)
 
 			lf(hashmap_iter)(&m, &it);
 
-			struct lf(hashmap_entry) *e;
-			while ((e = lf(hashmap_iter_next)(&it)))
-				iter_values_total += e->value[0];
+			struct lf(entry) e;
+			while (lf(entry_is_valid)(e = lf(hashmap_iter_next)(&it)))
+				iter_values_total += ((char *) e.value)[0];
 
 			assert(iter_values_total == values_total);
 		}
 
-		int limit2 = limit % ((rand() % 2024) + 1);
+		int limit2 = limit % ((rand() % 2048) + 4);
 		// remove all even-numbered keys
 		for (int i = 0; i < limit2; i += 2) {
 			value[0] = values[i];
@@ -77,21 +77,26 @@ int main(void)
 			assert(!lf(hashmap_get2)(&m, &i, sizeof(int)));
 		}
 
-		int limit3 = limit2 % ((rand() % 2024) + 1);
+		int limit3 = limit2 % ((rand() % 1024) + 4);
 		// now insert size_t keyed elements
 		for (size_t i = 0; i < (size_t) limit3; i += 4)
 			lf(hashmap_xinsert2)(&m, &i, sizeof(size_t), &i);
 
 		// check size_t keyed elements
+		size_t inserted_size = sizeof(size_t);
+
+		if ((size_t) elem_size < inserted_size)
+			inserted_size = elem_size;
+
 		for (size_t i = 0; i < (size_t) limit3; i += 4)
 			assert(!memcmp(lf(hashmap_get2)(&m, &i, sizeof(size_t)),
-							&i, elem_size));
+							&i, inserted_size));
 
 		lf(hashmap_xinsert)(&m, "inserting string", "the string value");
 		assert(lf(hashmap_get)(&m, "inserting string"));
-		assert(!memcmp(lf(hashmap_remove)(&m, "inserting string"),
-						  "the string value",
-						  elem_size));
+		assert(!strncmp(lf(hashmap_remove)(&m, "inserting string"),
+						   "the string value",
+						   elem_size));
 		assert(!lf(hashmap_remove)(&m, "inserting string"));
 
 		lf(hashmap_destroy)(&m);

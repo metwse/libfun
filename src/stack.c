@@ -1,10 +1,10 @@
-#include <stddef.h>
 #ifndef LF_HEADERONLY
-#include "common.h"
+#include "util.h"
 #include "../include/config.h"
 #include "../include/stack.h"
 #endif
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -29,7 +29,7 @@ void lf(stack_destroy)(struct lf(stack) *s)
 	free(s->data);
 }
 
-void *lf(stack_pop)(struct lf(stack) *s)
+const void *lf(stack_pop)(struct lf(stack) *s)
 {
 	lf_assert(s->len, "stack underflow");
 
@@ -40,7 +40,7 @@ void *lf(stack_pop)(struct lf(stack) *s)
 	return item;
 }
 
-int lf(stack_push)(struct lf(stack) *s, void *item)
+void *lf(stack_push)(struct lf(stack) *s, const void *item)
 {
 	if (s->len == s->cap) {
 		s->cap *= 2;
@@ -49,20 +49,21 @@ int lf(stack_push)(struct lf(stack) *s, void *item)
 					s->cap * s->item_size);
 
 		if (s->data == NULL)
-			return 1;
+			return NULL;
 	}
 
-	memcpy(&s->data[s->len * s->item_size],
+	void *item_on_stack = &s->data[s->len * s->item_size];
+	memcpy(item_on_stack,
 	       item, s->item_size);
 
 	s->len++;
 
-	return 0;
+	return item_on_stack;
 }
 
-void lf(stack_xpush)(struct lf(stack) *s, void *item)
+void lf(stack_xpush)(struct lf(stack) *s, const void *item)
 {
-	lf_unwrap(lf(stack_push)(s, item));
+	lf_assert(lf(stack_push)(s, item),);
 }
 
 void *lf(stack_top)(struct lf(stack) *s)

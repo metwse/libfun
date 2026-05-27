@@ -76,8 +76,8 @@ int main(void)
 		for (int i = 0; i < 1000; i++) {
 			int rev_i = 999 - i;
 
-			struct lf(map_entry) e = lf(map_select)(&m, i);
-			struct lf(map_entry) rev_e = lf(map_select)(&m, -(i + 1));
+			struct lf(entry) e = lf(map_select)(&m, i);
+			struct lf(entry) rev_e = lf(map_select)(&m, -(i + 1));
 
 			assert(memcmp(&i, e.value, sizeof(int)) == 0);
 			assert(memcmp(&rev_i, rev_e.value, sizeof(int)) == 0);
@@ -91,7 +91,7 @@ int main(void)
 
 		str[0] = '0'; str[1] = '0'; str[2] = '0';
 		for (int i = 0; i < 10; i++) {
-			int *value = lf(map_remove(&m, str));
+			const int *value = lf(map_remove(&m, str));
 
 			int key = strtod(str, NULL);
 

@@ -9,7 +9,7 @@
 #define LF_MAP_H
 
 #ifndef LF_HEADERONLY
-#include "config.h"
+#include "common.h"
 #endif
 
 #include <stddef.h>
@@ -34,16 +34,6 @@ struct lf(map_it) {
 	struct lf(map) *m;
 	struct lfi(map_node) *n;
 	/** @endcond */
-};
-
-/** @brief Map entry. */
-struct lf(map_entry) {
-	/** Key, the unique identifier pointing to the value. */
-	const void *key;
-	/** Length of the data stored in the key. */
-	size_t keylen;
-	/** The value assigned to the key by the user. */
-	const void *value;
 };
 
 /** @cond */
@@ -114,19 +104,19 @@ void *lf(map_get2)(struct lf(map) *map, const void *key, size_t keylen);
  *
  * @warning The key must not already exist in the map.
  */
-int lf(map_insert)(struct lf(map) *map,
-		   const void *key,
-		   const void *value) lfi_wur;
+void *lf(map_insert)(struct lf(map) *map,
+		     const void *key,
+		     const void *value) lfi_wur;
 
 /** @brief Identical to map_insert(), but raises an error if memory allocation
  * fails. */
 void lf(map_xinsert)(struct lf(map) *map, const void *key, const void *value);
 
 /** @brief Identical to map_insert(), but accepts a non-null-terminated key. */
-int lf(map_insert2)(struct lf(map) *map,
-		    const void *key,
-		    size_t keylen,
-		    const void *value);
+void *lf(map_insert2)(struct lf(map) *map,
+		      const void *key,
+		      size_t keylen,
+		      const void *value);
 
 /** @brief Identical to map_insert2(), but raises an error if memory allocation
  * fails. */
@@ -142,10 +132,10 @@ void lf(map_xinsert2)(struct lf(map) *map,
  * valid until the next remove operation. The user must copy the underlying
  * data if they wish to retain it.
  */
-void *lf(map_remove)(struct lf(map) *map, const void *key);
+const void *lf(map_remove)(struct lf(map) *map, const void *key);
 
 /** @brief Identical to map_remove(), but accepts a non-null-terminated key. */
-void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
+const void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
 
 /**
  * @brief Retrieves the map entry at a specific sorted index.
@@ -153,7 +143,7 @@ void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
  * Raises an error if the index is larger than map size. The entry may be
  * invalidated after a remove operation.
  */
-struct lf(map_entry) lf(map_select)(struct lf(map) *map, ptrdiff_t index);
+struct lf(entry) lf(map_select)(struct lf(map) *map, ptrdiff_t index);
 
 /**
  * @brief Determines the 0-based index of a specific key in the sorted map.
@@ -194,7 +184,7 @@ void lf(map_iter_from)(struct lf(map) *map,
  * Returns entries in ascending key order. When all entries have been
  * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
  */
-struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);
+struct lf(entry) lf(map_iter_next)(struct lf(map_it) *it);
 
 /**
  * @brief Retrieves the next entry from a reverse iteration handle.
@@ -202,7 +192,7 @@ struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);
  * Returns entries in descending key order. When all entries have been
  * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
  */
-struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it);
+struct lf(entry) lf(map_iter_prev)(struct lf(map_it) *it);
 
 
 #endif

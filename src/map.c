@@ -1,5 +1,5 @@
 #ifndef LF_HEADERONLY
-#include "common.h"
+#include "util.h"
 #include "../include/map.h"
 #endif
 
@@ -370,16 +370,12 @@ lfi_fdecl(struct lfi(map_node) *, map_predecessor)(struct lfi(map_node) *n)
 }
 
 /* Constructs a map_entry from a node, or the exhaustion sentinel if NULL. */
-lfi_fdecl(struct lf(map_entry), map_entry_of)(struct lfi(map_node) *n)
+lfi_fdecl(struct lf(entry), map_entry_of)(struct lfi(map_node) *n)
 {
 	if (n == NULL)
-		return (struct lf(map_entry)) {
-			.key = NULL,
-			.keylen = 0,
-			.value = NULL
-		};
+		return lfi_sentinel_entry;
 
-	return (struct lf(map_entry)) {
+	return (struct lf(entry)) {
 		.key = n->kv,
 		.keylen = n->keylen,
 		.value = lf_map_node_value(n),
@@ -430,33 +426,33 @@ void *lf(map_get2)(struct lf(map) *m, const void *key, size_t keylen)
 	return n != NULL ? lf_map_node_value(n) : NULL;
 }
 
-int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
+void *lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
 {
 	return lf(map_insert2)(m, key, strlen(key), value);
 }
 
 void lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
 {
-	lf_unwrap(lf(map_insert)(m, key, value));
+	lf_assert(lf(map_insert)(m, key, value),);
 }
 
-int lf(map_insert2)(struct lf(map) *m,
-		    const void *key,
-		    size_t keylen,
-		    const void *value)
+void *lf(map_insert2)(struct lf(map) *m,
+		      const void *key,
+		      size_t keylen,
+		      const void *value)
 {
 	struct lfi(map_node) *n =
 		lfi(map_new_node)(key, keylen, value, m->value_size);
 
 	if (n == NULL)
-		return 1;
+		return NULL;
 
 	if (m->root == NULL) {
 		m->root = n;
 	} else {
-		struct lfi(map_node) *p;
 		struct lfi(map_node) *cur = m->root;
 
+		struct lfi(map_node) *p;
 		int cmp = 0;
 
 		while (cur != NULL) {
@@ -483,7 +479,7 @@ int lf(map_insert2)(struct lf(map) *m,
 
 	lfi(map_insert_fixup)(m, n);
 
-	return 0;
+	return lf_map_node_value(n);
 }
 
 void lf(map_xinsert2)(struct lf(map) *m,
@@ -491,15 +487,15 @@ void lf(map_xinsert2)(struct lf(map) *m,
 		      size_t keylen,
 		      const void *value)
 {
-	lf_unwrap(lf(map_insert2)(m, key, keylen, value));
+	lf_assert(lf(map_insert2)(m, key, keylen, value),);
 }
 
-void *lf(map_remove)(struct lf(map) *m, const void *key)
+const void *lf(map_remove)(struct lf(map) *m, const void *key)
 {
 	return lf(map_remove2)(m, key, strlen(key));
 }
 
-void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
+const void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 {
 	struct lfi(map_node) *z = lfi(map_get2_node)(m, key, keylen);
 
@@ -568,7 +564,7 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 	return m->hold_value;
 }
 
-struct lf(map_entry) lf(map_select)(struct lf(map) *m, ptrdiff_t i)
+struct lf(entry) lf(map_select)(struct lf(map) *m, ptrdiff_t i)
 {
 	return lfi(map_entry_of)(lfi(map_select_node)(m, i));
 }
@@ -621,7 +617,7 @@ void lf(map_iter_from)(struct lf(map) *m,
 	it->n = lfi(map_select_node)(m, i);
 }
 
-struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)
+struct lf(entry) lf(map_iter_next)(struct lf(map_it) *it)
 {
 	struct lfi(map_node) *cur = it->n;
 
@@ -631,7 +627,7 @@ struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)
 	return lfi(map_entry_of)(cur);
 }
 
-struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it)
+struct lf(entry) lf(map_iter_prev)(struct lf(map_it) *it)
 {
 	struct lfi(map_node) *cur = it->n;
 
