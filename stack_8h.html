@@ -82,7 +82,7 @@ $(function() {
 
 <p>Basic stack.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="config_8h_source.html">config.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="common_8h_source.html">common.h</a>&quot;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
 </div>
 <p><a href="stack_8h_source.html">Go to the source code of this file.</a></p>
@@ -98,26 +98,26 @@ Functions</h2></td></tr>
 <tr class="memitem:ae113c0b3a0cd89994f3ca12073786235" id="r_ae113c0b3a0cd89994f3ca12073786235"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#ae113c0b3a0cd89994f3ca12073786235">fstack_init</a> (struct <a class="el" href="structfstack.html">fstack</a> *stack, size_t item_size)</td></tr>
 <tr class="memdesc:ae113c0b3a0cd89994f3ca12073786235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new stack.  <br /></td></tr>
 <tr class="separator:ae113c0b3a0cd89994f3ca12073786235"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9ab5adc602c8a57c2edc7a666b9a383" id="r_ad9ab5adc602c8a57c2edc7a666b9a383"><td class="memItemLeft" align="right" valign="top"><a id="ad9ab5adc602c8a57c2edc7a666b9a383" name="ad9ab5adc602c8a57c2edc7a666b9a383"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_xinit</b> (struct <a class="el" href="structfstack.html">fstack</a> *map, size_t value_size)</td></tr>
-<tr class="memdesc:ad9ab5adc602c8a57c2edc7a666b9a383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to stack_init(), but raises an error if memory allocation fails. <br /></td></tr>
-<tr class="separator:ad9ab5adc602c8a57c2edc7a666b9a383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae718e19973c4d379224b331bd2c9bce8" id="r_ae718e19973c4d379224b331bd2c9bce8"><td class="memItemLeft" align="right" valign="top"><a id="ae718e19973c4d379224b331bd2c9bce8" name="ae718e19973c4d379224b331bd2c9bce8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_xinit</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack, size_t value_size)</td></tr>
+<tr class="memdesc:ae718e19973c4d379224b331bd2c9bce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to stack_init(), but raises an error if memory allocation fails. <br /></td></tr>
+<tr class="separator:ae718e19973c4d379224b331bd2c9bce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebf34df6ebd564c118a001afa6e1750f" id="r_aebf34df6ebd564c118a001afa6e1750f"><td class="memItemLeft" align="right" valign="top"><a id="aebf34df6ebd564c118a001afa6e1750f" name="aebf34df6ebd564c118a001afa6e1750f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_destroy</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack)</td></tr>
 <tr class="memdesc:aebf34df6ebd564c118a001afa6e1750f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the memory allocated by the stack. <br /></td></tr>
 <tr class="separator:aebf34df6ebd564c118a001afa6e1750f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03beca0ef2cab86ef18e9614dcec81cf" id="r_a03beca0ef2cab86ef18e9614dcec81cf"><td class="memItemLeft" align="right" valign="top"><a id="a03beca0ef2cab86ef18e9614dcec81cf" name="a03beca0ef2cab86ef18e9614dcec81cf"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_pop</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack)</td></tr>
-<tr class="memdesc:a03beca0ef2cab86ef18e9614dcec81cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes and returns the top element from the stack. <br /></td></tr>
-<tr class="separator:a03beca0ef2cab86ef18e9614dcec81cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98bc2bb86ab84b83485ad0c2fe08ca33" id="r_a98bc2bb86ab84b83485ad0c2fe08ca33"><td class="memItemLeft" align="right" valign="top"><a id="a98bc2bb86ab84b83485ad0c2fe08ca33" name="a98bc2bb86ab84b83485ad0c2fe08ca33"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_push</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack, void *item)</td></tr>
-<tr class="memdesc:a98bc2bb86ab84b83485ad0c2fe08ca33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element to the top of the stack. <br /></td></tr>
-<tr class="separator:a98bc2bb86ab84b83485ad0c2fe08ca33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a421e3e4dc98bcacb3e8f95c1472c1533" id="r_a421e3e4dc98bcacb3e8f95c1472c1533"><td class="memItemLeft" align="right" valign="top"><a id="a421e3e4dc98bcacb3e8f95c1472c1533" name="a421e3e4dc98bcacb3e8f95c1472c1533"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_xpush</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack, void *item)</td></tr>
-<tr class="memdesc:a421e3e4dc98bcacb3e8f95c1472c1533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to stack_push(), but raises an error if memory allocation fails. <br /></td></tr>
-<tr class="separator:a421e3e4dc98bcacb3e8f95c1472c1533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b0ef1f9c901551412a6140982d370b3" id="r_a8b0ef1f9c901551412a6140982d370b3"><td class="memItemLeft" align="right" valign="top"><a id="a8b0ef1f9c901551412a6140982d370b3" name="a8b0ef1f9c901551412a6140982d370b3"></a>
+const void *&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_pop</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack)</td></tr>
+<tr class="memdesc:a8b0ef1f9c901551412a6140982d370b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes and returns the top element from the stack. <br /></td></tr>
+<tr class="separator:a8b0ef1f9c901551412a6140982d370b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a194caf20ef3d3d8dfe9312890ce66bd2" id="r_a194caf20ef3d3d8dfe9312890ce66bd2"><td class="memItemLeft" align="right" valign="top"><a id="a194caf20ef3d3d8dfe9312890ce66bd2" name="a194caf20ef3d3d8dfe9312890ce66bd2"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_push</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack, const void *item)</td></tr>
+<tr class="memdesc:a194caf20ef3d3d8dfe9312890ce66bd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element to the top of the stack. <br /></td></tr>
+<tr class="separator:a194caf20ef3d3d8dfe9312890ce66bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85d6d73008269d642b683e65f781dcfd" id="r_a85d6d73008269d642b683e65f781dcfd"><td class="memItemLeft" align="right" valign="top"><a id="a85d6d73008269d642b683e65f781dcfd" name="a85d6d73008269d642b683e65f781dcfd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_xpush</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack, const void *item)</td></tr>
+<tr class="memdesc:a85d6d73008269d642b683e65f781dcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to stack_push(), but raises an error if memory allocation fails. <br /></td></tr>
+<tr class="separator:a85d6d73008269d642b683e65f781dcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5f1acad52095cdd1e2b4936c9b84192" id="r_ac5f1acad52095cdd1e2b4936c9b84192"><td class="memItemLeft" align="right" valign="top"><a id="ac5f1acad52095cdd1e2b4936c9b84192" name="ac5f1acad52095cdd1e2b4936c9b84192"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>fstack_top</b> (struct <a class="el" href="structfstack.html">fstack</a> *stack)</td></tr>
 <tr class="memdesc:ac5f1acad52095cdd1e2b4936c9b84192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the top element of the stack. <br /></td></tr>

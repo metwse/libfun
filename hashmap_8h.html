@@ -82,8 +82,7 @@ $(function() {
 
 <p>Basic hashmap.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="config_8h_source.html">config.h</a>&quot;</code><br />
-<code>#include &lt;assert.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="common_8h_source.html">common.h</a>&quot;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
 </div>
 <p><a href="hashmap_8h_source.html">Go to the source code of this file.</a></p>
@@ -95,9 +94,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhashmap__it.html">fhashmap_it</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iteration handle to retrieve hashmap entries one by one.  <a href="structfhashmap__it.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhashmap__entry.html">fhashmap_entry</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key-value pair stored in the hashmap, entry.  <a href="structfhashmap__entry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -120,17 +116,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_destroy</b> 
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_get2</b> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, size_t keylen)</td></tr>
 <tr class="memdesc:a3876b22b56a253babeb38a4160e85485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to hashmap_get(), but accepts a non-null-terminated key. <br /></td></tr>
 <tr class="separator:a3876b22b56a253babeb38a4160e85485"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a8aa5e156e34eccc69548ca57a0ae64" id="r_a7a8aa5e156e34eccc69548ca57a0ae64"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashmap_8h.html#a7a8aa5e156e34eccc69548ca57a0ae64">fhashmap_insert</a> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, const void *value)</td></tr>
-<tr class="memdesc:a7a8aa5e156e34eccc69548ca57a0ae64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a key-value pair into the hashmap.  <br /></td></tr>
-<tr class="separator:a7a8aa5e156e34eccc69548ca57a0ae64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6f6113e487e025346a50959e6939cdf" id="r_ad6f6113e487e025346a50959e6939cdf"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashmap_8h.html#ad6f6113e487e025346a50959e6939cdf">fhashmap_insert</a> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, const void *value)</td></tr>
+<tr class="memdesc:ad6f6113e487e025346a50959e6939cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a key-value pair into the hashmap.  <br /></td></tr>
+<tr class="separator:ad6f6113e487e025346a50959e6939cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5219c57001de1bbe89415dbbffc5d23a" id="r_a5219c57001de1bbe89415dbbffc5d23a"><td class="memItemLeft" align="right" valign="top"><a id="a5219c57001de1bbe89415dbbffc5d23a" name="a5219c57001de1bbe89415dbbffc5d23a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_xinsert</b> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, const void *value)</td></tr>
 <tr class="memdesc:a5219c57001de1bbe89415dbbffc5d23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to hashmap_insert(), but raises an error if memory allocation fails. <br /></td></tr>
 <tr class="separator:a5219c57001de1bbe89415dbbffc5d23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2723875a32c15f266058bf78a1a759d" id="r_ac2723875a32c15f266058bf78a1a759d"><td class="memItemLeft" align="right" valign="top"><a id="ac2723875a32c15f266058bf78a1a759d" name="ac2723875a32c15f266058bf78a1a759d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_insert2</b> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, size_t keylen, const void *value)</td></tr>
-<tr class="memdesc:ac2723875a32c15f266058bf78a1a759d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to hashmap_insert(), but accepts a non-null-terminated key. <br /></td></tr>
-<tr class="separator:ac2723875a32c15f266058bf78a1a759d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a929951e3b0382374a5ca831a6a5bf59b" id="r_a929951e3b0382374a5ca831a6a5bf59b"><td class="memItemLeft" align="right" valign="top"><a id="a929951e3b0382374a5ca831a6a5bf59b" name="a929951e3b0382374a5ca831a6a5bf59b"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_insert2</b> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, size_t keylen, const void *value)</td></tr>
+<tr class="memdesc:a929951e3b0382374a5ca831a6a5bf59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to hashmap_insert(), but accepts a non-null-terminated key. <br /></td></tr>
+<tr class="separator:a929951e3b0382374a5ca831a6a5bf59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27377c48658e9a2f8584977de7d84b3d" id="r_a27377c48658e9a2f8584977de7d84b3d"><td class="memItemLeft" align="right" valign="top"><a id="a27377c48658e9a2f8584977de7d84b3d" name="a27377c48658e9a2f8584977de7d84b3d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_xinsert2</b> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, const void *key, size_t keylen, const void *value)</td></tr>
 <tr class="memdesc:a27377c48658e9a2f8584977de7d84b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to hashmap_insert2(), but raises an error if memory allocation fails. <br /></td></tr>
@@ -146,9 +142,9 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_remove2</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_iter</b> (struct <a class="el" href="structfhashmap.html">fhashmap</a> *hashmap, struct <a class="el" href="structfhashmap__it.html">fhashmap_it</a> *it)</td></tr>
 <tr class="memdesc:a590c0deb42b875832d479bad007c4da4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an iteration handle to retrieve the entries in the hashmap one by one. <br /></td></tr>
 <tr class="separator:a590c0deb42b875832d479bad007c4da4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac27225cec15d11f1b2cd5cdb8d943f11" id="r_ac27225cec15d11f1b2cd5cdb8d943f11"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfhashmap__entry.html">fhashmap_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashmap_8h.html#ac27225cec15d11f1b2cd5cdb8d943f11">fhashmap_iter_next</a> (struct <a class="el" href="structfhashmap__it.html">fhashmap_it</a> *it)</td></tr>
-<tr class="memdesc:ac27225cec15d11f1b2cd5cdb8d943f11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next entry from the iteration handle.  <br /></td></tr>
-<tr class="separator:ac27225cec15d11f1b2cd5cdb8d943f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493b637af848e96d3214fac191dc4a29" id="r_a493b637af848e96d3214fac191dc4a29"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfentry.html">fentry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashmap_8h.html#a493b637af848e96d3214fac191dc4a29">fhashmap_iter_next</a> (struct <a class="el" href="structfhashmap__it.html">fhashmap_it</a> *it)</td></tr>
+<tr class="memdesc:a493b637af848e96d3214fac191dc4a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next entry from the iteration handle.  <br /></td></tr>
+<tr class="separator:a493b637af848e96d3214fac191dc4a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic hashmap. </p>
@@ -219,14 +215,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_iter</b> (st
 
 </div>
 </div>
-<a id="a7a8aa5e156e34eccc69548ca57a0ae64" name="a7a8aa5e156e34eccc69548ca57a0ae64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a8aa5e156e34eccc69548ca57a0ae64">&#9670;&#160;</a></span>fhashmap_insert()</h2>
+<a id="ad6f6113e487e025346a50959e6939cdf" name="ad6f6113e487e025346a50959e6939cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6f6113e487e025346a50959e6939cdf">&#9670;&#160;</a></span>fhashmap_insert()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int fhashmap_insert </td>
+          <td class="memname">void * fhashmap_insert </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structfhashmap.html">fhashmap</a> *&#160;</td>
           <td class="paramname"><em>hashmap</em>, </td>
@@ -253,18 +249,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>fhashmap_iter</b> (st
 
 <p>Inserts a key-value pair into the hashmap. </p>
 <dl class="section warning"><dt>Warning</dt><dd>The <code>key</code> must not already exist in the hashmap.</dd></dl>
-<p>The <code>key</code> parameter must be null-terminated. Returns non-zero if the memory allocation failure occurs. </p>
+<p>The <code>key</code> parameter must be null-terminated. Returns <code>NULL</code> if a memory allocation failure occurs. </p>
 
 </div>
 </div>
-<a id="ac27225cec15d11f1b2cd5cdb8d943f11" name="ac27225cec15d11f1b2cd5cdb8d943f11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac27225cec15d11f1b2cd5cdb8d943f11">&#9670;&#160;</a></span>fhashmap_iter_next()</h2>
+<a id="a493b637af848e96d3214fac191dc4a29" name="a493b637af848e96d3214fac191dc4a29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a493b637af848e96d3214fac191dc4a29">&#9670;&#160;</a></span>fhashmap_iter_next()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structfhashmap__entry.html">fhashmap_entry</a> * fhashmap_iter_next </td>
+          <td class="memname">struct <a class="el" href="structfentry.html">fentry</a> fhashmap_iter_next </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structfhashmap__it.html">fhashmap_it</a> *&#160;</td>
           <td class="paramname"><em>it</em></td><td>)</td>

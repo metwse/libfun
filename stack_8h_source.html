@@ -86,7 +86,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define LF_STACK_H</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#ifndef LF_HEADERONLY</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="config_8h.html">config.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="common_8h.html">common.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
@@ -104,15 +104,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="stack_8h.html#ae113c0b3a0cd89994f3ca12073786235">   46</a></span><span class="keywordtype">int</span> lf(stack_init)(<span class="keyword">struct </span>lf(stack) *stack, <span class="keywordtype">size_t</span> item_size) lfi_wur;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="stack_8h.html#ad9ab5adc602c8a57c2edc7a666b9a383">   50</a></span><span class="keywordtype">void</span> lf(stack_xinit)(<span class="keyword">struct </span>lf(stack) *map, <span class="keywordtype">size_t</span> value_size);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="stack_8h.html#ae718e19973c4d379224b331bd2c9bce8">   50</a></span><span class="keywordtype">void</span> lf(stack_xinit)(<span class="keyword">struct </span>lf(stack) *stack, <span class="keywordtype">size_t</span> value_size);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="stack_8h.html#aebf34df6ebd564c118a001afa6e1750f">   53</a></span><span class="keywordtype">void</span> lf(stack_destroy)(<span class="keyword">struct </span>lf(stack) *stack);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="stack_8h.html#a03beca0ef2cab86ef18e9614dcec81cf">   56</a></span><span class="keywordtype">void</span> *lf(stack_pop)(<span class="keyword">struct </span>lf(stack) *stack);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="stack_8h.html#a8b0ef1f9c901551412a6140982d370b3">   56</a></span><span class="keyword">const</span> <span class="keywordtype">void</span> *lf(stack_pop)(<span class="keyword">struct </span>lf(stack) *stack);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="stack_8h.html#a98bc2bb86ab84b83485ad0c2fe08ca33">   59</a></span><span class="keywordtype">int</span> lf(stack_push)(<span class="keyword">struct </span>lf(stack) *stack, <span class="keywordtype">void</span> *item) lfi_wur;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="stack_8h.html#a194caf20ef3d3d8dfe9312890ce66bd2">   59</a></span><span class="keywordtype">void</span> *lf(stack_push)(<span class="keyword">struct </span>lf(stack) *stack, <span class="keyword">const</span> <span class="keywordtype">void</span> *item) lfi_wur;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="stack_8h.html#a421e3e4dc98bcacb3e8f95c1472c1533">   63</a></span><span class="keywordtype">void</span> lf(stack_xpush)(<span class="keyword">struct </span>lf(stack) *stack, <span class="keywordtype">void</span> *item);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="stack_8h.html#a85d6d73008269d642b683e65f781dcfd">   63</a></span><span class="keywordtype">void</span> lf(stack_xpush)(<span class="keyword">struct </span>lf(stack) *stack, <span class="keyword">const</span> <span class="keywordtype">void</span> *item);</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="stack_8h.html#ac5f1acad52095cdd1e2b4936c9b84192">   66</a></span><span class="keywordtype">void</span> *lf(stack_top)(<span class="keyword">struct </span>lf(stack) *stack);</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
@@ -122,7 +122,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div><div class="ttdoc">Library-wide configuration.</div></div>
+<div class="ttc" id="acommon_8h_html"><div class="ttname"><a href="common_8h.html">common.h</a></div><div class="ttdoc">Library-wide common types.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
