@@ -48,6 +48,42 @@
 #endif
 /** @endcond */
 /**
+ * @file common.h
+ * @brief Library-wide common types.
+ */
+
+#ifndef LF_COMMON_H
+#define LF_COMMON_H
+
+#ifndef LF_HEADERONLY
+#include "config.h"
+#endif
+
+#include <stdbool.h>
+#include <stddef.h>
+
+
+/** @brief Key-value pair stored in the hashmap, entry. */
+struct lf(entry) {
+	/** Key, the unique identifier pointing to the value. */
+	const void *key;
+
+	/** Length of the key. */
+	size_t keylen;
+
+	/** The value assigned to the key by the user. */
+	void *value;
+};
+
+
+static inline bool lf(entry_is_valid)(struct lf(entry) entry)
+{
+	return entry.key != NULL;
+}
+
+
+#endif
+/**
  * @file stack.h
  * @brief Basic stack.
  *
@@ -67,7 +103,7 @@
 #define LF_STACK_H
 
 #ifndef LF_HEADERONLY
-#include "config.h"
+#include "common.h"
 #endif
 
 #include <stddef.h>
@@ -96,20 +132,20 @@ int lf(stack_init)(struct lf(stack) *stack, size_t item_size) lfi_wur;
 
 /** @brief Identical to stack_init(), but raises an error if memory allocation
  * fails. */
-void lf(stack_xinit)(struct lf(stack) *map, size_t value_size);
+void lf(stack_xinit)(struct lf(stack) *stack, size_t value_size);
 
 /** @brief Clears the memory allocated by the stack. */
 void lf(stack_destroy)(struct lf(stack) *stack);
 
 /** @brief Removes and returns the top element from the stack. */
-void *lf(stack_pop)(struct lf(stack) *stack);
+const void *lf(stack_pop)(struct lf(stack) *stack);
 
 /** @brief Pushes an element to the top of the stack. */
-int lf(stack_push)(struct lf(stack) *stack, void *item) lfi_wur;
+void *lf(stack_push)(struct lf(stack) *stack, const void *item) lfi_wur;
 
 /** @brief Identical to stack_push(), but raises an error if memory allocation
  * fails. */
-void lf(stack_xpush)(struct lf(stack) *stack, void *item);
+void lf(stack_xpush)(struct lf(stack) *stack, const void *item);
 
 /** @brief Returns the top element of the stack. */
 void *lf(stack_top)(struct lf(stack) *stack);
@@ -135,17 +171,16 @@ size_t lf(stack_len)(const struct lf(stack) *stack);
 #define LF_HASHMAP_H
 
 #ifndef LF_HEADERONLY
-#include "config.h"
+#include "common.h"
 #endif
 
-#include <assert.h>
 #include <stddef.h>
 
 
 /** @brief hashmap. */
 struct lf(hashmap) {
 	/** @cond */
-	struct lf(hashmap_entry) *entries;
+	struct lfi(hashmap_entry) *entries;
 	size_t cap;
 	size_t used;
 	size_t value_size;
@@ -160,15 +195,13 @@ struct lf(hashmap_it) {
 	/** @endcond */
 };
 
-/** @brief Key-value pair stored in the hashmap, entry. */
-struct lf(hashmap_entry) {
-	/** Key, the unique identifier pointing to the value. */
+/** @cond */
+struct lfi(hashmap_entry) {
 	const void *key;
-	/** Length of the data stored in the key. */
 	size_t keylen;
-	/** The value assigned to the key by the user. */
 	char value[];
 };
+/** @endcond */
 
 
 /**
@@ -208,12 +241,12 @@ void *lf(hashmap_get2)(struct lf(hashmap) *hashmap,
  *
  * @warning The `key` must not already exist in the hashmap.
  *
- * The `key` parameter must be null-terminated. Returns non-zero if the memory
+ * The `key` parameter must be null-terminated. Returns `NULL` if a memory
  * allocation failure occurs.
  */
-int lf(hashmap_insert)(struct lf(hashmap) *hashmap,
-		       const void *key,
-		       const void *value) lfi_wur;
+void *lf(hashmap_insert)(struct lf(hashmap) *hashmap,
+			 const void *key,
+			 const void *value) lfi_wur;
 
 /** @brief Identical to hashmap_insert(), but raises an error if memory
  * allocation fails. */
@@ -223,10 +256,10 @@ void lf(hashmap_xinsert)(struct lf(hashmap) *hashmap,
 
 /** @brief Identical to hashmap_insert(), but accepts a non-null-terminated
  * key. */
-int lf(hashmap_insert2)(struct lf(hashmap) *hashmap,
-			const void *key,
-			size_t keylen,
-			const void *value) lfi_wur;
+void *lf(hashmap_insert2)(struct lf(hashmap) *hashmap,
+			  const void *key,
+			  size_t keylen,
+			  const void *value) lfi_wur;
 
 /** @brief Identical to hashmap_insert2(), but raises an error if memory
  * allocation fails. */
@@ -262,7 +295,7 @@ void lf(hashmap_iter)(struct lf(hashmap) *hashmap, struct lf(hashmap_it) *it);
  *
  * If all entries have been retrieved, it returns `NULL`.
  */
-struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
+struct lf(entry) lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
 
 
 #endif
@@ -277,7 +310,7 @@ struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
 #define LF_MAP_H
 
 #ifndef LF_HEADERONLY
-#include "config.h"
+#include "common.h"
 #endif
 
 #include <stddef.h>
@@ -302,16 +335,6 @@ struct lf(map_it) {
 	struct lf(map) *m;
 	struct lfi(map_node) *n;
 	/** @endcond */
-};
-
-/** @brief Map entry. */
-struct lf(map_entry) {
-	/** Key, the unique identifier pointing to the value. */
-	const void *key;
-	/** Length of the data stored in the key. */
-	size_t keylen;
-	/** The value assigned to the key by the user. */
-	const void *value;
 };
 
 /** @cond */
@@ -382,19 +405,19 @@ void *lf(map_get2)(struct lf(map) *map, const void *key, size_t keylen);
  *
  * @warning The key must not already exist in the map.
  */
-int lf(map_insert)(struct lf(map) *map,
-		   const void *key,
-		   const void *value) lfi_wur;
+void *lf(map_insert)(struct lf(map) *map,
+		     const void *key,
+		     const void *value) lfi_wur;
 
 /** @brief Identical to map_insert(), but raises an error if memory allocation
  * fails. */
 void lf(map_xinsert)(struct lf(map) *map, const void *key, const void *value);
 
 /** @brief Identical to map_insert(), but accepts a non-null-terminated key. */
-int lf(map_insert2)(struct lf(map) *map,
-		    const void *key,
-		    size_t keylen,
-		    const void *value);
+void *lf(map_insert2)(struct lf(map) *map,
+		      const void *key,
+		      size_t keylen,
+		      const void *value);
 
 /** @brief Identical to map_insert2(), but raises an error if memory allocation
  * fails. */
@@ -410,10 +433,10 @@ void lf(map_xinsert2)(struct lf(map) *map,
  * valid until the next remove operation. The user must copy the underlying
  * data if they wish to retain it.
  */
-void *lf(map_remove)(struct lf(map) *map, const void *key);
+const void *lf(map_remove)(struct lf(map) *map, const void *key);
 
 /** @brief Identical to map_remove(), but accepts a non-null-terminated key. */
-void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
+const void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
 
 /**
  * @brief Retrieves the map entry at a specific sorted index.
@@ -421,7 +444,7 @@ void *lf(map_remove2)(struct lf(map) *map, const void *key, size_t keylen);
  * Raises an error if the index is larger than map size. The entry may be
  * invalidated after a remove operation.
  */
-struct lf(map_entry) lf(map_select)(struct lf(map) *map, ptrdiff_t index);
+struct lf(entry) lf(map_select)(struct lf(map) *map, ptrdiff_t index);
 
 /**
  * @brief Determines the 0-based index of a specific key in the sorted map.
@@ -462,7 +485,7 @@ void lf(map_iter_from)(struct lf(map) *map,
  * Returns entries in ascending key order. When all entries have been
  * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
  */
-struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);
+struct lf(entry) lf(map_iter_next)(struct lf(map_it) *it);
 
 /**
  * @brief Retrieves the next entry from a reverse iteration handle.
@@ -470,15 +493,15 @@ struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it);
  * Returns entries in descending key order. When all entries have been
  * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
  */
-struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it);
+struct lf(entry) lf(map_iter_prev)(struct lf(map_it) *it);
 
 
 #endif
 #ifdef LF_IMPLEMENTATION
-#include <stddef.h>
-#ifndef LF_COMMON_H
+#ifndef LF_UTIL_H
 
 #ifndef LF_HEADERONLY
+#include "../include/common.h"
 #include "../include/config.h"
 #endif
 
@@ -536,10 +559,12 @@ inline lfi_fdecl(size_t, circular_index)(ptrdiff_t index, size_t size)
 	return index;
 }
 
+#define lfi_sentinel_entry ((struct lf(entry)) { .key = NULL, })
+
 
 #endif
 #ifndef LF_HEADERONLY
-#include "common.h"
+#include "util.h"
 #include "../include/config.h"
 #include "../include/hashmap.h"
 #endif
@@ -554,8 +579,8 @@ inline lfi_fdecl(size_t, circular_index)(ptrdiff_t index, size_t size)
 #define LF_HASHMAP_TOMBSTONE SIZE_MAX
 
 #define lf_hashmap_entry_at(entries, i) \
-	((struct lf(hashmap_entry) *) &((char *) entries) \
-	 [i * (sizeof(struct lf(hashmap_entry)) + m->value_size)])
+	((struct lfi(hashmap_entry) *) &((char *) entries) \
+	 [i * (sizeof(struct lfi(hashmap_entry)) + m->value_size)])
 
 
 /* https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function */
@@ -563,17 +588,17 @@ lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *, size_t);
 
 /* Normally, insert copies the key. But for rehashing, this function is
  * used. */
-lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *,
-				       const void *,
-				       size_t, const void *);
+lfi_fdecl(void *, hashmap_insert2_nocopy)(struct lf(hashmap) *,
+					  const void *,
+					  size_t, const void *);
 
 /* Rehash the hashmap to a bigger hash bucket. */
 lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *, size_t);
 
 /* Get an entry, key-value pair. */
-lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *,
-							  const void *,
-							  size_t);
+lfi_fdecl(struct lfi(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *,
+							   const void *,
+							   size_t);
 
 
 lfi_fdecl(uint64_t, hashmap_fnv_hash)(const char *key, size_t keylen)
@@ -599,7 +624,7 @@ int lf(hashmap_init)(struct lf(hashmap) *m, size_t value_size)
 			sizeof(size_t);
 
 	m->entries = calloc(LF_HASHMAP_INITIAL_CAP,
-			    m->value_size + sizeof(struct lf(hashmap_entry)));
+			    m->value_size + sizeof(struct lfi(hashmap_entry)));
 
 	return m->entries == NULL ? 1 : 0;
 
@@ -608,7 +633,7 @@ int lf(hashmap_init)(struct lf(hashmap) *m, size_t value_size)
 void lf(hashmap_destroy)(struct lf(hashmap) *m)
 {
 	for (size_t i = 0; i < m->cap; i++) {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			free((void *) e->key);
@@ -624,7 +649,7 @@ void *lf(hashmap_get)(struct lf(hashmap) *m, const void *key)
 
 void *lf(hashmap_get2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 {
-	struct lf(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
+	struct lfi(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
 	return e ? e->value : NULL;
 }
@@ -636,7 +661,7 @@ void *lf(hashmap_remove)(struct lf(hashmap) *m, const void *key)
 
 void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 {
-	struct lf(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
+	struct lfi(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
 	if (e) {
 		e->keylen = LF_HASHMAP_TOMBSTONE;
@@ -649,20 +674,20 @@ void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 	}
 }
 
-int lf(hashmap_insert)(struct lf(hashmap) *m, const void *key, const void *value)
+void *lf(hashmap_insert)(struct lf(hashmap) *m, const void *key, const void *value)
 {
 	return lf(hashmap_insert2)(m, key, strlen(key), value);
 }
 
-int lf(hashmap_insert2)(struct lf(hashmap) *m,
-			const void *key,
-			size_t keylen,
-			const void *value)
+void *lf(hashmap_insert2)(struct lf(hashmap) *m,
+			  const void *key,
+			  size_t keylen,
+			  const void *value)
 {
 	void *new_key = malloc(keylen);
 
 	if (new_key == NULL)
-		return 1;
+		return NULL;
 
 	memcpy(new_key, key, keylen);
 
@@ -675,21 +700,25 @@ void lf(hashmap_iter)(struct lf(hashmap) *m, struct lf(hashmap_it) *it)
 	it->i = 0;
 }
 
-struct lf(hashmap_entry) *lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
+struct lf(entry) lf(hashmap_iter_next)(struct lf(hashmap_it) *it)
 {
 	struct lf(hashmap) *m = it->m;
 
 	while (it->i != m->cap) {
-		struct lf(hashmap_entry) *e =
+		struct lfi(hashmap_entry) *e =
 			lf_hashmap_entry_at(m->entries, it->i);
 
 		it->i++;
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
-			return e;
+			return (struct lf(entry)) {
+				.key = e->key,
+				.keylen = e->keylen,
+				.value = e->value
+			};
 	}
 
-	return NULL;
+	return lfi_sentinel_entry;
 }
 
 void lf(hashmap_xinit)(struct lf(hashmap) *m, size_t value_size)
@@ -701,7 +730,7 @@ void lf(hashmap_xinsert)(struct lf(hashmap) *m,
 			 const void *key,
 			 const void *value)
 {
-	lf_unwrap(lf(hashmap_insert)(m, key, value));
+	lf_assert(lf(hashmap_insert)(m, key, value),);
 }
 
 void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
@@ -709,19 +738,19 @@ void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
 			  size_t keylen,
 			  const void *value)
 {
-	lf_unwrap(lf(hashmap_insert2)(m, key, keylen, value));
+	lf_assert(lf(hashmap_insert2)(m, key, keylen, value),);
 }
 
-lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
-							  const void *key,
-							  size_t keylen)
+lfi_fdecl(struct lfi(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
+							   const void *key,
+							   size_t keylen)
 {
 	uint64_t hash = lfi(hashmap_fnv_hash)(key, keylen);
 	size_t start_i = hash % m->cap;
 	size_t i = start_i;
 
 	do {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
 		if (e->keylen == 0)
 			return NULL;
@@ -739,17 +768,17 @@ lfi_fdecl(struct lf(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
 
 lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t old_cap)
 {
-	struct lf(hashmap_entry) *old_entries = m->entries;
+	struct lfi(hashmap_entry) *old_entries = m->entries;
 
 	m->used = 0;
 	m->entries = calloc(m->cap,
-			    m->value_size + sizeof(struct lf(hashmap_entry)));
+			    m->value_size + sizeof(struct lfi(hashmap_entry)));
 
 	if (m->entries == NULL)
 		return 1;
 
 	for (size_t i = 0; i < old_cap; i++) {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(old_entries, i);
 
 		if (e->keylen != LF_HASHMAP_TOMBSTONE && e->keylen != 0)
 			lfi(hashmap_insert2_nocopy)(m, e->key, e->keylen, e->value);
@@ -760,10 +789,10 @@ lfi_fdecl(int, hashmap_rehash)(struct lf(hashmap) *m, size_t old_cap)
 	return 0;
 }
 
-lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
-				       const void *key,
-				       size_t keylen,
-				       const void *value)
+lfi_fdecl(void *, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
+					  const void *key,
+					  size_t keylen,
+					  const void *value)
 {
 	if (m->cap * 3 < m->used * 4) {
 		size_t old_cap = m->cap;
@@ -771,7 +800,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 		m->cap *= 2;
 
 		if (lfi(hashmap_rehash)(m, old_cap))
-			return 1;
+			return NULL;
 	}
 
 	lf_assert(!lf(hashmap_get2)(m, key, keylen),
@@ -782,7 +811,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 	size_t i = start_i;
 
 	do {
-		struct lf(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
+		struct lfi(hashmap_entry) *e = lf_hashmap_entry_at(m->entries, i);
 
 		if (e->keylen == 0 || e->keylen == LF_HASHMAP_TOMBSTONE) {
 			e->keylen = keylen;
@@ -793,7 +822,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 
 			m->used++;
 
-			return 0;
+			return e->value;
 		} else {
 			i++;
 		}
@@ -804,7 +833,7 @@ lfi_fdecl(int, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 	lf_unreachable;  // GCOVR_EXCL_LINE: unreachable
 }
 #ifndef LF_HEADERONLY
-#include "common.h"
+#include "util.h"
 #include "../include/map.h"
 #endif
 
@@ -1175,16 +1204,12 @@ lfi_fdecl(struct lfi(map_node) *, map_predecessor)(struct lfi(map_node) *n)
 }
 
 /* Constructs a map_entry from a node, or the exhaustion sentinel if NULL. */
-lfi_fdecl(struct lf(map_entry), map_entry_of)(struct lfi(map_node) *n)
+lfi_fdecl(struct lf(entry), map_entry_of)(struct lfi(map_node) *n)
 {
 	if (n == NULL)
-		return (struct lf(map_entry)) {
-			.key = NULL,
-			.keylen = 0,
-			.value = NULL
-		};
+		return lfi_sentinel_entry;
 
-	return (struct lf(map_entry)) {
+	return (struct lf(entry)) {
 		.key = n->kv,
 		.keylen = n->keylen,
 		.value = lf_map_node_value(n),
@@ -1235,33 +1260,33 @@ void *lf(map_get2)(struct lf(map) *m, const void *key, size_t keylen)
 	return n != NULL ? lf_map_node_value(n) : NULL;
 }
 
-int lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
+void *lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
 {
 	return lf(map_insert2)(m, key, strlen(key), value);
 }
 
 void lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
 {
-	lf_unwrap(lf(map_insert)(m, key, value));
+	lf_assert(lf(map_insert)(m, key, value),);
 }
 
-int lf(map_insert2)(struct lf(map) *m,
-		    const void *key,
-		    size_t keylen,
-		    const void *value)
+void *lf(map_insert2)(struct lf(map) *m,
+		      const void *key,
+		      size_t keylen,
+		      const void *value)
 {
 	struct lfi(map_node) *n =
 		lfi(map_new_node)(key, keylen, value, m->value_size);
 
 	if (n == NULL)
-		return 1;
+		return NULL;
 
 	if (m->root == NULL) {
 		m->root = n;
 	} else {
-		struct lfi(map_node) *p;
 		struct lfi(map_node) *cur = m->root;
 
+		struct lfi(map_node) *p;
 		int cmp = 0;
 
 		while (cur != NULL) {
@@ -1288,7 +1313,7 @@ int lf(map_insert2)(struct lf(map) *m,
 
 	lfi(map_insert_fixup)(m, n);
 
-	return 0;
+	return lf_map_node_value(n);
 }
 
 void lf(map_xinsert2)(struct lf(map) *m,
@@ -1296,15 +1321,15 @@ void lf(map_xinsert2)(struct lf(map) *m,
 		      size_t keylen,
 		      const void *value)
 {
-	lf_unwrap(lf(map_insert2)(m, key, keylen, value));
+	lf_assert(lf(map_insert2)(m, key, keylen, value),);
 }
 
-void *lf(map_remove)(struct lf(map) *m, const void *key)
+const void *lf(map_remove)(struct lf(map) *m, const void *key)
 {
 	return lf(map_remove2)(m, key, strlen(key));
 }
 
-void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
+const void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 {
 	struct lfi(map_node) *z = lfi(map_get2_node)(m, key, keylen);
 
@@ -1373,7 +1398,7 @@ void *lf(map_remove2)(struct lf(map) *m, const void *key, size_t keylen)
 	return m->hold_value;
 }
 
-struct lf(map_entry) lf(map_select)(struct lf(map) *m, ptrdiff_t i)
+struct lf(entry) lf(map_select)(struct lf(map) *m, ptrdiff_t i)
 {
 	return lfi(map_entry_of)(lfi(map_select_node)(m, i));
 }
@@ -1426,7 +1451,7 @@ void lf(map_iter_from)(struct lf(map) *m,
 	it->n = lfi(map_select_node)(m, i);
 }
 
-struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)
+struct lf(entry) lf(map_iter_next)(struct lf(map_it) *it)
 {
 	struct lfi(map_node) *cur = it->n;
 
@@ -1436,7 +1461,7 @@ struct lf(map_entry) lf(map_iter_next)(struct lf(map_it) *it)
 	return lfi(map_entry_of)(cur);
 }
 
-struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it)
+struct lf(entry) lf(map_iter_prev)(struct lf(map_it) *it)
 {
 	struct lfi(map_node) *cur = it->n;
 
@@ -1445,13 +1470,13 @@ struct lf(map_entry) lf(map_iter_prev)(struct lf(map_it) *it)
 
 	return lfi(map_entry_of)(cur);
 }
-#include <stddef.h>
 #ifndef LF_HEADERONLY
-#include "common.h"
+#include "util.h"
 #include "../include/config.h"
 #include "../include/stack.h"
 #endif
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -1476,7 +1501,7 @@ void lf(stack_destroy)(struct lf(stack) *s)
 	free(s->data);
 }
 
-void *lf(stack_pop)(struct lf(stack) *s)
+const void *lf(stack_pop)(struct lf(stack) *s)
 {
 	lf_assert(s->len, "stack underflow");
 
@@ -1487,7 +1512,7 @@ void *lf(stack_pop)(struct lf(stack) *s)
 	return item;
 }
 
-int lf(stack_push)(struct lf(stack) *s, void *item)
+void *lf(stack_push)(struct lf(stack) *s, const void *item)
 {
 	if (s->len == s->cap) {
 		s->cap *= 2;
@@ -1496,20 +1521,21 @@ int lf(stack_push)(struct lf(stack) *s, void *item)
 					s->cap * s->item_size);
 
 		if (s->data == NULL)
-			return 1;
+			return NULL;
 	}
 
-	memcpy(&s->data[s->len * s->item_size],
+	void *item_on_stack = &s->data[s->len * s->item_size];
+	memcpy(item_on_stack,
 	       item, s->item_size);
 
 	s->len++;
 
-	return 0;
+	return item_on_stack;
 }
 
-void lf(stack_xpush)(struct lf(stack) *s, void *item)
+void lf(stack_xpush)(struct lf(stack) *s, const void *item)
 {
-	lf_unwrap(lf(stack_push)(s, item));
+	lf_assert(lf(stack_push)(s, item),);
 }
 
 void *lf(stack_top)(struct lf(stack) *s)
