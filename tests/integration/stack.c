@@ -28,6 +28,10 @@ int main(void)
 		for (int i = limit; i > 0; i--) {
 			assert(*(int *) lf(stack_top)(&s) == i - 1);
 			assert(*(int *) lf(stack_pop)(&s) == i - 1);
+
+			int *item = lf(stack_xpush)(&s, NULL);
+			*item = i;
+			assert(*(int *) lf(stack_pop)(&s) == i);
 		}
 
 		lf(stack_destroy)(&s);

@@ -40,9 +40,9 @@ int main(void)
 					for (int j = 0; j < 10; j++) {
 						str[1] = '0';
 						for (int k = 0; k < 10; k++) {
-							int d = strtod(str, NULL);
+							int *val = lf(map_xinsert)(&m, str, NULL);
 
-							lf(map_xinsert)(&m, str, &d);
+							*val = strtod(str, NULL);
 							str[1]++;
 						}
 						str[0]++;

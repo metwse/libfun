@@ -27,6 +27,7 @@ struct lf(entry) {
 };
 
 
+/** @brief Returns false if the entry is sentinel or invalid. */
 static inline bool lf(entry_is_valid)(struct lf(entry) entry)
 {
 	return entry.key != NULL;

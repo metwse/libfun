@@ -45,25 +45,32 @@ void *lf(stack_push)(struct lf(stack) *s, const void *item)
 	if (s->len == s->cap) {
 		s->cap *= 2;
 
-		s->data = realloc(s->data,
-					s->cap * s->item_size);
+		void *new_data = realloc(s->data, s->cap * s->item_size);
 
-		if (s->data == NULL)
+		if (new_data == NULL)
 			return NULL;
+		else
+			s->data = new_data;
+
 	}
 
 	void *item_on_stack = &s->data[s->len * s->item_size];
-	memcpy(item_on_stack,
-	       item, s->item_size);
+
+	if (item != NULL)
+		memcpy(item_on_stack, item, s->item_size);
 
 	s->len++;
 
 	return item_on_stack;
 }
 
-void lf(stack_xpush)(struct lf(stack) *s, const void *item)
+void *lf(stack_xpush)(struct lf(stack) *s, const void *item)
 {
-	lf_assert(lf(stack_push)(s, item),);
+	void *push_res = lf(stack_push)(s, item);
+
+	lf_assert(push_res != NULL, "insert returned NULL");
+
+	return push_res;
 }
 
 void *lf(stack_top)(struct lf(stack) *s)

@@ -110,7 +110,7 @@ void *lf(map_insert)(struct lf(map) *map,
 
 /** @brief Identical to map_insert(), but raises an error if memory allocation
  * fails. */
-void lf(map_xinsert)(struct lf(map) *map, const void *key, const void *value);
+void *lf(map_xinsert)(struct lf(map) *map, const void *key, const void *value);
 
 /** @brief Identical to map_insert(), but accepts a non-null-terminated key. */
 void *lf(map_insert2)(struct lf(map) *map,
@@ -120,7 +120,7 @@ void *lf(map_insert2)(struct lf(map) *map,
 
 /** @brief Identical to map_insert2(), but raises an error if memory allocation
  * fails. */
-void lf(map_xinsert2)(struct lf(map) *map,
+void *lf(map_xinsert2)(struct lf(map) *map,
 		      const void *key,
 		      size_t keylen,
 		      const void *value);
@@ -179,19 +179,17 @@ void lf(map_iter_from)(struct lf(map) *map,
 		       ptrdiff_t index);
 
 /**
- * @brief Retrieves the next entry from a forward iteration handle.
+ * @brief Retrieves the next entry from an iteration handle.
  *
  * Returns entries in ascending key order. When all entries have been
- * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
+ * retrieved, returns a sentinel entry. Use entry_is_valid() to check wheter
+ * or not the entry is sentinel.
+ *
+ * @see common.h
  */
 struct lf(entry) lf(map_iter_next)(struct lf(map_it) *it);
 
-/**
- * @brief Retrieves the next entry from a reverse iteration handle.
- *
- * Returns entries in descending key order. When all entries have been
- * retrieved, returns a sentinel entry with `.key == NULL` and `.keylen == 0`.
- */
+/** @brief Identical to map_iter_next, but in reverse direction. */
 struct lf(entry) lf(map_iter_prev)(struct lf(map_it) *it);
 
 

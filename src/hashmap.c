@@ -89,12 +89,14 @@ void *lf(hashmap_get2)(struct lf(hashmap) *m, const void *key, size_t keylen)
 	return e ? e->value : NULL;
 }
 
-void *lf(hashmap_remove)(struct lf(hashmap) *m, const void *key)
+const void *lf(hashmap_remove)(struct lf(hashmap) *m, const void *key)
 {
 	return lf(hashmap_remove2)(m, key, strlen(key));
 }
 
-void *lf(hashmap_remove2)(struct lf(hashmap) *m, const void *key, size_t keylen)
+const void *lf(hashmap_remove2)(struct lf(hashmap) *m,
+				const void *key,
+				size_t keylen)
 {
 	struct lfi(hashmap_entry) *e = lfi(hashmap_get2_entry)(m, key, keylen);
 
@@ -126,7 +128,12 @@ void *lf(hashmap_insert2)(struct lf(hashmap) *m,
 
 	memcpy(new_key, key, keylen);
 
-	return lfi(hashmap_insert2_nocopy)(m, new_key, keylen, value);
+	void *insert_res = lfi(hashmap_insert2_nocopy)(m, new_key, keylen, value);
+
+	if (insert_res == NULL)
+		free(new_key);
+
+	return insert_res;
 }
 
 void lf(hashmap_iter)(struct lf(hashmap) *m, struct lf(hashmap_it) *it)
@@ -161,19 +168,27 @@ void lf(hashmap_xinit)(struct lf(hashmap) *m, size_t value_size)
 	lf_unwrap(lf(hashmap_init)(m, value_size));
 }
 
-void lf(hashmap_xinsert)(struct lf(hashmap) *m,
-			 const void *key,
-			 const void *value)
-{
-	lf_assert(lf(hashmap_insert)(m, key, value),);
-}
-
-void lf(hashmap_xinsert2)(struct lf(hashmap) *m,
+void *lf(hashmap_xinsert)(struct lf(hashmap) *m,
 			  const void *key,
-			  size_t keylen,
 			  const void *value)
 {
-	lf_assert(lf(hashmap_insert2)(m, key, keylen, value),);
+	void *insert_res = lf(hashmap_insert)(m, key, value);
+
+	lf_assert(insert_res != NULL, "insert returned NULL");
+
+	return insert_res;
+}
+
+void *lf(hashmap_xinsert2)(struct lf(hashmap) *m,
+			   const void *key,
+			   size_t keylen,
+			   const void *value)
+{
+	void *insert_res = lf(hashmap_insert2)(m, key, keylen, value);
+
+	lf_assert(insert_res != NULL, "insert returned NULL");
+
+	return insert_res;
 }
 
 lfi_fdecl(struct lfi(hashmap_entry) *, hashmap_get2_entry)(struct lf(hashmap) *m,
@@ -252,7 +267,7 @@ lfi_fdecl(void *, hashmap_insert2_nocopy)(struct lf(hashmap) *m,
 			e->keylen = keylen;
 			e->key = key;
 
-			if (m->value_size)
+			if (m->value_size && value != NULL)
 				memcpy(e->value, value, m->value_size);
 
 			m->used++;

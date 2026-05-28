@@ -44,7 +44,7 @@ lfi_fdecl(struct lfi(map_node) *, map_new_node)(const void *key,
 	n->size = 1;
 	n->color = 1;
 
-	if (value_size > 0)
+	if (value_size > 0 && value != NULL)
 		memcpy(lf_map_node_value(n), value, value_size);
 
 	return n;
@@ -431,9 +431,13 @@ void *lf(map_insert)(struct lf(map) *m, const void *key, const void *value)
 	return lf(map_insert2)(m, key, strlen(key), value);
 }
 
-void lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
+void *lf(map_xinsert)(struct lf(map) *m, const void *key, const void *value)
 {
-	lf_assert(lf(map_insert)(m, key, value),);
+	void *insert_res = lf(map_insert)(m, key, value);
+
+	lf_assert(insert_res != NULL, "insert returned NULL");
+
+	return insert_res;
 }
 
 void *lf(map_insert2)(struct lf(map) *m,
@@ -482,12 +486,16 @@ void *lf(map_insert2)(struct lf(map) *m,
 	return lf_map_node_value(n);
 }
 
-void lf(map_xinsert2)(struct lf(map) *m,
-		      const void *key,
-		      size_t keylen,
-		      const void *value)
+void *lf(map_xinsert2)(struct lf(map) *m,
+		       const void *key,
+		       size_t keylen,
+		       const void *value)
 {
-	lf_assert(lf(map_insert2)(m, key, keylen, value),);
+	void *insert_res = lf(map_insert2)(m, key, keylen, value);
+
+	lf_assert(insert_res != NULL, "insert returned NULL");
+
+	return insert_res;
 }
 
 const void *lf(map_remove)(struct lf(map) *m, const void *key)

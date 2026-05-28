@@ -90,9 +90,9 @@ void *lf(hashmap_insert)(struct lf(hashmap) *hashmap,
 
 /** @brief Identical to hashmap_insert(), but raises an error if memory
  * allocation fails. */
-void lf(hashmap_xinsert)(struct lf(hashmap) *hashmap,
-			 const void *key,
-			 const void *value);
+void *lf(hashmap_xinsert)(struct lf(hashmap) *hashmap,
+			  const void *key,
+			  const void *value);
 
 /** @brief Identical to hashmap_insert(), but accepts a non-null-terminated
  * key. */
@@ -103,10 +103,10 @@ void *lf(hashmap_insert2)(struct lf(hashmap) *hashmap,
 
 /** @brief Identical to hashmap_insert2(), but raises an error if memory
  * allocation fails. */
-void lf(hashmap_xinsert2)(struct lf(hashmap) *hashmap,
-			  const void *key,
-			  size_t keylen,
-			  const void *value);
+void *lf(hashmap_xinsert2)(struct lf(hashmap) *hashmap,
+			   const void *key,
+			   size_t keylen,
+			   const void *value);
 
 /**
  * @brief Removes the key-value pair from the hashmap, returns a pointer to the
@@ -118,13 +118,13 @@ void lf(hashmap_xinsert2)(struct lf(hashmap) *hashmap,
  *
  * The `key` parameter must be `null-terminated`.
  */
-void *lf(hashmap_remove)(struct lf(hashmap) *hashmap, const void *key);
+const void *lf(hashmap_remove)(struct lf(hashmap) *hashmap, const void *key);
 
 /** @brief Identical to hashmap_remove(), but accepts a non-null-terminated
  * key. */
-void *lf(hashmap_remove2)(struct lf(hashmap) *hashmap,
-			  const void *key,
-			  size_t keylen);
+const void *lf(hashmap_remove2)(struct lf(hashmap) *hashmap,
+				const void *key,
+				size_t keylen);
 
 /** @brief Creates an iteration handle to retrieve the entries in the hashmap
  * one by one. */
@@ -133,7 +133,10 @@ void lf(hashmap_iter)(struct lf(hashmap) *hashmap, struct lf(hashmap_it) *it);
 /**
  * @brief Retrieves the next entry from the iteration handle.
  *
- * If all entries have been retrieved, it returns `NULL`.
+ * If all entries have been retrieved, it returns a sentinel entry. Use
+ * entry_is_valid() to check wheter or not the returned entry is sentinel.
+ *
+ * @see common.h
  */
 struct lf(entry) lf(hashmap_iter_next)(struct lf(hashmap_it) *it);
 

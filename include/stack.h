@@ -60,7 +60,7 @@ void *lf(stack_push)(struct lf(stack) *stack, const void *item) lfi_wur;
 
 /** @brief Identical to stack_push(), but raises an error if memory allocation
  * fails. */
-void lf(stack_xpush)(struct lf(stack) *stack, const void *item);
+void *lf(stack_xpush)(struct lf(stack) *stack, const void *item);
 
 /** @brief Returns the top element of the stack. */
 void *lf(stack_top)(struct lf(stack) *stack);

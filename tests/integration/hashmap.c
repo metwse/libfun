@@ -79,8 +79,12 @@ int main(void)
 
 		int limit3 = limit2 % ((rand() % 1024) + 4);
 		// now insert size_t keyed elements
-		for (size_t i = 0; i < (size_t) limit3; i += 4)
-			lf(hashmap_xinsert2)(&m, &i, sizeof(size_t), &i);
+		for (size_t i = 0; i < (size_t) limit3; i += 4) {
+			void *val = lf(hashmap_xinsert2)(&m, &i, sizeof(size_t), NULL);
+
+			if (elem_size)
+				memcpy(val, &i, elem_size);
+		}
 
 		// check size_t keyed elements
 		size_t inserted_size = sizeof(size_t);
