@@ -17,16 +17,16 @@ jobs:
     - name: Generate the Header-Only Library
       run: make headeronly LIBFUN_H=/tmp/libfun.h
 
-    - name: Deploy to the headeronly Branch
+    - name: Deploy to the autogen/headeronly Branch
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-        if git ls-remote --heads origin headeronly | grep -q 'refs/heads/headeronly'; then
-          git fetch origin headeronly
-          git checkout headeronly
+        if git ls-remote --heads origin autogen/headeronly | grep -q 'refs/heads/autogen/headeronly'; then
+          git fetch origin autogen/headeronly
+          git checkout autogen/headeronly
         else
-          git checkout --orphan headeronly
+          git checkout --orphan autogen/headeronly
           git rm -rf .
         fi
 
@@ -35,5 +35,5 @@ jobs:
 
         if ! git diff --staged --quiet; then
           git commit -m 'auto-update header-only library'
-          git push origin headeronly
+          git push origin autogen/headeronly
         fi
