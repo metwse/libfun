@@ -8,7 +8,8 @@ OBJ_DIR = $(DIST_DIR)/obj
 
 # No need to change rules below this line.
 
-CFLAGS = -std=c11 -Wall -Wextra -pedantic -O0 -g3 --coverage -DLIBFUN_PREFIX=$(LIBFUN_PREFIX)
+CFLAGS = -std=c11 -Wall -Wextra -pedantic -O0 -g3 --coverage \
+	 -DLIBFUN_PREFIX=$(LIBFUN_PREFIX) -DLIBFUN_ASSERTIONS
 
 INTEGRATION_SRCS = $(wildcard $(INTEGRATION_DIR)/*.c)
 

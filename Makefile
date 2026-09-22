@@ -12,8 +12,6 @@ include libfun.mk
 
 _default: $(LIBFUN) $(LIBFUN_SO)
 
-headeronly: $(LIBFUN_H)
-
 clean:
 	$(RM) $(libfun_DIST_DIR) docs-autogen
 

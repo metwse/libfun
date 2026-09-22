@@ -21,8 +21,8 @@
 #ifndef LFI_DOXYGEN
 
 /** @cond */
-#ifndef LF_HASHMAP_H
-#define LF_HASHMAP_H
+#ifndef LF_STACK_H
+#define LF_STACK_H
 
 #include "priv/detail.h"
 #include "priv/template.h"
@@ -30,20 +30,21 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#define LFI_HASHMAP_INITIAL_CAP 64
+#define LFI_STACK_INITIAL_CAP 64
 
-#endif  // LF_HASHMAP_H
+#endif  // LF_STACK_H
 
 #ifndef T
 #define T int, int
 #endif
 
 #define lfi_ctype stack
-#define lfi_key lfi_arg1(T)
 #define lfi_name lfi_arg2(T)
 #define lfi_flags lfi_arg3(T, 0, 0)
 
 #include "priv/linkage.h"
+
+#define lfi_key lfi_arg1(T)
 
 /** @endcond */
 #else  // LFI LFI_DOXYGEN
@@ -69,10 +70,10 @@ lfi_self {
  * occurs. */
 lfi_wur static inline int lfi_memb(init)(lfi_self *s)
 {
-	s->lfi(cap) = LFI_HASHMAP_INITIAL_CAP;
+	s->lfi(cap) = LFI_STACK_INITIAL_CAP;
 	s->lfi(len) = 0;
 	s->lfi(data) =
-		(lfi_key *) malloc(sizeof(lfi_key) * LFI_HASHMAP_INITIAL_CAP);
+		(lfi_key *) malloc(sizeof(lfi_key) * LFI_STACK_INITIAL_CAP);
 
 	return s->lfi(data) == NULL ? 1 : 0;
 }
@@ -91,7 +92,7 @@ static inline void lfi_memb(destroy)(lfi_self *s)
 }
 
 /** @brief Removes and returns the top element from the stack. */
-static inline const lfi_key *lfi_memb(pop)(lfi_self *s)
+static inline lfi_key const *lfi_memb(pop)(lfi_self *s)
 {
 	lfi_debug_assertion(s->lfi(len) > 0, "stack underflow");
 
@@ -100,7 +101,7 @@ static inline const lfi_key *lfi_memb(pop)(lfi_self *s)
 
 /** @brief Pushes an element to the top of the stack. */
 lfi_wur static inline lfi_key *lfi_memb(push)(lfi_self *s,
-					       const lfi_key *item)
+					       lfi_key const *item)
 {
 	if (s->lfi(len) == s->lfi(cap)) {
 		s->lfi(cap) *= 2;
@@ -124,7 +125,7 @@ lfi_wur static inline lfi_key *lfi_memb(push)(lfi_self *s,
 /** @brief Identical to stack_push(), but raises an error if memory allocation
  * fails. */
 static inline lfi_key *lfi_memb(xpush)(lfi_self *s,
-					const lfi_key *item)
+					lfi_key const *item)
 {
 	lfi_key *item_on_stack = lfi_memb(push)(s, item);
 
@@ -134,51 +135,52 @@ static inline lfi_key *lfi_memb(xpush)(lfi_self *s,
 }
 
 /** @brief Returns the top element of the stack. */
-static inline const lfi_key *lfi_memb(top)(const lfi_self *stack)
+static inline lfi_key const *lfi_memb(top)(const lfi_self *s)
 {
 	lfi_debug_assertion(s->lfi(len) > 0, "stack underflow");
 
-	return &stack->lfi(data)[stack->lfi(len) - 1];
+	return &s->lfi(data)[s->lfi(len) - 1];
 }
 
 /** @brief Returns the element at the specified `index`. */
-static inline const lfi_key *lfi_memb(at)(const lfi_self *stack, size_t index)
+static inline lfi_key const *lfi_memb(at)(const lfi_self *s, size_t index)
 {
 	lfi_debug_assertion(s->lfi(len) > index, "out of bounds");
 
-	return &stack->lfi(data)[index];
+	return &s->lfi(data)[index];
 }
 
 /** @brief Returns the nth element from top. */
-static inline const lfi_key *lfi_memb(peek)(const lfi_self *stack, size_t distance)
+static inline lfi_key const *lfi_memb(peek)(const lfi_self *s, size_t distance)
 {
 	lfi_debug_assertion(s->lfi(len) >= distance, "out of bounds");
 
-	return &stack->lfi(data)[stack->lfi(len) - distance];
+	return &s->lfi(data)[s->lfi(len) - distance];
 }
 
 /** @brief See stack_top_mut(). */
-static inline lfi_key *lfi_memb(top_mut)(lfi_self *stack)
+static inline lfi_key *lfi_memb(top_mut)(lfi_self *s)
 {
-	return (lfi_key *) lfi_memb(top)(stack);
+	return (lfi_key *) lfi_memb(top)(s);
 }
 
 /** @brief See stack_at_mut(). */
-static inline lfi_key *lfi_memb(at_mut)(lfi_self *stack, size_t index)
+static inline lfi_key *lfi_memb(at_mut)(lfi_self *s, size_t index)
 {
-	return (lfi_key *) lfi_memb(at)(stack, index);
+	return (lfi_key *) lfi_memb(at)(s, index);
 }
 
 /** @brief See stack_peek_mut(). */
-static inline lfi_key *lfi_memb(peek_mut)(lfi_self *stack, size_t distance)
+static inline lfi_key *lfi_memb(peek_mut)(lfi_self *s, size_t distance)
 {
-	return (lfi_key *) lfi_memb(peek)(stack, distance);
+	return (lfi_key *) lfi_memb(peek)(s, distance);
 }
 
 /** @brief Returns the total number of elements. */
-static inline size_t lfi_memb(len)(const lfi_self *stack)
+static inline size_t lfi_memb(len)(const lfi_self *s)
 {
-	return stack->lfi(len);
+	return s->lfi(len);
 }
+
 
 #include "priv/finalize.h"

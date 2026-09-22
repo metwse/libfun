@@ -36,6 +36,13 @@
 
 #define lfi_unreachable do { lfi_assert(0, "unreachable"); abort(); } while (0)
 
+#ifdef LIBFUN_ASSERTIONS
+#define lfi_debug_assertion(c, ...) lfi_assert(c, __VA_ARGS__)
+#else
+#define lfi_debug_assertion(c, ...) ((void) 0)
+#endif
+
+
 
 #if defined(__GNUC__) || defined(__clang__)
 #define lfi_wur __attribute__((warn_unused_result))

@@ -33,7 +33,6 @@
  * pairs and allows variable-length keys while storing fixed-length values.
  */
 
-#include <stdint.h>
 #ifndef LFI_DOXYGEN
 
 /** @cond */
@@ -44,6 +43,7 @@
 #include "priv/template.h"
 
 #include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -100,6 +100,7 @@ struct lfi_memb(entry) {
 	size_t key_len  /** Length of the key. */;
 	lfi_value const *value  /** Value. */;
 };
+
 
 /* @cond */
 struct lfi(entry) {
@@ -222,7 +223,7 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 	if (m->lfi(cap) == m->lfi(used))
 		return NULL;
 
-	lfi_debug_assertion(!*lfi(get_slot)(m, key, key_len),
+	lfi_assert(lfi(get_slot)(m, key, key_len) == NULL,
 			"hashmap contains the element");
 
 	struct lfi(entry) *e = (struct lfi(entry) *)
