@@ -93,16 +93,16 @@ lfi_self {
 
 /** @brief Key value pair. */
 struct lfi_memb(entry_mut) {
+	lfi_value *value  /** Value. */;
 	const lfi_key *key  /** The key. */;
 	size_t key_len  /** Length of the key. */;
-	lfi_value *value  /** Value. */;
 };
 
 /** @brief Key value pair. */
 struct lfi_memb(entry) {
+	lfi_value const *value  /** Value. */;
 	const lfi_key *key  /** The key. */;
 	size_t key_len  /** Length of the key. */;
-	lfi_value const *value  /** Value. */;
 };
 
 /** @brief Iteration handle. */
@@ -129,7 +129,26 @@ struct lfi(entry) {
 	lfi_key key[];
 };
 
-static uint64_t lfi(hash)(const lfi_key *key, size_t key_len)
+/* Cast internal entry to public entry type. */
+static inline struct lfi_memb(entry) lfi(new_pub_entry)(struct lfi(entry) *e)
+{
+	return (struct lfi_memb(entry)) {
+		.value = &e->value,
+		.key = e->key,
+		.key_len = e->key_len,
+	};
+}
+/* Cast mutable entry to immuatble entry. */
+static inline struct lfi_memb(entry_mut) lfi(as_mut)(struct lfi_memb(entry) *e)
+{
+	return (struct lfi_memb(entry_mut)) {
+		.value = (lfi_value *) e->value,
+		.key = e->key,
+		.key_len = e->key_len,
+	};
+}
+
+static inline uint64_t lfi(hash)(const lfi_key *key, size_t key_len)
 {
 	const char *mapped_key_bytes;
 	size_t mapped_key_len;
@@ -265,7 +284,7 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 /* @endcond */
 
 
-/** @brief Idetical to fhmap_init(), but accepts an capacity argument */
+/** @brief Idetical to fhmap_init(), but accepts a capacity argument */
 lfi_wur static inline int lfi_memb(with_cap)(lfi_self *m, size_t cap)
 {
 	if (cap == 0)
@@ -312,65 +331,81 @@ static inline void lfi_memb(destroy)(lfi_self *m)
 	free(m->lfi(entries));
 }
 
-/** @brief Returns a pointer to the value matching the key, returns `NULL` if
- * the key is not found. */
-static inline lfi_value const *lfi_memb(get)(const lfi_self *m,
-					     const lfi_key *key,
-					     size_t key_len)
+/** @brief Returns true if a matching the key value pair foud, and out_entry
+ * set to this pair. */
+static inline bool lfi_memb(gete)(const lfi_self *m,
+				  const lfi_key *key,
+				  size_t key_len,
+				  struct lfi_memb(entry) *out_entry)
 {
 
-	lfi_debug_assertion(key_len != 0,
-			    "key length cannot be zero");
+	lfi_debug_assertion(key_len != 0, "key length cannot be zero");
 
 	struct lfi(entry) **e = lfi(get_entry)((lfi_self *) m, key, key_len);
 
 	if (e == NULL)
-		return NULL;
+		return false;
 
-	return (lfi_value const *) &(*e)->value;
+	if (out_entry != NULL)
+		*out_entry = lfi(new_pub_entry)(*e);
+
+	return true;
 }
 
-/** @brief Identical to fhmap_get(), but the key_len is sizeof(key_type). */
-static inline lfi_value const *lfi_memb(get2)(const lfi_self *m,
-					      const lfi_key *key)
-{
-	return lfi_memb(get)(m, key, sizeof(lfi_key));
-}
+/** @brief Identical to fhmap_gete(), but the key_len is sizeof(key_type). */
+static inline bool lfi_memb(get2e)(const lfi_self *m,
+				   const lfi_key *key,
+				   struct lfi_memb(entry) *out_entry)
+{ return lfi_memb(gete)(m, key, sizeof(lfi_key), out_entry); }
 
-/** @brief Identical to fhmap_get(), but accepts a null-terminated key. */
-static inline lfi_value const *lfi_memb(get3)(const lfi_self *m,
-					      const lfi_key key[])
-{
-	return lfi_memb(get)(m, key, strlen((const char *) key) + 1);
-}
+/** @brief Identical to fhmap_gete(), but accepts a null-terminated key. */
+static inline bool lfi_memb(get3e)(const lfi_self *m,
+				   const lfi_key key[],
+				   struct lfi_memb(entry) *out_entry)
+{ return lfi_memb(gete)(m, key, strlen((const char *) key) + 1, out_entry); }
 
-/** @brief Identical to fhmap_get(), but returns a mutable pointer. */
-static inline lfi_value *lfi_memb(get_mut)(lfi_self *m,
-					   const lfi_key *key,
-					   size_t key_len)
-{
-	return (lfi_value *) lfi_memb(get)(m, key, key_len);
-}
+#define lfi_define_get_fns(get_fn, params, args) \
+	/** @brief Identical to @ref fhmap_ ## get_fn, but returns a mutable
+	 * entry. */ \
+	static inline bool lfi_memb(get_fn ## e ## _mut) \
+	(lfi_remove_paren(params), struct lfi_memb(entry_mut) *out_entry) \
+	{ \
+		struct lfi_memb(entry) out_entry_const; \
+		bool res = lfi_memb(get_fn ## e)(lfi_remove_paren(args), \
+					         &out_entry_const); \
+		if (out_entry != NULL) \
+			*out_entry = lfi(as_mut)(&out_entry_const); \
+		return res; \
+	} \
+	static inline lfi_value const * \
+	/** @brief Identical to @ref fhmap_ ## get_fn ## e, but returns a
+	 * pointer to value. */ \
+	lfi_memb(get_fn)(const lfi_remove_paren(params)) \
+	{ \
+		struct lfi_memb(entry) e; \
+		return lfi_memb(get_fn ## e)(lfi_remove_paren(args), &e) ? \
+			e.value : NULL; \
+	} \
+	/** @brief Identical to @ref fhmap_ ## get_fn ## e_mut, but returns a
+	 * mutable pointer to value. */ \
+	static inline lfi_value * \
+	lfi_memb(get_fn ## _mut) params \
+	{ \
+		struct lfi_memb(entry_mut) e; \
+		return lfi_memb(get_fn ## e_mut)(lfi_remove_paren(args), &e) ? \
+			e.value : NULL; \
+	}
 
-/** @brief Identical to fhmap_get2(), but returns a mutable pointer. */
-static inline lfi_value *lfi_memb(get2_mut)(lfi_self *m,
-					    const lfi_key *key)
-{
-	return (lfi_value *) lfi_memb(get2)(m, key);
-}
+lfi_define_get_fns(get, (lfi_self *m, const lfi_key *key, size_t key_len),
+		   (m, key, key_len))
+lfi_define_get_fns(get2, (lfi_self *m, const lfi_key *key), (m, key))
+lfi_define_get_fns(get3, (lfi_self *m, const lfi_key *key), (m, key))
 
-/** @brief Identical to fhmap_get3(), but returns a mutable pointer. */
-static inline lfi_value *lfi_memb(get3_mut)(lfi_self *m,
-					    const lfi_key key[])
-{
-	return (lfi_value *) lfi_memb(get3)(m, key);
-}
+#undef lfi_define_get_fns
 
-/**
- * @brief Inserts a key-value pair into the hmap.
+/** @brief Inserts a key-value pair into the hmap.
  *
- * @warning The `key` must not already exist in the hmap.
- */
+ * @warning The `key` must not already exist in the hmap. */
 static inline lfi_value *lfi_memb(insert)(lfi_self *m,
 					  const lfi_key *key,
 					  size_t key_len,
@@ -391,17 +426,13 @@ static inline lfi_value *lfi_memb(insert)(lfi_self *m,
 static inline lfi_value *lfi_memb(insert2)(lfi_self *m,
 					   const lfi_key *key,
 					   lfi_value const *value)
-{
-	return lfi_memb(insert)(m, key, sizeof(lfi_key), value);
-}
+{ return lfi_memb(insert)(m, key, sizeof(lfi_key), value); }
 
 /** @brief Identical to fhmap_insert(), but accepts a null-terminated key. */
 static inline lfi_value *lfi_memb(insert3)(lfi_self *m,
 					  const lfi_key key[],
 					  lfi_value const *value)
-{
-	return lfi_memb(insert)(m, key, strlen((const char *) key) + 1, value);
-}
+{ return lfi_memb(insert)(m, key, strlen((const char *) key) + 1, value); }
 
 /** @brief Idetical to fhmap_insert(), but raises an error if memory
  * allocation fails. */
@@ -566,33 +597,27 @@ static inline int lfi_memb(reserve)(lfi_self *m, size_t additional)
 		return 0;
 }
 
-/** @brief Initializes a new mutable iteration handle. */
-static inline struct lfi_memb(it_mut) lfi_memb(iter_mut)(lfi_self *m)
-{
-	return (struct lfi_memb(it_mut)) { .lfi(m) = m, .lfi(i) = 0 };
-}
-
 /** @brief Initializes a new iteration handle. */
 static inline struct lfi_memb(it) lfi_memb(iter)(const lfi_self *m)
 {
 	return (struct lfi_memb(it)) { .lfi(m) = m, .lfi(i) = 0 };
 }
 
-/** @brief Advances the iterator and sets out to the next value.
- *
- * Returns true if out set to an entry. */
-static inline bool lfi_memb(iter_next_mut)(struct lfi_memb(it_mut) *it,
-				           struct lfi_memb(entry_mut) *out)
+/** @brief Initializes a new mutable iteration handle. */
+static inline struct lfi_memb(it_mut) lfi_memb(iter_mut)(lfi_self *m)
+{
+	return (struct lfi_memb(it_mut)) { .lfi(m) = m, .lfi(i) = 0 };
+}
+
+/** @brief See fhmap_iter_next() */
+static inline bool lfi_memb(iter_next)(struct lfi_memb(it) *it,
+				       struct lfi_memb(entry) *out)
 {
 	for (; it->lfi(i) < it->lfi(m)->lfi(cap); it->lfi(i)++) {
 		struct lfi(entry) *e = it->lfi(m)->lfi(entries)[it->lfi(i)];
 
 		if (e != NULL && e != LFI_HASHMAP_TOMBSTONE) {
-			*out = (struct lfi_memb(entry_mut)) {
-				.key = e->key,
-				.key_len = e->key_len,
-				.value = &e->value,
-			};
+			*out = lfi(new_pub_entry)(e);
 			it->lfi(i)++;
 			return true;
 		}
@@ -601,23 +626,21 @@ static inline bool lfi_memb(iter_next_mut)(struct lfi_memb(it_mut) *it,
 	return false;
 }
 
-/** @brief See fhmap_iter_next_mut() */
-static inline bool lfi_memb(iter_next)(struct lfi_memb(it) *it,
-				       struct lfi_memb(entry) *out)
+/** @brief Advances the iterator and sets out to the next value.
+ *
+ * Returns true if out set to an entry. */
+static inline bool lfi_memb(iter_next_mut)(struct lfi_memb(it_mut) *it,
+				           struct lfi_memb(entry_mut) *out)
 {
-	struct lfi_memb(entry_mut) e;
-	struct lfi_memb(it_mut) it_mut = {
+	struct lfi_memb(entry) e;
+	struct lfi_memb(it) it_const = {
 		.lfi(m) = (lfi_self *) it->lfi(m),
 		.lfi(i) = it->lfi(i)
 	};
-	bool res = lfi_memb(iter_next_mut)(&it_mut, &e);
+	bool res = lfi_memb(iter_next)(&it_const, &e);
 
-	it->lfi(i) = it_mut.lfi(i);
-	*out = (struct lfi_memb(entry)) {
-		.key = e.key,
-		.key_len = e.key_len,
-		.value = e.value,
-	};
+	it->lfi(i) = it_const.lfi(i);
+	*out = lfi(as_mut)(&e);
 
 	return res;
 }

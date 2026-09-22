@@ -53,7 +53,16 @@ void test_basic(void)
 
 	assert(strcmp(*thmap_str2str_xinsert3(&m, "key", &(char *) { "value" }),
 		      "value") == 0);
-	assert(strcmp(*thmap_str2str_get3(&m, "key"), "value") == 0);
+	assert(strcmp(*thmap_str2str_xinsert3(&m, "key2", &(char *) { "value2" }),
+		      "value") == 0);
+	assert(strcmp(*thmap_str2str_get3(&m, "key2"), "value") == 0);
+
+	struct thmap_str2str_entry e;  /* type assertions */
+	struct thmap_str2str_entry_mut e_mut;
+	assert(thmap_str2str_get3e(&m, "key2", &e));
+	assert(thmap_str2str_get3e_mut(&m, "key2", &e_mut));
+	*e_mut.value = "value2-changed";
+	assert(strcmp(*e.value, "value2-changed") == 0);
 
 	char *removed;
 	assert(thmap_str2str_remove3(&m, "key", &removed));

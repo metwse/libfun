@@ -72,5 +72,8 @@
 
 #define lfi_g(name) lfi_concat(_libfun_internal_, name)
 
+#define lfi_remove_paren_inner(...) __VA_ARGS__
+#define lfi_remove_paren(...) lfi_remove_paren_inner __VA_ARGS__
+
 
 #endif
