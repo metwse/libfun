@@ -109,7 +109,7 @@ struct lfi(entry) {
 	lfi_key key[];
 };
 
-uint64_t lfi(hash)(const lfi_key *key, size_t key_len)
+static uint64_t lfi(hash)(const lfi_key *key, size_t key_len)
 {
 	const void *mapped_key_bytes;
 	size_t mapped_key_len;

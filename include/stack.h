@@ -153,9 +153,9 @@ static inline lfi_key const *lfi_memb(at)(const lfi_self *s, size_t index)
 /** @brief Returns the nth element from top. */
 static inline lfi_key const *lfi_memb(peek)(const lfi_self *s, size_t distance)
 {
-	lfi_debug_assertion(s->lfi(len) >= distance, "out of bounds");
+	lfi_debug_assertion(s->lfi(len) > distance, "out of bounds");
 
-	return &s->lfi(data)[s->lfi(len) - distance];
+	return &s->lfi(data)[s->lfi(len) - distance - 1];
 }
 
 /** @brief See stack_top_mut(). */

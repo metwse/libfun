@@ -23,11 +23,12 @@ int main(void)
 			lf(stack_int_xpush)(&s, &i);
 
 			assert(*lf(stack_int_at)(&s, i) == i);
-			assert(*lf(stack_int_peek)(&s, 1) == i);
+			assert(*lf(stack_int_peek)(&s, 0) == i);
 			assert(lf(stack_int_len)(&s) == (size_t) i + 1);
 		}
-		for (int i = 1; i <= limit; i++) {
-			assert(*lf(stack_int_peek)(&s, i) == limit - i);
+		for (int i = 0; i < limit; i++) {
+			assert(*lf(stack_int_at)(&s, i) == i);
+			assert(*lf(stack_int_peek)(&s, i) == limit - i - 1);
 		}
 
 		for (int i = limit; i > 0; i--) {
