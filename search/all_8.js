@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['public_20api_0',['Public API',['../index.html#public_api_sec',1,'']]]
+  ['quick_20integration_0',['Quick Integration',['../md_README.html#autotoc_md1',1,'']]]
 ];

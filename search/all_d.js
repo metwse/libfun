@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['value_0',['value',['../structfentry.html#a155225e18c8f3a8b223b07e1537060c3',1,'fentry']]],
-  ['variables_1',['Configuration Variables',['../md_README.html#autotoc_md2',1,'']]]
+  ['wai_20slop_20tt_0',['&lt;tt&gt;contribute -Wai-slop&lt;/tt&gt;',['../md_README.html#autotoc_md3',1,'']]]
 ];
