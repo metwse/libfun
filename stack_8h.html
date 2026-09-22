@@ -108,11 +108,20 @@ Functions</h2></td></tr>
 <tr class="memitem:a3b872209eb2adf019761c0038f1673be" id="r_a3b872209eb2adf019761c0038f1673be"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a3b872209eb2adf019761c0038f1673be">fstack_destroy</a> (struct <a class="el" href="structfstack.html">fstack</a> *s)</td></tr>
 <tr class="memdesc:a3b872209eb2adf019761c0038f1673be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the memory allocated by the stack.  <br /></td></tr>
 <tr class="separator:a3b872209eb2adf019761c0038f1673be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdb1963c49835b0aae83a2ac00eb201a" id="r_afdb1963c49835b0aae83a2ac00eb201a"><td class="memItemLeft" align="right" valign="top">static type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#afdb1963c49835b0aae83a2ac00eb201a">fstack_multipop</a> (struct <a class="el" href="structfstack.html">fstack</a> *s, size_t count)</td></tr>
+<tr class="memdesc:afdb1963c49835b0aae83a2ac00eb201a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes count element and returns array of removed elements.  <br /></td></tr>
+<tr class="separator:afdb1963c49835b0aae83a2ac00eb201a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40f4239b0410d0a631e7ffa310a97733" id="r_a40f4239b0410d0a631e7ffa310a97733"><td class="memItemLeft" align="right" valign="top">static type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a40f4239b0410d0a631e7ffa310a97733">fstack_pop</a> (struct <a class="el" href="structfstack.html">fstack</a> *s)</td></tr>
 <tr class="memdesc:a40f4239b0410d0a631e7ffa310a97733"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes and returns the top element from the stack.  <br /></td></tr>
 <tr class="separator:a40f4239b0410d0a631e7ffa310a97733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02293c415ba22030bb684cafc56a4416" id="r_a02293c415ba22030bb684cafc56a4416"><td class="memItemLeft" align="right" valign="top">static type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a02293c415ba22030bb684cafc56a4416">fstack_multipush</a> (struct <a class="el" href="structfstack.html">fstack</a> *s, type const items[], size_t count)</td></tr>
+<tr class="memdesc:a02293c415ba22030bb684cafc56a4416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes multiple elements to top of the stack.  <br /></td></tr>
+<tr class="separator:a02293c415ba22030bb684cafc56a4416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af891cb27a14b30f3d183f41fb3ba1711" id="r_af891cb27a14b30f3d183f41fb3ba1711"><td class="memItemLeft" align="right" valign="top">static type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#af891cb27a14b30f3d183f41fb3ba1711">fstack_xmultipush</a> (struct <a class="el" href="structfstack.html">fstack</a> *s, type const items[], size_t count)</td></tr>
+<tr class="memdesc:af891cb27a14b30f3d183f41fb3ba1711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to stack_push(), but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:af891cb27a14b30f3d183f41fb3ba1711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a016a63beb241371f1dbd802fcf104b97" id="r_a016a63beb241371f1dbd802fcf104b97"><td class="memItemLeft" align="right" valign="top">static type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a016a63beb241371f1dbd802fcf104b97">fstack_push</a> (struct <a class="el" href="structfstack.html">fstack</a> *s, type const *item)</td></tr>
-<tr class="memdesc:a016a63beb241371f1dbd802fcf104b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element to the top of the stack.  <br /></td></tr>
+<tr class="memdesc:a016a63beb241371f1dbd802fcf104b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element to top of the stack.  <br /></td></tr>
 <tr class="separator:a016a63beb241371f1dbd802fcf104b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ac06b85723a1cbe416166f9b655568" id="r_a21ac06b85723a1cbe416166f9b655568"><td class="memItemLeft" align="right" valign="top">static type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a21ac06b85723a1cbe416166f9b655568">fstack_xpush</a> (struct <a class="el" href="structfstack.html">fstack</a> *s, type const *item)</td></tr>
 <tr class="memdesc:a21ac06b85723a1cbe416166f9b655568"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to stack_push(), but raises an error if memory allocation fails.  <br /></td></tr>
@@ -141,6 +150,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a627ee1e5fd11e021d3f9db691aab0241" id="r_a627ee1e5fd11e021d3f9db691aab0241"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a627ee1e5fd11e021d3f9db691aab0241">fstack_cap</a> (const struct <a class="el" href="structfstack.html">fstack</a> *s)</td></tr>
 <tr class="memdesc:a627ee1e5fd11e021d3f9db691aab0241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the stack capacity.  <br /></td></tr>
 <tr class="separator:a627ee1e5fd11e021d3f9db691aab0241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa65e7a7f5ca275892509fb71ae67c529" id="r_aa65e7a7f5ca275892509fb71ae67c529"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#aa65e7a7f5ca275892509fb71ae67c529">fstack_clear</a> (struct <a class="el" href="structfstack.html">fstack</a> *s)</td></tr>
+<tr class="memdesc:aa65e7a7f5ca275892509fb71ae67c529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the stack.  <br /></td></tr>
+<tr class="separator:aa65e7a7f5ca275892509fb71ae67c529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a958dcf94a01eb5ba276c4dd542acb851" id="r_a958dcf94a01eb5ba276c4dd542acb851"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stack_8h.html#a958dcf94a01eb5ba276c4dd542acb851">fstack_shrink_to_fit</a> (struct <a class="el" href="structfstack.html">fstack</a> *s)</td></tr>
 <tr class="memdesc:a958dcf94a01eb5ba276c4dd542acb851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the stack as much as possible.  <br /></td></tr>
 <tr class="separator:a958dcf94a01eb5ba276c4dd542acb851"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,7 +212,7 @@ Functions</h2></td></tr>
 
 <p>Returns the element at the specified <code>index</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00179">179</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00214">214</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -240,7 +252,7 @@ Functions</h2></td></tr>
 
 <p>See stack_at_mut(). </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00201">201</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00236">236</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -270,7 +282,37 @@ Functions</h2></td></tr>
 
 <p>Returns the stack capacity. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00219">219</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00254">254</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+
+</div>
+</div>
+<a id="aa65e7a7f5ca275892509fb71ae67c529" name="aa65e7a7f5ca275892509fb71ae67c529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa65e7a7f5ca275892509fb71ae67c529">&#9670;&#160;</a></span>fstack_clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fstack_clear </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfstack.html">fstack</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clears the stack. </p>
+
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00260">260</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +402,93 @@ Functions</h2></td></tr>
 
 <p>Returns the total number of elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00213">213</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00248">248</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+
+</div>
+</div>
+<a id="afdb1963c49835b0aae83a2ac00eb201a" name="afdb1963c49835b0aae83a2ac00eb201a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdb1963c49835b0aae83a2ac00eb201a">&#9670;&#160;</a></span>fstack_multipop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static type const  * fstack_multipop </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfstack.html">fstack</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes count element and returns array of removed elements. </p>
+
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00134">134</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+
+</div>
+</div>
+<a id="a02293c415ba22030bb684cafc56a4416" name="a02293c415ba22030bb684cafc56a4416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02293c415ba22030bb684cafc56a4416">&#9670;&#160;</a></span>fstack_multipush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static type * fstack_multipush </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfstack.html">fstack</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">type const&#160;</td>
+          <td class="paramname"><em>items</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pushes multiple elements to top of the stack. </p>
+
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00153">153</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -400,7 +528,7 @@ Functions</h2></td></tr>
 
 <p>Returns the nth element from top. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00187">187</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00222">222</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -440,7 +568,7 @@ Functions</h2></td></tr>
 
 <p>See stack_peek_mut(). </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00207">207</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00242">242</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -470,7 +598,7 @@ Functions</h2></td></tr>
 
 <p>Removes and returns the top element from the stack. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00134">134</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00145">145</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -508,9 +636,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Pushes an element to the top of the stack. </p>
+<p>Pushes an element to top of the stack. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00142">142</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00189">189</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +680,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This operation is best-effort grow, the capacity may left as-is if a memory allocation failure occur.</dd></dl>
 <p>Returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00260">260</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00301">301</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -595,7 +723,7 @@ Functions</h2></td></tr>
 <p>See stack_shrink_to_fit()</p>
 <p>Returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00243">243</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00284">284</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -627,7 +755,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This operation is best-effort shrink, the capacity may left as-is if a memory allocation error occur.</dd></dl>
 <p>Returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00230">230</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00271">271</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -657,7 +785,7 @@ Functions</h2></td></tr>
 
 <p>Returns the top element of the stack. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00171">171</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00206">206</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -687,7 +815,7 @@ Functions</h2></td></tr>
 
 <p>See stack_top_mut(). </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00195">195</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00230">230</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
@@ -761,6 +889,52 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af891cb27a14b30f3d183f41fb3ba1711" name="af891cb27a14b30f3d183f41fb3ba1711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af891cb27a14b30f3d183f41fb3ba1711">&#9670;&#160;</a></span>fstack_xmultipush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static type * fstack_xmultipush </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfstack.html">fstack</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">type const&#160;</td>
+          <td class="paramname"><em>items</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to stack_push(), but raises an error if memory allocation fails. </p>
+
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00177">177</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+
+</div>
+</div>
 <a id="a21ac06b85723a1cbe416166f9b655568" name="a21ac06b85723a1cbe416166f9b655568"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21ac06b85723a1cbe416166f9b655568">&#9670;&#160;</a></span>fstack_xpush()</h2>
 
@@ -797,7 +971,7 @@ Functions</h2></td></tr>
 
 <p>Identical to stack_push(), but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00160">160</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stack_8h_source.html#l00196">196</a> of file <a class="el" href="stack_8h_source.html">stack.h</a>.</p>
 
 </div>
 </div>
