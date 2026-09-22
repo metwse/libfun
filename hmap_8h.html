@@ -82,8 +82,7 @@ $(function() {
 
 <p>Basic hmap.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;priv/finalize.h&quot;</code><br />
-</div>
+
 <p><a href="hmap_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -100,6 +99,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a1e7648b44f59ee64a8ea64986b4d4a01" id="r_a1e7648b44f59ee64a8ea64986b4d4a01"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1e7648b44f59ee64a8ea64986b4d4a01">fhmap_with_cap</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t cap)</td></tr>
+<tr class="memdesc:a1e7648b44f59ee64a8ea64986b4d4a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to fmap_init, but accepts an capacity argument.  <br /></td></tr>
+<tr class="separator:a1e7648b44f59ee64a8ea64986b4d4a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa236daae5a2b83726952a599af595378" id="r_aa236daae5a2b83726952a599af595378"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#aa236daae5a2b83726952a599af595378">fhmap_xwith_cap</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t cap)</td></tr>
+<tr class="memdesc:aa236daae5a2b83726952a599af595378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:aa236daae5a2b83726952a599af595378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c486b43002ad5a17e1d5b669e51690a" id="r_a1c486b43002ad5a17e1d5b669e51690a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a">fhmap_init</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
 <tr class="memdesc:a1c486b43002ad5a17e1d5b669e51690a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new hmap, returns non-zero if a memory allocation failure occurs.  <br /></td></tr>
 <tr class="separator:a1c486b43002ad5a17e1d5b669e51690a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,6 +159,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ad5e00d11abe7be3b81be3ae9030e9706" id="r_ad5e00d11abe7be3b81be3ae9030e9706"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ad5e00d11abe7be3b81be3ae9030e9706">fhmap_remove3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], value_type *out_val)</td></tr>
 <tr class="memdesc:ad5e00d11abe7be3b81be3ae9030e9706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but accepts a null-terminated key list.  <br /></td></tr>
 <tr class="separator:ad5e00d11abe7be3b81be3ae9030e9706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbaaa3da86676e4bec114668e1850db5" id="r_acbaaa3da86676e4bec114668e1850db5"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#acbaaa3da86676e4bec114668e1850db5">fhmap_used</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:acbaaa3da86676e4bec114668e1850db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns total number of the key-value pairs.  <br /></td></tr>
+<tr class="separator:acbaaa3da86676e4bec114668e1850db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a8d3ecad525078377cc79f617ebb540" id="r_a3a8d3ecad525078377cc79f617ebb540"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a3a8d3ecad525078377cc79f617ebb540">fhmap_cap</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:a3a8d3ecad525078377cc79f617ebb540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns capacity of the hashmap.  <br /></td></tr>
+<tr class="separator:a3a8d3ecad525078377cc79f617ebb540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0024f34013682007ce7ce4d599d3213" id="r_ac0024f34013682007ce7ce4d599d3213"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ac0024f34013682007ce7ce4d599d3213">fhmap_shrink_to_fit</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:ac0024f34013682007ce7ce4d599d3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the map to ~133% of its used element count if its capacity is larger than that.  <br /></td></tr>
+<tr class="separator:ac0024f34013682007ce7ce4d599d3213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d54a929ac445c8f15c30673eb22a983" id="r_a5d54a929ac445c8f15c30673eb22a983"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5d54a929ac445c8f15c30673eb22a983">fhmap_shrink_to</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t new_cap)</td></tr>
+<tr class="memdesc:a5d54a929ac445c8f15c30673eb22a983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the map to given capacity.  <br /></td></tr>
+<tr class="separator:a5d54a929ac445c8f15c30673eb22a983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a138aca53b16b7566b82cdd6b3a7015c6" id="r_a138aca53b16b7566b82cdd6b3a7015c6"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a138aca53b16b7566b82cdd6b3a7015c6">fhmap_reserve</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t additional)</td></tr>
+<tr class="memdesc:a138aca53b16b7566b82cdd6b3a7015c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserves capacity for at least <code>additional</code> more elements to be inserted in the hashmap.  <br /></td></tr>
+<tr class="separator:a138aca53b16b7566b82cdd6b3a7015c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic hmap. </p>
@@ -186,6 +206,36 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a3a8d3ecad525078377cc79f617ebb540" name="a3a8d3ecad525078377cc79f617ebb540"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a8d3ecad525078377cc79f617ebb540">&#9670;&#160;</a></span>fhmap_cap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static size_t fhmap_cap </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns capacity of the hashmap. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00475">475</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
 <a id="a2fc50a2db7392f4b97532595d02db136" name="a2fc50a2db7392f4b97532595d02db136"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fc50a2db7392f4b97532595d02db136">&#9670;&#160;</a></span>fhmap_destroy()</h2>
 
@@ -212,7 +262,7 @@ Functions</h2></td></tr>
 
 <p>Clears the memory allocated by the fhmap. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00266">266</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00286">286</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +308,7 @@ Functions</h2></td></tr>
 
 <p>Returns a pointer to the value matching the key, returns <code>NULL</code> if the key is not found. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00280">280</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00300">300</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +348,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84" title="Returns a pointer to the value matching the key, returns NULL if the key is not found.">fhmap_get()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00297">297</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00317">317</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -338,7 +388,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84" title="Returns a pointer to the value matching the key, returns NULL if the key is not found.">fhmap_get()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00320">320</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00340">340</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -378,7 +428,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84" title="Returns a pointer to the value matching the key, returns NULL if the key is not found.">fhmap_get()</a>, but accepts a null-terminated key list. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00304">304</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00324">324</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -418,7 +468,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84" title="Returns a pointer to the value matching the key, returns NULL if the key is not found.">fhmap_get()</a>, but accepts a null-terminated key list. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00327">327</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00347">347</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -464,7 +514,7 @@ Functions</h2></td></tr>
 
 <p>Returns a pointer to the value matching the key, returns <code>NULL</code> if the key is not found. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00312">312</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00332">332</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -494,7 +544,7 @@ Functions</h2></td></tr>
 
 <p>Creates a new hmap, returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00248">248</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00273">273</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -547,7 +597,7 @@ Functions</h2></td></tr>
 <p>Inserts a key-value pair into the hmap. </p>
 <dl class="section warning"><dt>Warning</dt><dd>The <code>key</code> must not already exist in the hmap. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00338">338</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00358">358</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -593,7 +643,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00355">355</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00375">375</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -639,7 +689,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00363">363</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00383">383</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -692,7 +742,7 @@ Functions</h2></td></tr>
 <p>Removes the key-value pair from the hmap, sets <code>out_value</code> to removed key if exists. </p>
 <p>Returns true if a pair removed. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00408">408</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00428">428</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -738,7 +788,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00432">432</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00452">452</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -784,7 +834,196 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but accepts a null-terminated key list. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00440">440</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00460">460</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="a138aca53b16b7566b82cdd6b3a7015c6" name="a138aca53b16b7566b82cdd6b3a7015c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a138aca53b16b7566b82cdd6b3a7015c6">&#9670;&#160;</a></span>fhmap_reserve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_reserve </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>additional</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reserves capacity for at least <code>additional</code> more elements to be inserted in the hashmap. </p>
+<p>The collection may reserve more space to speculatively avoid frequent reallocations.</p>
+<dl class="section note"><dt>Note</dt><dd>This operation is best-effort grow, the capacity may left as-is if a memory allocation failure occur.</dd></dl>
+<p>Returns non-zero if a memory allocation failure occurs. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00528">528</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="a5d54a929ac445c8f15c30673eb22a983" name="a5d54a929ac445c8f15c30673eb22a983"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d54a929ac445c8f15c30673eb22a983">&#9670;&#160;</a></span>fhmap_shrink_to()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_shrink_to </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>new_cap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Shrinks the map to given capacity. </p>
+<p>If a capacity lower than the number of stored elements is specified, the capacity is reduced to the number of stored elements.</p>
+<p>See hmap_shrink_to_fit()</p>
+<p>Returns non-zero if a memory allocation failure occurs. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00508">508</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="ac0024f34013682007ce7ce4d599d3213" name="ac0024f34013682007ce7ce4d599d3213"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0024f34013682007ce7ce4d599d3213">&#9670;&#160;</a></span>fhmap_shrink_to_fit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_shrink_to_fit </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Shrinks the map to ~133% of its used element count if its capacity is larger than that. </p>
+<p>Use hmap_shrink_to(&amp;m, 0) if you really want to shrink the capacity of the map as much as possible.</p>
+<dl class="section note"><dt>Note</dt><dd>This operation is best-effort shrink, the capacity may left as-is if a memory allocation error occur.</dd></dl>
+<p>Returns non-zero if a memory allocation failure occurs. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00490">490</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="acbaaa3da86676e4bec114668e1850db5" name="acbaaa3da86676e4bec114668e1850db5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbaaa3da86676e4bec114668e1850db5">&#9670;&#160;</a></span>fhmap_used()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static size_t fhmap_used </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns total number of the key-value pairs. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00469">469</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="a1e7648b44f59ee64a8ea64986b4d4a01" name="a1e7648b44f59ee64a8ea64986b4d4a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e7648b44f59ee64a8ea64986b4d4a01">&#9670;&#160;</a></span>fhmap_with_cap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_with_cap </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Similar to fmap_init, but accepts an capacity argument. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00252">252</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -814,7 +1053,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00260">260</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00280">280</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -866,7 +1105,7 @@ Functions</h2></td></tr>
 
 <p>Idetical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00372">372</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00392">392</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -912,7 +1151,7 @@ Functions</h2></td></tr>
 
 <p>Idetical to <a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6" title="Identical to fhmap_insert(), but the key_len is sizeof(key_type).">fhmap_insert2()</a>, but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00384">384</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00404">404</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -958,7 +1197,47 @@ Functions</h2></td></tr>
 
 <p>Idetical to <a class="el" href="hmap_8h.html#ae8264845a0bab7b399e59202bf7aa25f" title="Identical to fhmap_insert(), but the key_len is sizeof(key_type).">fhmap_insert3()</a>, but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00395">395</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00415">415</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="aa236daae5a2b83726952a599af595378" name="aa236daae5a2b83726952a599af595378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa236daae5a2b83726952a599af595378">&#9670;&#160;</a></span>fhmap_xwith_cap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fhmap_xwith_cap </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00266">266</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
