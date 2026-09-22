@@ -24,17 +24,17 @@
 
 #ifndef LFI_DOXYGEN
 
-/** @cond */
 #ifndef LF_STACK_H
 #define LF_STACK_H
-
-#include "priv/detail.h"
-#include "priv/template.h"
 
 #include <stddef.h>
 #include <stdlib.h>
 
-#define LFI_STACK_INITIAL_CAP 64
+#define LF_STACK_INITIAL_CAP 64
+
+/** @cond */
+#include "priv/detail.h"
+#include "priv/template.h"
 
 #endif  // LF_STACK_H
 
@@ -70,16 +70,51 @@ lfi_self {
 };
 
 
+/* @cond */
+static inline int lfi(resize)(lfi_self *s, size_t new_cap)
+{
+	lfi_key *old_data = s->lfi(data);
+
+	s->lfi(data) = (lfi_key *) realloc(s->lfi(data),
+					   new_cap * sizeof(lfi_key));
+
+	if (s->lfi(data) == NULL) {
+		s->lfi(data) = old_data;
+		return 1;
+	}
+
+	s->lfi(cap) = new_cap;
+	return 0;
+}
+/* @endcond */
+
+
+/** @brief Creates a new stack, returns non-zero if a memory allocation failure
+ * occurs. */
+lfi_wur static inline int lfi_memb(with_cap)(lfi_self *s, size_t cap)
+{
+	if (cap == 0)
+		cap = 1;
+
+	s->lfi(cap) = cap;
+	s->lfi(len) = 0;
+	s->lfi(data) = malloc(sizeof(lfi_key) * cap);
+
+	return s->lfi(data) == NULL ? 1 : 0;
+}
+
+/** @brief Identical to stack_with_cap(), but raises an error if memory allocation
+ * fails. */
+static inline void lfi_memb(xwith_cap)(lfi_self *s, size_t cap)
+{
+	lfi_unwrap(lfi_memb(with_cap)(s, cap) == 0);
+}
+
 /** @brief Creates a new stack, returns non-zero if a memory allocation failure
  * occurs. */
 lfi_wur static inline int lfi_memb(init)(lfi_self *s)
 {
-	s->lfi(cap) = LFI_STACK_INITIAL_CAP;
-	s->lfi(len) = 0;
-	s->lfi(data) =
-		(lfi_key *) malloc(sizeof(lfi_key) * LFI_STACK_INITIAL_CAP);
-
-	return s->lfi(data) == NULL ? 1 : 0;
+	return lfi_memb(with_cap(s, LF_STACK_INITIAL_CAP));
 }
 
 /** @brief Identical to stack_init(), but raises an error if memory allocation
@@ -107,17 +142,11 @@ static inline lfi_key const *lfi_memb(pop)(lfi_self *s)
 lfi_wur static inline lfi_key *lfi_memb(push)(lfi_self *s,
 					       lfi_key const *item)
 {
-	if (s->lfi(len) == s->lfi(cap)) {
-		s->lfi(cap) *= 2;
+	if (s->lfi(len) == s->lfi(cap))
+		lfi(resize)(s, s->lfi(cap) * 2);
 
-		lfi_key *new_data = (lfi_key *) realloc(s->lfi(data),
-							s->lfi(cap) * sizeof(lfi_key));
-
-		if (new_data == NULL)
-			return NULL;
-		else
-			s->lfi(data) = new_data;
-	}
+	if (s->lfi(len) == s->lfi(cap))
+		return NULL;
 
 	lfi_key *item_on_stack = &s->lfi(data)[s->lfi(len)++];
 	if (item != NULL)
@@ -186,5 +215,62 @@ static inline size_t lfi_memb(len)(const lfi_self *s)
 	return s->lfi(len);
 }
 
+/** @brief Returns the stack capacity. */
+static inline size_t lfi_memb(cap)(const lfi_self *s)
+{
+	return s->lfi(cap);
+}
 
+/** @brief Shrinks the stack as much as possible.
+ *
+ * @note This operation is best-effort shrink, the capacity may left as-is
+ *       if a memory allocation error occur.
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(shrink_to_fit)(lfi_self *s)
+{
+	return lfi(resize)(s, s->lfi(len));
+}
+
+/** @brief Shrinks the stack to given capacity.
+ *
+ * If a capacity lower than the number of stored elements is specified, the
+ * capacity is reduced to the number of stored elements.
+ *
+ * See stack_shrink_to_fit()
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(shrink_to)(lfi_self *s, size_t new_cap)
+{
+	if (new_cap < s->lfi(len))
+		return lfi(resize)(s, s->lfi(len));
+	else if (new_cap == 0)
+		return lfi(resize)(s, 1);
+	else
+		return lfi(resize)(s, new_cap);
+}
+
+/** @brief Reserves capacity for at least `additional` more elements to be
+ * inserted in the stack.
+ *
+ * @note This operation is best-effort grow, the capacity may left as-is if a
+ *       memory allocation failure occur.
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(reserve)(lfi_self *s, size_t additional)
+{
+	if (additional == 0)
+		return 0;
+
+	size_t new_cap = s->lfi(len) + additional;
+
+	if (new_cap > s->lfi(cap))
+		return lfi(resize)(s, new_cap);
+	else
+		return 0;
+}
+
+
+/* @cond */
 #include "priv/finalize.h"
+/* @endcond */

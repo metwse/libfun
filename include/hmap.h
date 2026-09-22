@@ -36,19 +36,21 @@
 
 #ifndef LFI_DOXYGEN
 
-/** @cond */
 #ifndef LF_HASHMAP_H
 #define LF_HASHMAP_H
-
-#include "priv/detail.h"
-#include "priv/template.h"
 
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define LFI_HASHMAP_INITIAL_CAP 64
+/** @brief Default initial capacity of the hashmap. */
+#define LF_HASHMAP_INITIAL_CAP 64
+
+/** @cond */
+#include "priv/detail.h"
+#include "priv/template.h"
+
 #define LFI_HASHMAP_TOMBSTONE ((void *) -1)
 
 uint64_t lfi_g(fnv_hash)(const char *, size_t);
@@ -186,6 +188,9 @@ static inline void lfi(insert_entry)(lfi_self *m, struct lfi(entry) *e)
 
 static inline int lfi(resize)(lfi_self *m, size_t new_cap)
 {
+	if (m->lfi(cap) == new_cap)
+		return 0;
+
 	struct lfi(entry) **old_entries = m->lfi(entries);
 
 	m->lfi(entries) = calloc(new_cap, sizeof(struct lfi(entry) *));
@@ -243,16 +248,31 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 /* @endcond */
 
 
+/** @brief Similar to fmap_init, but accepts an capacity argument */
+lfi_wur static inline int lfi_memb(with_cap)(lfi_self *m, size_t cap)
+{
+	if (cap == 0)
+		cap = 1;
+
+	m->lfi(cap) = cap;
+	m->lfi(used) = 0;
+	m->lfi(entries) = calloc(cap, sizeof(struct lfi(hmap_entry) *));
+
+	return m->lfi(entries) == NULL ? 1 : 0;
+}
+
+/** @brief Identical to fhmap_init(), but raises an error if memory allocation
+ * fails. */
+static inline void lfi_memb(xwith_cap)(lfi_self *m, size_t cap)
+{
+	lfi_unwrap(lfi_memb(with_cap)(m, cap) == 0);
+}
+
 /** @brief Creates a new hmap, returns non-zero if a memory allocation
  * failure occurs. */
 lfi_wur static inline int lfi_memb(init)(lfi_self *m)
 {
-	m->lfi(cap) = LFI_HASHMAP_INITIAL_CAP;
-	m->lfi(used) = 0;
-	m->lfi(entries) = calloc(LFI_HASHMAP_INITIAL_CAP,
-				 sizeof(struct lfi(hmap_entry *)));
-
-	return m->lfi(entries) == NULL ? 1 : 0;
+	return lfi_memb(with_cap)(m, LF_HASHMAP_INITIAL_CAP);
 }
 
 /** @brief Identical to fhmap_init(), but raises an error if memory allocation
@@ -445,7 +465,83 @@ static inline int lfi_memb(remove3)(lfi_self *m,
 }
 
 
+/** @brief Returns total number of the key-value pairs. */
+static inline size_t lfi_memb(used)(const lfi_self *m)
+{
+	return m->lfi(used);
+}
+
+/** @brief Returns capacity of the hashmap. */
+static inline size_t lfi_memb(cap)(const lfi_self *m)
+{
+	return m->lfi(cap);
+}
+
+/** @brief Shrinks the map to ~133% of its used element count if its capacity
+ * is larger than that.
+ *
+ * Use hmap_shrink_to(&m, 0) if you really want to shrink the capacity of the
+ * map as much as possible.
+ *
+ * @note This operation is best-effort shrink, the capacity may left as-is
+ *       if a memory allocation error occur.
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(shrink_to_fit)(lfi_self *m)
+{
+	size_t new_cap = (m->lfi(used) + 1) * 4 / 3;
+
+	if (new_cap < m->lfi(cap))
+		return lfi(resize)(m, (m->lfi(used) + 1) * 4 / 3);
+
+	return 0;
+}
+
+/** @brief Shrinks the map to given capacity.
+ *
+ * If a capacity lower than the number of stored elements is specified, the
+ * capacity is reduced to the number of stored elements.
+ *
+ * See hmap_shrink_to_fit()
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(shrink_to)(lfi_self *m, size_t new_cap)
+{
+	if (new_cap < m->lfi(used))
+		return lfi(resize)(m, m->lfi(used));
+	else if (new_cap == 0)
+		return lfi(resize)(m, 1);
+	else
+		return lfi(resize)(m, new_cap);
+}
+
+/** @brief Reserves capacity for at least `additional` more elements to be
+ * inserted in the hashmap.
+ *
+ * The collection may reserve more space to speculatively avoid frequent
+ * reallocations.
+ *
+ * @note This operation is best-effort grow, the capacity may left as-is if a
+ *       memory allocation failure occur.
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(reserve)(lfi_self *m, size_t additional)
+{
+	if (additional == 0)
+		return 0;
+
+	size_t new_cap = (m->lfi(used) + additional) * 4 / 3;
+
+	if (new_cap > m->lfi(cap))
+		return lfi(resize)(m, new_cap);
+	else
+		return 0;
+}
+
+
 #undef fmap_key
 #undef fuse_hash
 
+/* @cond */
 #include "priv/finalize.h"
+/* @endcond */

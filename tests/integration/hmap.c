@@ -23,9 +23,9 @@ struct my_str {
 };
 
 void my_map_key(const struct my_str *key,
-                size_t key_len,
-                const char **out_bytes,
-                size_t *out_len)
+		size_t key_len,
+		const char **out_bytes,
+		size_t *out_len)
 {
 	/* cannot map array of strings */
 	assert(key_len == sizeof(struct my_str));
@@ -49,7 +49,7 @@ uint64_t my_hash(const char *key, size_t key_len)
 void test_basic(void)
 {
 	struct thmap_str2str m;
-	thmap_str2str_xinit(&m);
+	thmap_str2str_xwith_cap(&m, 0);
 
 	assert(strcmp(*thmap_str2str_xinsert3(&m, "key", &(char *) { "value" }),
 		      "value") == 0);
@@ -109,11 +109,20 @@ void test_fuzz(void)
 	char buf[128];
 
 	for (int _fuzz = 0; _fuzz < 32; _fuzz++) {
-		thmap_int_xinit(&m_int);
-		thmap_str_xinit(&m_str);
+		thmap_int_xwith_cap(&m_int, 1);
+		assert(thmap_int_shrink_to(&m_int, 0) == 0);
 
-		int limit = rand() % 4096;
+		thmap_str_xwith_cap(&m_str, 1);
+
+		int limit = rand() % 4096 + 4;
 		int values[limit];
+
+		/* noop */
+		assert(thmap_int_reserve(&m_int, 0) == 0);
+		/* we'll reserve capacity beforehand, and check there will not
+		 * be any reallocation */
+		assert(thmap_int_reserve(&m_int, limit) == 0);
+		size_t m_int_cap = thmap_int_cap(&m_int);
 
 		for (int i = 0; i < limit; i++) {
 			values[i] = rand();
@@ -134,6 +143,17 @@ void test_fuzz(void)
 			assert(*thmap_str_get3(&m_str, buf) == values[i]);
 		}
 
+		/* no reallocation should occur as we have reserved cap */
+		assert(thmap_int_cap(&m_int) == m_int_cap);
+
+		assert(thmap_int_shrink_to_fit(&m_int) == 0);
+		assert(thmap_int_used(&m_int) == (size_t) limit);
+
+		/* shrink as much as possible */
+		assert(thmap_str_shrink_to(&m_str, 0) == 0);
+		/* noop */
+		assert(thmap_str_shrink_to(&m_str, thmap_str_cap(&m_str)) == 0);
+		assert(thmap_str_cap(&m_str) == (size_t) limit);
 
 		int limit2 = limit % ((rand() % 2048) + 4);
 		// remove all even-numbered keys

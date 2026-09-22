@@ -21,4 +21,4 @@
 	lfi_concat(lfi_self_name, lfi_concat(_, name))
 
 /* internal identifiers */
-#define lfi(name) lfi_concat(lfi_self_name, lfi_g(name))
+#define lfi(name) lfi_g(lfi_concat(lfi_self_name, name))
