@@ -130,6 +130,17 @@ static inline void lfi_memb(destroy)(lfi_self *s)
 	free(s->lfi(data));
 }
 
+/** @brief Removes count element and returns array of removed elements. */
+static inline lfi_key const *lfi_memb(multipop)(lfi_self *s, size_t count)
+{
+	lfi_debug_assertion(s->lfi(len) >= count, "stack underflow");
+	lfi_debug_assertion(count > 0, "cannot pop 0 elements");
+
+	s->lfi(len) -= count;
+
+	return &s->lfi(data)[s->lfi(len)];
+}
+
 /** @brief Removes and returns the top element from the stack. */
 static inline lfi_key const *lfi_memb(pop)(lfi_self *s)
 {
@@ -138,27 +149,51 @@ static inline lfi_key const *lfi_memb(pop)(lfi_self *s)
 	return &s->lfi(data)[--s->lfi(len)];
 }
 
-/** @brief Pushes an element to the top of the stack. */
-lfi_wur static inline lfi_key *lfi_memb(push)(lfi_self *s,
-					       lfi_key const *item)
+/** @brief Pushes multiple elements to top of the stack. */
+lfi_wur static inline lfi_key *lfi_memb(multipush)(lfi_self *s,
+					           lfi_key const items[],
+					           size_t count)
 {
-	if (s->lfi(len) == s->lfi(cap))
+	while (s->lfi(len) + count > s->lfi(cap))
 		lfi(resize)(s, s->lfi(cap) * 2);
 
-	if (s->lfi(len) == s->lfi(cap))
+	if (s->lfi(len) + count > s->lfi(cap))
 		return NULL;
 
-	lfi_key *item_on_stack = &s->lfi(data)[s->lfi(len)++];
-	if (item != NULL)
-		*item_on_stack = *item;
+	lfi_key *pushed_bottom = &s->lfi(data)[s->lfi(len)];
 
-	return item_on_stack;
+	if (items != NULL) {
+		for (size_t i = 0; i < count; i++)
+			s->lfi(data)[s->lfi(len)++] = items[i];
+	} else {
+		s->lfi(len) += count;
+	}
+
+	return pushed_bottom;
 }
 
 /** @brief Identical to stack_push(), but raises an error if memory allocation
  * fails. */
-static inline lfi_key *lfi_memb(xpush)(lfi_self *s,
-					lfi_key const *item)
+static inline lfi_key *lfi_memb(xmultipush)(lfi_self *s,
+					    lfi_key const items[],
+					    size_t count)
+{
+	lfi_key *pushed_bottom = lfi_memb(multipush)(s, items, count);
+
+	lfi_unwrap(pushed_bottom != NULL);
+
+	return pushed_bottom;
+}
+
+/** @brief Pushes an element to top of the stack. */
+lfi_wur static inline lfi_key *lfi_memb(push)(lfi_self *s, lfi_key const *item)
+{
+	return lfi_memb(multipush)(s, item, 1);
+}
+
+/** @brief Identical to stack_push(), but raises an error if memory allocation
+ * fails. */
+static inline lfi_key *lfi_memb(xpush)(lfi_self *s, lfi_key const *item)
 {
 	lfi_key *item_on_stack = lfi_memb(push)(s, item);
 
@@ -219,6 +254,12 @@ static inline size_t lfi_memb(len)(const lfi_self *s)
 static inline size_t lfi_memb(cap)(const lfi_self *s)
 {
 	return s->lfi(cap);
+}
+
+/** @brief Clears the stack. */
+static inline void lfi_memb(clear)(lfi_self *s)
+{
+	s->lfi(len) = 0;
 }
 
 /** @brief Shrinks the stack as much as possible.
