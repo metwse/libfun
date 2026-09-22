@@ -39,19 +39,16 @@
 #ifndef LF_HASHMAP_H
 #define LF_HASHMAP_H
 
+#include "priv/detail.h"
+#include "priv/template.h"
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
-/** @brief Default initial capacity of the hashmap. */
 #define LF_HASHMAP_INITIAL_CAP 64
-
-/** @cond */
-#include "priv/detail.h"
-#include "priv/template.h"
-
 #define LFI_HASHMAP_TOMBSTONE ((void *) -1)
 
 uint64_t lfi_g(fnv_hash)(const char *, size_t);
@@ -71,8 +68,9 @@ uint64_t lfi_g(fnv_hash)(const char *, size_t);
 #define lfi_key lfi_arg1(T)
 #define lfi_value lfi_arg2(T)
 
-/** @endcond */
 #else  // LFI LFI_DOXYGEN
+
+#include "priv/template.h"
 
 #define lfi_self struct fhmap
 #define lfi_key key_type
@@ -366,7 +364,7 @@ static inline bool lfi_memb(get3e)(const lfi_self *m,
 
 #define lfi_define_get_fns(get_fn, params, args) \
 	/** @brief Identical to @ref fhmap_ ## get_fn, but returns a mutable
-	 * entry. */ \
+	   entry. */ \
 	static inline bool lfi_memb(get_fn ## e ## _mut) \
 	(lfi_remove_paren(params), struct lfi_memb(entry_mut) *out_entry) \
 	{ \
@@ -377,9 +375,9 @@ static inline bool lfi_memb(get3e)(const lfi_self *m,
 			*out_entry = lfi(as_mut)(&out_entry_const); \
 		return res; \
 	} \
-	static inline lfi_value const * \
 	/** @brief Identical to @ref fhmap_ ## get_fn ## e, but returns a
-	 * pointer to value. */ \
+	   pointer to value. */ \
+	static inline lfi_value const * \
 	lfi_memb(get_fn)(const lfi_remove_paren(params)) \
 	{ \
 		struct lfi_memb(entry) e; \
@@ -387,7 +385,7 @@ static inline bool lfi_memb(get3e)(const lfi_self *m,
 			e.value : NULL; \
 	} \
 	/** @brief Identical to @ref fhmap_ ## get_fn ## e_mut, but returns a
-	 * mutable pointer to value. */ \
+	   mutable pointer to value. */ \
 	static inline lfi_value * \
 	lfi_memb(get_fn ## _mut) params \
 	{ \
@@ -403,70 +401,90 @@ lfi_define_get_fns(get3, (lfi_self *m, const lfi_key *key), (m, key))
 
 #undef lfi_define_get_fns
 
-/** @brief Inserts a key-value pair into the hmap.
+/** @brief Inserts a key-value pair into the hmap and sets `out_entry` to
+ * inserted entry.
+ *
+ * Returns non-zero if memory allocation fail occurs.
  *
  * @warning The `key` must not already exist in the hmap. */
-static inline lfi_value *lfi_memb(insert)(lfi_self *m,
-					  const lfi_key *key,
-					  size_t key_len,
-					  lfi_value const *value)
+static inline int lfi_memb(inserte)(lfi_self *m,
+				    const lfi_key *key,
+				    size_t key_len,
+				    lfi_value const *value,
+				    struct lfi_memb(entry_mut) *out_entry)
 {
-	lfi_debug_assertion(key_len != 0,
-			    "key length cannot be zero");
+	lfi_assert(key_len != 0, "key length cannot be zero");
 
 	struct lfi(entry) *e = lfi(insert)(m, key, key_len, value);
 
 	if (e == NULL)
-		return NULL;
+		return 1;
 
-	return &e->value;
+	struct lfi_memb(entry) out_entry_const = lfi(new_pub_entry)(e);
+	if (out_entry != NULL)
+		*out_entry = lfi(as_mut)(&out_entry_const);
+
+	return 0;
 }
 
 /** @brief Identical to fhmap_insert(), but the key_len is sizeof(key_type). */
-static inline lfi_value *lfi_memb(insert2)(lfi_self *m,
-					   const lfi_key *key,
-					   lfi_value const *value)
-{ return lfi_memb(insert)(m, key, sizeof(lfi_key), value); }
+static inline int lfi_memb(insert2e)(lfi_self *m,
+				     const lfi_key *key,
+				     lfi_value const *value,
+				     struct lfi_memb(entry_mut) *out_entry)
+{ return lfi_memb(inserte)(m, key, sizeof(lfi_key), value, out_entry); }
 
 /** @brief Identical to fhmap_insert(), but accepts a null-terminated key. */
-static inline lfi_value *lfi_memb(insert3)(lfi_self *m,
-					  const lfi_key key[],
-					  lfi_value const *value)
-{ return lfi_memb(insert)(m, key, strlen((const char *) key) + 1, value); }
+static inline int lfi_memb(insert3e)(lfi_self *m,
+				     const lfi_key key[],
+				     lfi_value const *value,
+				     struct lfi_memb(entry_mut) *out_entry)
+{ return lfi_memb(inserte)(m, key, strlen((const char *) key) + 1, value, out_entry); }
 
-/** @brief Idetical to fhmap_insert(), but raises an error if memory
- * allocation fails. */
-static inline lfi_value *lfi_memb(xinsert)(lfi_self *m,
-					   const lfi_key *key,
-					   size_t key_len,
-					   lfi_value const *value)
-{
-	lfi_value *inserted_item = lfi_memb(insert)(m, key, key_len, value);
-	lfi_unwrap(inserted_item != NULL);
-	return inserted_item;
-}
+#define lfi_define_insert_fns(insert_fn, params, args) \
+	/** @brief Identical to @ref fhmap_ ## insert_fn ## e, but raises an
+	    error if memory allocation fails. */ \
+	static inline void lfi_memb(x ## insert_fn ## e) \
+	(lfi_remove_paren(params), struct lfi_memb(entry_mut) *out_entry) \
+	{ \
+		struct lfi_memb(entry_mut) e; \
+		lfi_unwrap(lfi_memb(insert_fn ## e)(lfi_remove_paren(args), &e) == 0); \
+		if (out_entry != NULL) \
+			*out_entry = e; \
+	} \
+	/** @brief Identical to @ref fhmap_ ## insert_fn ## e, but returns a
+	   pointer to the inserted value. */ \
+	static inline lfi_value *lfi_memb(insert_fn) params \
+	{ \
+		struct lfi_memb(entry_mut) e; \
+		if (lfi_memb(insert_fn ## e)(lfi_remove_paren(args), &e) == 0) \
+			return e.value; \
+		else \
+			return NULL; \
+	} \
+	/** @brief Identical to @ref fhmap_ ## insert_fn, but raises an error
+	    if memory allocation fails. */ \
+	static inline lfi_value *lfi_memb(x ## insert_fn) params \
+	{ \
+		lfi_value *inserted_value = lfi_memb(insert_fn) args; \
+		lfi_unwrap(inserted_value != NULL); \
+		return inserted_value; \
+	}
 
-/** @brief Idetical to fhmap_insert2(), but raises an error if memory
- * allocation fails. */
-static inline lfi_value *lfi_memb(xinsert2)(lfi_self *m,
-					    const lfi_key *key,
-					    lfi_value const *value)
-{
-	lfi_value *inserted_item = lfi_memb(insert2)(m, key, value);
-	lfi_unwrap(inserted_item != NULL);
-	return inserted_item;
-}
+lfi_define_insert_fns(insert,
+		     (lfi_self *m, const lfi_key *key,
+		      size_t key_len, lfi_value const *value),
+		     (m, key, key_len, value))
 
-/** @brief Idetical to fhmap_insert3(), but raises an error if memory
- * allocation fails. */
-static inline lfi_value *lfi_memb(xinsert3)(lfi_self *m,
-					    const lfi_key key[],
-					    lfi_value const *value)
-{
-	lfi_value *inserted_item = lfi_memb(insert3)(m, key, value);
-	lfi_unwrap(inserted_item != NULL);
-	return inserted_item;
-}
+lfi_define_insert_fns(insert2,
+		     (lfi_self *m, const lfi_key *key, lfi_value const *value),
+		     (m, key, value))
+
+lfi_define_insert_fns(insert3,
+		     (lfi_self *m, const lfi_key *key, lfi_value const *value),
+		     (m, key, value))
+
+#undef lfi_define_insert_fns
 
 /** @brief Removes the key-value pair from the hmap, sets `out_value` to
  * removed key if exists.

@@ -27,14 +27,12 @@
 #ifndef LF_STACK_H
 #define LF_STACK_H
 
+#include "priv/detail.h"
+
 #include <stddef.h>
 #include <stdlib.h>
 
 #define LF_STACK_INITIAL_CAP 64
-
-/** @cond */
-#include "priv/detail.h"
-#include "priv/template.h"
 
 #endif  // LF_STACK_H
 
@@ -50,7 +48,6 @@
 
 #define lfi_key lfi_arg1(T)
 
-/** @endcond */
 #else  // LFI LFI_DOXYGEN
 
 #define lfi_self struct fstack

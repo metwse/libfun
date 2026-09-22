@@ -42,7 +42,6 @@ uint64_t my_hash(const char *key, size_t key_len)
 #define T struct my_str, int, my_str
 #define fmap_key my_map_key
 #define fuse_hash my_hash
-
 #include "../../include/hmap.h"
 
 
@@ -53,14 +52,20 @@ void test_basic(void)
 
 	assert(strcmp(*thmap_str2str_xinsert3(&m, "key", &(char *) { "value" }),
 		      "value") == 0);
-	assert(strcmp(*thmap_str2str_xinsert3(&m, "key2", &(char *) { "value2" }),
-		      "value") == 0);
-	assert(strcmp(*thmap_str2str_get3(&m, "key2"), "value") == 0);
+
+	struct thmap_str2str_entry_mut inserted_e;
+	thmap_str2str_xinsert3e(&m, "key2", &(char *) { "value2-initial" },
+				&inserted_e);
+
+	assert(strcmp(*thmap_str2str_get3(&m, "key"), "value") == 0);
+	assert(strcmp(*inserted_e.value, "value2-initial") == 0);
+	*inserted_e.value = "value2";
 
 	struct thmap_str2str_entry e;  /* type assertions */
 	struct thmap_str2str_entry_mut e_mut;
 	assert(thmap_str2str_get3e(&m, "key2", &e));
 	assert(thmap_str2str_get3e_mut(&m, "key2", &e_mut));
+	assert(strcmp(*e_mut.value, "value2") == 0);
 	*e_mut.value = "value2-changed";
 	assert(strcmp(*e.value, "value2-changed") == 0);
 
