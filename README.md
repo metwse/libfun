@@ -6,8 +6,8 @@ public API details!*
 
 
 ## Quick Integration
-You can easily embed libfun build system inside your own Makefiles by including
-the [libfun.mk](./libfun.mk).
+You can easily embed libfun build system to your Makefile by including the
+[libfun.mk](./libfun.mk).
 
 ```makefile
 # Set the path to your libfun source folder. (REQUIRED)
@@ -15,11 +15,12 @@ LIBFUN_DIR := vendor/libfun
 
 # Optionally configure the build variables
 LIBFUN_MODE := debug
-LIBFUN_PREFIX := lf_
+LIBFUN_PREFIX := f
 
 # You may prefer installing libfun using git
 $(LIBFUN_DIR)/libfun.mk:
-	git clone https://github.com/metwse/libfun.git $(LIBFUN_DIR)
+	git clone https://github.com/metwse/libfun.git $(LIBFUN_DIR) \
+		--depth 1
 
 # Include the libfun build system
 include $(LIBFUN_DIR)/libfun.mk
@@ -33,8 +34,8 @@ my_app: main.c $(LIBFUN)
 ```
 
 ### Configuration Variables
-libfun provides an include-based build which uses the following `LIBFUN_*`
-configuration variables to control the build process.
+libfun provides an include-based build for Makefiles, and uses the following
+`LIBFUN_*` configuration variables to control the build process.
 
 | Variable | Description | Default | Valid Values |
 |----------|-------------|---------|--------------|
@@ -42,14 +43,13 @@ configuration variables to control the build process.
 | `LIBFUN_PREFIX` | Symbol prefix for public functions and structs. | `f` | any C identifier |
 | `LIBFUN_DIR` | Path to the root of the libfun source repository. | `.` (*do not* use the default) | libfun path |
 
-`libfun.mk` defines three target variables: `LIBFUN`, the static library target,
-`LIBFUN_SO`, the shared object version and `LIBFUN_H`, the header-only library.
-You can set these before including the `libfun.mk` file to output into desired
-location, but you can also use the default values that output to libfun's
-internal build directory.
+`libfun.mk` defines three target variables: `LIBFUN`, the static library target
+and `LIBFUN_SO`, the shared object version. You can set these before including
+the `libfun.mk` file to output into desired location, but you can also use the
+default values that output to libfun's internal build directory.
 
 A variable named `LIBFUN_INCLUDE_DIR` is also defined to point to the folder
-containing the public headers.
+containing the libfun public headers.
 
 
 ## `contribute -Wai-slop`

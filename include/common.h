@@ -10,8 +10,6 @@
 #define LIBFUN_PREFIX f
 #endif
 
-#define fdebug_assertions (1)
-
 #define lf(name) lfi_concat(LIBFUN_PREFIX, name)
 
 

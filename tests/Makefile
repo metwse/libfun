@@ -21,17 +21,9 @@ OBJS = $(wildcard $(OBJ_DIR)/*.o)
 
 default: $(TEST_TARGETS)
 
-PREFIX_FILE = .prefix
-SHELL = /bin/bash
-
 LIBFUN_DIR := ..
 LIBFUN_MODE := test
-LIBFUN_PREFIX := $(shell \
-		if [ ! -f $(PREFIX_FILE) ]; then \
-			 echo t$$RANDOM >> $(PREFIX_FILE); \
-		fi; \
-		cat $(PREFIX_FILE))
-
+LIBFUN_PREFIX := t
 include ../libfun.mk
 
 

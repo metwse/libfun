@@ -1,17 +1,17 @@
 /**
- * @file hashmap.h
- * @brief Basic hashmap.
+ * @file hmap.h
+ * @brief Basic hmap.
  *
  * ```
  * #define T <key-type>, <value-type>, <name>[, (<flags>)]
  *
- * #define fmap_key <key-fn> Function takes key type as input and returns
- *                           (char *, len).
+ * // Function to override hash function input.
+ * #define fmap_key <map-key-fn>
  *
- * #define fuse_hash <hash-fn> Function takes key type as input and returns
- *                             its hash.
+ * // Function takes key type as input and returns its hash.
+ * #define fuse_hash <hash-fn>
  *
- * // map_key function should have signature:
+ * // map_key function should have the signature:
  * void my_map_key(const key_type *key,
  *                 size_t key_len,
  *                 const char **out_bytes,
@@ -19,17 +19,18 @@
  * {
  *     // default implementation
  *     *out_len = key_len;
- *     **out_bytes = &key;
+ *     *out_bytes = &key;
  * }
  *
  * // hash function should have signature:
  * uint64_t my_hash(const char *key, size_t key_len)
  * {
  *     // default implementation is the FNV hash function.
+ *     ...
  * }
  * ```
  *
- * hashmap uses runs in open addressing method. It stores data as key-value
+ * hmap uses runs in open addressing method. It stores data as key-value
  * pairs and allows variable-length keys while storing fixed-length values.
  */
 
@@ -58,7 +59,7 @@ uint64_t lfi_g(fnv_hash)(const char *, size_t);
 #define T char, int, a
 #endif
 
-#define lfi_ctype hashmap
+#define lfi_ctype hmap
 #define lfi_name lfi_arg3(T)
 #define lfi_flags lfi_arg4(T, 0, 0, 0)
 
@@ -70,15 +71,15 @@ uint64_t lfi_g(fnv_hash)(const char *, size_t);
 /** @endcond */
 #else  // LFI LFI_DOXYGEN
 
-#define lfi_self struct fhashmap
+#define lfi_self struct fhmap
 #define lfi_key key_type
 #define lfi_value value_type
-#define lfi_memb(name) fhashmap_ ## name
+#define lfi_memb(name) fhmap_ ## name
 
 #endif
 
 
-/** @brief hashmap. */
+/** @brief hmap. */
 lfi_self {
 	/** @cond */
 	struct lfi(entry) **lfi(entries);
@@ -111,17 +112,17 @@ struct lfi(entry) {
 
 static uint64_t lfi(hash)(const lfi_key *key, size_t key_len)
 {
-	const void *mapped_key_bytes;
+	const char *mapped_key_bytes;
 	size_t mapped_key_len;
 	uint64_t hash;
 #ifdef fmap_key
-	fmap_key (key, key_len, &mapped_key_bytes, &mapped_key_len);
+	fmap_key(key, key_len, &mapped_key_bytes, &mapped_key_len);
 #else
-	mapped_key_bytes = (const void *) key;
+	mapped_key_bytes = (const char *) key;
 	mapped_key_len = key_len;
 #endif
 #ifdef fuse_hash
-	hash = fuse_hash((const char *) key, key_len);
+	hash = fuse_hash(mapped_key_bytes, mapped_key_len);
 #else
 	hash = lfi_g(fnv_hash)(mapped_key_bytes, mapped_key_len);
 #endif
@@ -224,7 +225,7 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 		return NULL;
 
 	lfi_assert(lfi(get_slot)(m, key, key_len) == NULL,
-			"hashmap contains the element");
+			"hmap contains the element");
 
 	struct lfi(entry) *e = (struct lfi(entry) *)
 		malloc(sizeof(struct lfi(entry)) + key_len);
@@ -242,26 +243,26 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 /* @endcond */
 
 
-/** @brief Creates a new hashmap, returns non-zero if a memory allocation
+/** @brief Creates a new hmap, returns non-zero if a memory allocation
  * failure occurs. */
 lfi_wur static inline int lfi_memb(init)(lfi_self *m)
 {
 	m->lfi(cap) = LFI_HASHMAP_INITIAL_CAP;
 	m->lfi(used) = 0;
 	m->lfi(entries) = calloc(LFI_HASHMAP_INITIAL_CAP,
-				 sizeof(struct lfi(hashmap_entry *)));
+				 sizeof(struct lfi(hmap_entry *)));
 
 	return m->lfi(entries) == NULL ? 1 : 0;
 }
 
-/** @brief Identical to fhashmap_init(), but raises an error if memory allocation
+/** @brief Identical to fhmap_init(), but raises an error if memory allocation
  * fails. */
 static inline void lfi_memb(xinit)(lfi_self *m)
 {
 	lfi_unwrap(lfi_memb(init)(m) == 0);
 }
 
-/** @brief Clears the memory allocated by the fhashmap. */
+/** @brief Clears the memory allocated by the fhmap. */
 static inline void lfi_memb(destroy)(lfi_self *m)
 {
 	for (size_t i = 0; i < m->lfi(cap); i++) {
@@ -292,14 +293,14 @@ static inline lfi_value const *lfi_memb(get)(const lfi_self *m,
 	return (lfi_value const *) &(*slot)->value;
 }
 
-/** @brief Identical to fhashmap_get(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_get(), but the key_len is sizeof(key_type). */
 static inline lfi_value const *lfi_memb(get2)(const lfi_self *m,
 					      const lfi_key *key)
 {
 	return lfi_memb(get)(m, key, sizeof(lfi_key));
 }
 
-/** @brief Identical to fhashmap_get(), but accepts a null-terminated key list. */
+/** @brief Identical to fhmap_get(), but accepts a null-terminated key list. */
 static inline lfi_value const *lfi_memb(get3)(const lfi_self *m,
 					      const lfi_key key[])
 {
@@ -315,14 +316,14 @@ static inline lfi_value *lfi_memb(get_mut)(lfi_self *m,
 	return (lfi_value *) lfi_memb(get)(m, key, key_len);
 }
 
-/** @brief Identical to fhashmap_get(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_get(), but the key_len is sizeof(key_type). */
 static inline lfi_value *lfi_memb(get2_mut)(lfi_self *m,
 					    const lfi_key *key)
 {
 	return (lfi_value *) lfi_memb(get2)(m, key);
 }
 
-/** @brief Identical to fhashmap_get(), but accepts a null-terminated key list. */
+/** @brief Identical to fhmap_get(), but accepts a null-terminated key list. */
 static inline lfi_value *lfi_memb(get3_mut)(lfi_self *m,
 					    const lfi_key key[])
 {
@@ -330,9 +331,9 @@ static inline lfi_value *lfi_memb(get3_mut)(lfi_self *m,
 }
 
 /**
- * @brief Inserts a key-value pair into the hashmap.
+ * @brief Inserts a key-value pair into the hmap.
  *
- * @warning The `key` must not already exist in the hashmap.
+ * @warning The `key` must not already exist in the hmap.
  */
 static inline lfi_value *lfi_memb(insert)(lfi_self *m,
 					  const lfi_key *key,
@@ -350,7 +351,7 @@ static inline lfi_value *lfi_memb(insert)(lfi_self *m,
 	return &e->value;
 }
 
-/** @brief Identical to fhashmap_insert(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_insert(), but the key_len is sizeof(key_type). */
 static inline lfi_value *lfi_memb(insert2)(lfi_self *m,
 					   const lfi_key *key,
 					   lfi_value const *value)
@@ -358,7 +359,7 @@ static inline lfi_value *lfi_memb(insert2)(lfi_self *m,
 	return lfi_memb(insert)(m, key, sizeof(lfi_key), value);
 }
 
-/** @brief Identical to fhashmap_insert(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_insert(), but the key_len is sizeof(key_type). */
 static inline lfi_value *lfi_memb(insert3)(lfi_self *m,
 					  const lfi_key key[],
 					  lfi_value const *value)
@@ -366,7 +367,7 @@ static inline lfi_value *lfi_memb(insert3)(lfi_self *m,
 	return lfi_memb(insert)(m, key, strlen((const char *) key), value);
 }
 
-/** @brief Idetical to fhashmap_insert(), but raises an error if memory
+/** @brief Idetical to fhmap_insert(), but raises an error if memory
  * allocation fails. */
 static inline lfi_value *lfi_memb(xinsert)(lfi_self *m,
 					   const lfi_key *key,
@@ -378,7 +379,7 @@ static inline lfi_value *lfi_memb(xinsert)(lfi_self *m,
 	return inserted_item;
 }
 
-/** @brief Idetical to fhashmap_insert2(), but raises an error if memory
+/** @brief Idetical to fhmap_insert2(), but raises an error if memory
  * allocation fails. */
 static inline lfi_value *lfi_memb(xinsert2)(lfi_self *m,
 					    const lfi_key *key,
@@ -389,7 +390,7 @@ static inline lfi_value *lfi_memb(xinsert2)(lfi_self *m,
 	return inserted_item;
 }
 
-/** @brief Idetical to fhashmap_insert3(), but raises an error if memory
+/** @brief Idetical to fhmap_insert3(), but raises an error if memory
  * allocation fails. */
 static inline lfi_value *lfi_memb(xinsert3)(lfi_self *m,
 					    const lfi_key key[],
@@ -400,7 +401,7 @@ static inline lfi_value *lfi_memb(xinsert3)(lfi_self *m,
 	return inserted_item;
 }
 
-/** @brief Removes the key-value pair from the hashmap, sets `out_value` to
+/** @brief Removes the key-value pair from the hmap, sets `out_value` to
  * removed key if exists.
  *
  * Returns true if a pair removed. */
@@ -427,7 +428,7 @@ static inline int lfi_memb(remove)(lfi_self *m,
 	return 1;
 }
 
-/** @brief Identical to fhashmap_remove(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_remove(), but the key_len is sizeof(key_type). */
 static inline int lfi_memb(remove2)(lfi_self *m,
 				    const lfi_key *key,
 				    lfi_value *out_val)
@@ -435,7 +436,7 @@ static inline int lfi_memb(remove2)(lfi_self *m,
 	return lfi_memb(remove)(m, key, sizeof(lfi_key), out_val);
 }
 
-/** @brief Identical to fhashmap_remove(), but accepts a null-terminated key list. */
+/** @brief Identical to fhmap_remove(), but accepts a null-terminated key list. */
 static inline int lfi_memb(remove3)(lfi_self *m,
 				    const lfi_key key[],
 				    lfi_value *out_val)

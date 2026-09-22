@@ -16,6 +16,10 @@
  * - You can get the total number of elements.
  *
  * However, you can still only push to and pop from the top of the stack.
+ *
+ * @note References to elements in a stack are valid until the next reisizing
+ *       operation. E.g. if you push an element, previous pointers returned
+ *       by get operations are invalidated.
  */
 
 #ifndef LFI_DOXYGEN
