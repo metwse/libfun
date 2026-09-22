@@ -55,6 +55,11 @@ void test_basic(void)
 		      "value") == 0);
 	assert(strcmp(*thmap_str2str_get3(&m, "key"), "value") == 0);
 
+	char *removed;
+	assert(thmap_str2str_remove3(&m, "key", &removed));
+	assert(thmap_str2str_remove3(&m, "key", &removed) == 0);  /* already removed */
+	assert(strcmp(removed, "value") == 0);
+
 	thmap_str2str_destroy(&m);
 
 	struct thmap_str2const_str mc;

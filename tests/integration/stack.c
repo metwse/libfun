@@ -17,6 +17,7 @@ void test_resize(void)
 
 	tstack_int_xwith_cap(&s, 0);
 	assert(tstack_int_reserve(&s, 0) == 0)  /* noop */;
+	tstack_int_shrink_to_fit(&s);  /* len == 0, cap == 1, noop */
 
 	/* reserve capacity beforehand */
 	assert(tstack_int_reserve(&s, 10) == 0);
@@ -39,9 +40,12 @@ void test_resize(void)
 		assert(popped[i] == i + 1);
 	assert(*tstack_int_pop(&s) == 0);
 
-	/* has 0, reserve for 1, but cap is already 11 */
+	/* len == 0, reserve for 1, but cap == 11, so noop */
 	assert(tstack_int_reserve(&s, 1) == 0);
 	assert(tstack_int_cap(&s) == 11);
+
+	/* len == 0, cap == 11, new cap will be 1 */
+	tstack_int_shrink_to_fit(&s);
 
 	tstack_int_destroy(&s);
 }

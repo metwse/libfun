@@ -510,26 +510,6 @@ static inline void lfi_memb(clear)(lfi_self *m)
 	m->lfi(used) = 0;
 }
 
-/** @brief Shrinks the hashmap to ~133% of its used element count, if its
- * capacity is larger than that.
- *
- * Use hmap_shrink_to(&m, 0) if you really want to shrink the capacity of the
- * map as much as possible.
- *
- * @note This operation is best-effort shrink, the capacity may left as-is
- *       if a memory allocation error occur.
- *
- * Returns non-zero if a memory allocation failure occurs. */
-static inline int lfi_memb(shrink_to_fit)(lfi_self *m)
-{
-	size_t new_cap = (m->lfi(used) + 1) * 4 / 3;
-
-	if (new_cap < m->lfi(cap))
-		return lfi(resize)(m, (m->lfi(used) + 1) * 4 / 3);
-
-	return 0;
-}
-
 /** @brief Shrinks the map to given capacity.
  *
  * If a capacity lower than the number of stored elements is specified, the
@@ -546,6 +526,21 @@ static inline int lfi_memb(shrink_to)(lfi_self *m, size_t new_cap)
 		return lfi(resize)(m, 1);
 	else
 		return lfi(resize)(m, new_cap);
+}
+
+/** @brief Shrinks the hashmap to ~133% of its used element count, if its
+ * capacity is larger than that.
+ *
+ * Use hmap_shrink_to(&m, 0) if you really want to shrink the capacity of the
+ * map as much as possible.
+ *
+ * @note This operation is best-effort shrink, the capacity may left as-is
+ *       if a memory allocation error occur.
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(shrink_to_fit)(lfi_self *m)
+{
+	return lfi_memb(shrink_to)(m, (m->lfi(used) + 1) * 4 / 3);
 }
 
 /** @brief Reserves capacity for at least `additional` more elements to be

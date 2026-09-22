@@ -73,6 +73,9 @@ lfi_self {
 /* @cond */
 static inline int lfi(resize)(lfi_self *s, size_t new_cap)
 {
+	if (s->lfi(cap) == new_cap)
+		return 0;
+
 	lfi_key *old_data = s->lfi(data);
 
 	s->lfi(data) = (lfi_key *) realloc(s->lfi(data),
@@ -262,17 +265,6 @@ static inline void lfi_memb(clear)(lfi_self *s)
 	s->lfi(len) = 0;
 }
 
-/** @brief Shrinks the stack as much as possible.
- *
- * @note This operation is best-effort shrink, the capacity may left as-is
- *       if a memory allocation error occur.
- *
- * Returns non-zero if a memory allocation failure occurs. */
-static inline int lfi_memb(shrink_to_fit)(lfi_self *s)
-{
-	return lfi(resize)(s, s->lfi(len));
-}
-
 /** @brief Shrinks the stack to given capacity.
  *
  * If a capacity lower than the number of stored elements is specified, the
@@ -289,6 +281,17 @@ static inline int lfi_memb(shrink_to)(lfi_self *s, size_t new_cap)
 		return lfi(resize)(s, 1);
 	else
 		return lfi(resize)(s, new_cap);
+}
+
+/** @brief Shrinks the stack as much as possible.
+ *
+ * @note This operation is best-effort shrink, the capacity may left as-is
+ *       if a memory allocation error occur.
+ *
+ * Returns non-zero if a memory allocation failure occurs. */
+static inline int lfi_memb(shrink_to_fit)(lfi_self *s)
+{
+	return lfi_memb(shrink_to)(s, s->lfi(len));
 }
 
 /** @brief Reserves capacity for at least `additional` more elements to be
