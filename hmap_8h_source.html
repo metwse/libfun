@@ -567,110 +567,105 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>}</div>
 </div>
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span> </div>
-<div class="foldopen" id="foldopen00523" data-start="{" data-end="}">
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno"><a class="line" href="hmap_8h.html#ac0024f34013682007ce7ce4d599d3213">  523</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> lfi_memb(shrink_to_fit)(lfi_self *m)</div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>{</div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>        <span class="keywordtype">size_t</span> new_cap = (m-&gt;lfi(used) + 1) * 4 / 3;</div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span> </div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>        <span class="keywordflow">if</span> (new_cap &lt; m-&gt;lfi(cap))</div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>                <span class="keywordflow">return</span> lfi(resize)(m, (m-&gt;lfi(used) + 1) * 4 / 3);</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span> </div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>}</div>
+<div class="foldopen" id="foldopen00521" data-start="{" data-end="}">
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno"><a class="line" href="hmap_8h.html#a5d54a929ac445c8f15c30673eb22a983">  521</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> lfi_memb(shrink_to)(lfi_self *m, <span class="keywordtype">size_t</span> new_cap)</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>{</div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>        <span class="keywordflow">if</span> (new_cap &lt; m-&gt;lfi(used))</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>                <span class="keywordflow">return</span> lfi(resize)(m, m-&gt;lfi(used));</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (new_cap == 0)</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>                <span class="keywordflow">return</span> lfi(resize)(m, 1);</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>                <span class="keywordflow">return</span> lfi(resize)(m, new_cap);</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>}</div>
 </div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span> </div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span> </div>
 <div class="foldopen" id="foldopen00541" data-start="{" data-end="}">
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno"><a class="line" href="hmap_8h.html#a5d54a929ac445c8f15c30673eb22a983">  541</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> lfi_memb(shrink_to)(lfi_self *m, <span class="keywordtype">size_t</span> new_cap)</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno"><a class="line" href="hmap_8h.html#ac0024f34013682007ce7ce4d599d3213">  541</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> lfi_memb(shrink_to_fit)(lfi_self *m)</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>{</div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>        <span class="keywordflow">if</span> (new_cap &lt; m-&gt;lfi(used))</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>                <span class="keywordflow">return</span> lfi(resize)(m, m-&gt;lfi(used));</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (new_cap == 0)</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                <span class="keywordflow">return</span> lfi(resize)(m, 1);</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>                <span class="keywordflow">return</span> lfi(resize)(m, new_cap);</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>}</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>        <span class="keywordflow">return</span> lfi_memb(shrink_to)(m, (m-&gt;lfi(used) + 1) * 4 / 3);</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>}</div>
 </div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span> </div>
-<div class="foldopen" id="foldopen00561" data-start="{" data-end="}">
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno"><a class="line" href="hmap_8h.html#a138aca53b16b7566b82cdd6b3a7015c6">  561</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> lfi_memb(reserve)(lfi_self *m, <span class="keywordtype">size_t</span> additional)</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>{</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>        <span class="keywordflow">if</span> (additional == 0)</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span> </div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>        <span class="keywordtype">size_t</span> new_cap = (m-&gt;lfi(used) + additional) * 4 / 3;</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span> </div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>        <span class="keywordflow">if</span> (new_cap &gt; m-&gt;lfi(cap))</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>                <span class="keywordflow">return</span> lfi(resize)(m, new_cap);</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>                <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>}</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span> </div>
+<div class="foldopen" id="foldopen00556" data-start="{" data-end="}">
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno"><a class="line" href="hmap_8h.html#a138aca53b16b7566b82cdd6b3a7015c6">  556</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> lfi_memb(reserve)(lfi_self *m, <span class="keywordtype">size_t</span> additional)</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>{</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        <span class="keywordflow">if</span> (additional == 0)</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span> </div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        <span class="keywordtype">size_t</span> new_cap = (m-&gt;lfi(used) + additional) * 4 / 3;</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span> </div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>        <span class="keywordflow">if</span> (new_cap &gt; m-&gt;lfi(cap))</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                <span class="keywordflow">return</span> lfi(resize)(m, new_cap);</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>                <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>}</div>
 </div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span> </div>
-<div class="foldopen" id="foldopen00575" data-start="{" data-end="}">
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno"><a class="line" href="hmap_8h.html#a4fade3a2083e87f9855b9d9417bae0d7">  575</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span>lfi_memb(it_mut) lfi_memb(iter_mut)(lfi_self *m)</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>{</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>        <span class="keywordflow">return</span> (<span class="keyword">struct</span> lfi_memb(it_mut)) { .lfi(m) = m, .lfi(i) = 0 };</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>}</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span> </div>
+<div class="foldopen" id="foldopen00570" data-start="{" data-end="}">
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno"><a class="line" href="hmap_8h.html#a4fade3a2083e87f9855b9d9417bae0d7">  570</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span>lfi_memb(it_mut) lfi_memb(iter_mut)(lfi_self *m)</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>{</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        <span class="keywordflow">return</span> (<span class="keyword">struct</span> lfi_memb(it_mut)) { .lfi(m) = m, .lfi(i) = 0 };</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>}</div>
 </div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span> </div>
-<div class="foldopen" id="foldopen00581" data-start="{" data-end="}">
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno"><a class="line" href="hmap_8h.html#af7ef69b995482a480b078e3b38abe3c5">  581</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span>lfi_memb(it) lfi_memb(iter)(const lfi_self *m)</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>{</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>        <span class="keywordflow">return</span> (<span class="keyword">struct</span> lfi_memb(it)) { .lfi(m) = m, .lfi(i) = 0 };</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>}</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span> </div>
+<div class="foldopen" id="foldopen00576" data-start="{" data-end="}">
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno"><a class="line" href="hmap_8h.html#af7ef69b995482a480b078e3b38abe3c5">  576</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span>lfi_memb(it) lfi_memb(iter)(const lfi_self *m)</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>{</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>        <span class="keywordflow">return</span> (<span class="keyword">struct</span> lfi_memb(it)) { .lfi(m) = m, .lfi(i) = 0 };</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>}</div>
 </div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span> </div>
-<div class="foldopen" id="foldopen00589" data-start="{" data-end="}">
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno"><a class="line" href="hmap_8h.html#a58e27b3baa478a9469373f9c443a0b23">  589</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> lfi_memb(iter_next_mut)(<span class="keyword">struct </span>lfi_memb(it_mut) *it,</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                                           <span class="keyword">struct </span>lfi_memb(entry_mut) *out)</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>{</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>        <span class="keywordflow">for</span> (; it-&gt;lfi(i) &lt; it-&gt;lfi(m)-&gt;lfi(cap); it-&gt;lfi(i)++) {</div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>                <span class="keyword">struct </span>lfi(entry) *e = it-&gt;lfi(m)-&gt;lfi(entries)[it-&gt;lfi(i)];</div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span> </div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                <span class="keywordflow">if</span> (e != NULL &amp;&amp; e != LFI_HASHMAP_TOMBSTONE) {</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                        *out = (<span class="keyword">struct </span>lfi_memb(entry_mut)) {</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                                .key = e-&gt;key,</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                                .key_len = e-&gt;key_len,</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>                                .value = &amp;e-&gt;value,</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>                        };</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>                        it-&gt;lfi(i)++;</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>                }</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>        }</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span> </div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>}</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span> </div>
+<div class="foldopen" id="foldopen00584" data-start="{" data-end="}">
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno"><a class="line" href="hmap_8h.html#a58e27b3baa478a9469373f9c443a0b23">  584</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> lfi_memb(iter_next_mut)(<span class="keyword">struct </span>lfi_memb(it_mut) *it,</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>                                           <span class="keyword">struct </span>lfi_memb(entry_mut) *out)</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>{</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>        <span class="keywordflow">for</span> (; it-&gt;lfi(i) &lt; it-&gt;lfi(m)-&gt;lfi(cap); it-&gt;lfi(i)++) {</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>                <span class="keyword">struct </span>lfi(entry) *e = it-&gt;lfi(m)-&gt;lfi(entries)[it-&gt;lfi(i)];</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span> </div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                <span class="keywordflow">if</span> (e != NULL &amp;&amp; e != LFI_HASHMAP_TOMBSTONE) {</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                        *out = (<span class="keyword">struct </span>lfi_memb(entry_mut)) {</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>                                .key = e-&gt;key,</div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>                                .key_len = e-&gt;key_len,</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>                                .value = &amp;e-&gt;value,</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                        };</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                        it-&gt;lfi(i)++;</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                }</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        }</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>}</div>
 </div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
-<div class="foldopen" id="foldopen00610" data-start="{" data-end="}">
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno"><a class="line" href="hmap_8h.html#af15157bbe1daa3a978293f6770382b10">  610</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> lfi_memb(iter_next)(<span class="keyword">struct </span>lfi_memb(it) *it,</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>                                       <span class="keyword">struct </span>lfi_memb(entry) *out)</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>{</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>        <span class="keyword">struct </span>lfi_memb(entry_mut) e;</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>        <span class="keyword">struct </span>lfi_memb(it_mut) it_mut = {</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                .lfi(m) = (lfi_self *) it-&gt;lfi(m),</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                .lfi(i) = it-&gt;lfi(i)</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        };</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keywordtype">bool</span> res = lfi_memb(iter_next_mut)(&amp;it_mut, &amp;e);</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span> </div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>        it-&gt;lfi(i) = it_mut.lfi(i);</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>        *out = (<span class="keyword">struct </span>lfi_memb(entry)) {</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                .key = e.key,</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                .key_len = e.key_len,</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                .value = e.value,</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>        };</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span> </div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>}</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span> </div>
+<div class="foldopen" id="foldopen00605" data-start="{" data-end="}">
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno"><a class="line" href="hmap_8h.html#af15157bbe1daa3a978293f6770382b10">  605</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> lfi_memb(iter_next)(<span class="keyword">struct </span>lfi_memb(it) *it,</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                                       <span class="keyword">struct </span>lfi_memb(entry) *out)</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>{</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>        <span class="keyword">struct </span>lfi_memb(entry_mut) e;</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>        <span class="keyword">struct </span>lfi_memb(it_mut) it_mut = {</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                .lfi(m) = (lfi_self *) it-&gt;lfi(m),</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>                .lfi(i) = it-&gt;lfi(i)</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>        };</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>        <span class="keywordtype">bool</span> res = lfi_memb(iter_next_mut)(&amp;it_mut, &amp;e);</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span> </div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>        it-&gt;lfi(i) = it_mut.lfi(i);</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        *out = (<span class="keyword">struct </span>lfi_memb(entry)) {</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>                .key = e.key,</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>                .key_len = e.key_len,</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                .value = e.value,</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>        };</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span> </div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>}</div>
 </div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span> </div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span> </div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="preprocessor">#undef fmap_key</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span><span class="preprocessor">#undef fuse_hash</span></div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span> </div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span><span class="comment">/* @cond */</span></div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span><span class="preprocessor">#include &quot;priv/finalize.h&quot;</span></div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span><span class="comment">/* @endcond */</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span> </div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span> </div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="preprocessor">#undef fmap_key</span></div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="preprocessor">#undef fuse_hash</span></div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="comment">/* @cond */</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="preprocessor">#include &quot;priv/finalize.h&quot;</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="comment">/* @endcond */</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
