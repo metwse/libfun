@@ -1,110 +1,104 @@
+#define T int, int, int
+#include "../../include/hashmap.h"
+
+#define T char, int, str
+#include "../../include/hashmap.h"
+
+#define T char, char *, str2str
+#include "../../include/hashmap.h"
+
+#define T char, const char *, str2const_str
 #include "../../include/hashmap.h"
 
 #include <assert.h>
-#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <time.h>
 
 
 int main(void)
 {
-	srand(time(NULL));
+	struct lf(hashmap_str2str) m;
+	lf(hashmap_str2str_xinit)(&m);
+	assert(strcmp(*lf(hashmap_str2str_xinsert3)(&m,
+						   "key",
+						   &(char *) { "value" }),
+			  "value") == 0);
 
-	struct lf(hashmap) m;
+	char *stored_value = *lf(hashmap_str2str_get3)(&m, "key");
+	assert(strcmp(stored_value, "value") == 0);
+	lf(hashmap_str2str_destroy)(&m);
+
+	struct lf(hashmap_str2const_str) mc;
+	lf(hashmap_str2const_str_xinit)(&mc);
+	const char *const_str = "test";
+
+	lf(hashmap_str2const_str_xinsert3)(&mc, "key", &const_str);
+
+	/* still const , as lfi_type defined as const char * */
+	const char *const_str2 =
+		*lf(hashmap_str2const_str_get3)(&mc, "key");
+	const char *const_str3 =
+		*lf(hashmap_str2const_str_get3_mut)(&mc, "key");  /* unsafe */
+	assert(strcmp(const_str, const_str2) == 0);
+	assert(strcmp(const_str, const_str3) == 0);
+
+	lf(hashmap_str2const_str_destroy)(&mc);
+
+	struct lf(hashmap_int) m_int;
+	struct lf(hashmap_str) m_str;
+
+	char buf[128];
 
 	for (int _fuzz = 0; _fuzz < 128; _fuzz++) {
-		int elem_size = rand() % 32;
-
-		lf(hashmap_xinit)(&m, elem_size);
-
-		char value[elem_size + 1];
-
-		for (int i = 0; i <= elem_size; i++)
-			value[i] = rand() % 255;
+		lf(hashmap_int_xinit)(&m_int);
+		lf(hashmap_str_xinit)(&m_str);
 
 		int limit = rand() % 4096;
-		char values[limit];
-
-		size_t values_total = 0;
+		int values[limit];
 
 		for (int i = 0; i < limit; i++) {
-			value[0] = rand() % 255;
-
-			values[i] = value[0];
+			values[i] = rand();
+			sprintf(buf, "%d", values[i]);
 
 			// hashmap does not contain the key
-			assert(!lf(hashmap_get2)(&m, &i, sizeof(int)));
+			assert(!lf(hashmap_int_get2)(&m_int, &i));
+			assert(!lf(hashmap_str_get3)(&m_str, buf));
 
-			lf(hashmap_xinsert2)(&m, &i, sizeof(int), value);
+			lf(hashmap_int_xinsert2)(&m_int, &i, &values[i]);
+			lf(hashmap_str_xinsert3)(&m_str, buf, &values[i]);
 
 			// now it contain
-			assert(lf(hashmap_get2)(&m, &i, sizeof(int)));
+			assert(lf(hashmap_int_get2)(&m_int, &i));
+			assert(lf(hashmap_str_get3)(&m_str, buf));
 
-			assert(!memcmp(lf(hashmap_get2)(&m, &i, sizeof(int)),
-							value, elem_size));
-
-			values_total += value[0];
+			assert(*lf(hashmap_int_get2)(&m_int, &i) == values[i]);
+			assert(*lf(hashmap_str_get3)(&m_str, buf) == values[i]);
 		}
 
-		if (elem_size) {
-			size_t iter_values_total = 0;
-
-			struct lf(hashmap_it) it;
-
-			lf(hashmap_iter)(&m, &it);
-
-			struct lf(entry) e;
-			while (lf(entry_is_valid)(e = lf(hashmap_iter_next)(&it)))
-				iter_values_total += ((char *) e.value)[0];
-
-			assert(iter_values_total == values_total);
-		}
 
 		int limit2 = limit % ((rand() % 2048) + 4);
 		// remove all even-numbered keys
 		for (int i = 0; i < limit2; i += 2) {
-			value[0] = values[i];
+			sprintf(buf, "%d", values[i]);
 
 			// check element
-			assert(!memcmp(lf(hashmap_get2)(&m, &i, sizeof(int)),
-							value, elem_size));
+			assert(*lf(hashmap_int_get2)(&m_int, &i) == values[i]);
+			assert(*lf(hashmap_str_get3)(&m_str, buf) == values[i]);
 
 			// now remove it
-			assert(!memcmp(lf(hashmap_remove2)(&m, &i, sizeof(int)),
-							   value, elem_size));
+			int remove_out_i;
+			int remove_out_str;
+			assert(lf(hashmap_int_remove2)(&m_int, &i, &remove_out_i));
+			assert(lf(hashmap_str_remove3)(&m_str, buf, &remove_out_str));
+			assert(remove_out_i == values[i] &&
+			       remove_out_str == values[i]);
 
 			// the key should not present
-			assert(!lf(hashmap_get2)(&m, &i, sizeof(int)));
+			assert(lf(hashmap_int_get2)(&m_int, &i) == NULL);
+			assert(lf(hashmap_str_get3)(&m_str, buf) == NULL);
 		}
 
-		int limit3 = limit2 % ((rand() % 1024) + 4);
-		// now insert size_t keyed elements
-		for (size_t i = 0; i < (size_t) limit3; i += 4) {
-			void *val = lf(hashmap_xinsert2)(&m, &i, sizeof(size_t), NULL);
-
-			if (elem_size)
-				memcpy(val, &i, elem_size);
-		}
-
-		// check size_t keyed elements
-		size_t inserted_size = sizeof(size_t);
-
-		if ((size_t) elem_size < inserted_size)
-			inserted_size = elem_size;
-
-		for (size_t i = 0; i < (size_t) limit3; i += 4)
-			assert(!memcmp(lf(hashmap_get2)(&m, &i, sizeof(size_t)),
-							&i, inserted_size));
-
-		lf(hashmap_xinsert)(&m, "inserting string", "the string value");
-		assert(lf(hashmap_get)(&m, "inserting string"));
-		assert(!strncmp(lf(hashmap_remove)(&m, "inserting string"),
-						   "the string value",
-						   elem_size));
-		assert(!lf(hashmap_remove)(&m, "inserting string"));
-
-		lf(hashmap_destroy)(&m);
+		lf(hashmap_str_destroy)(&m_str);
+		lf(hashmap_int_destroy)(&m_int);
 	}
-
-	return EXIT_SUCCESS;
 }

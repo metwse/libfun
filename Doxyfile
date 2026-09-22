@@ -9,7 +9,8 @@ GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 EXTRACT_STATIC         = YES
 QUIET                  = YES
-PREDEFINED             = lfi_wur= lf(name)="f ## name"
+PREDEFINED             = lfi_wur= lf(name)="f ## name" LFI_DOXYGEN="1"
 ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
-EXPAND_ONLY_PREDEF     = YES
+EXPAND_ONLY_PREDEF     = NO
+EXCLUDE_SYMBOLS        = lfi_self lfi_key lfi_value lfi_memb
