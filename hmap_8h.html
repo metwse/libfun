@@ -82,7 +82,8 @@ $(function() {
 
 <p>Basic hashmap.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;priv/template.h&quot;</code><br />
+</div>
 <p><a href="hmap_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -90,11 +91,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhmap.html">fhmap</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">hmap.  <a href="structfhmap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key value pair.  <a href="structfhmap__entry__mut.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhmap__entry.html">fhmap_entry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key value pair.  <a href="structfhmap__entry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key value pair.  <a href="structfhmap__entry__mut.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfhmap__it.html">fhmap_it</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iteration handle.  <a href="structfhmap__it.html#details">More...</a><br /></td></tr>
@@ -105,102 +106,72 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1e7648b44f59ee64a8ea64986b4d4a01" id="r_a1e7648b44f59ee64a8ea64986b4d4a01"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1e7648b44f59ee64a8ea64986b4d4a01">fhmap_with_cap</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t cap)</td></tr>
-<tr class="memdesc:a1e7648b44f59ee64a8ea64986b4d4a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idetical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but accepts a capacity argument.  <br /></td></tr>
-<tr class="separator:a1e7648b44f59ee64a8ea64986b4d4a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa236daae5a2b83726952a599af595378" id="r_aa236daae5a2b83726952a599af595378"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#aa236daae5a2b83726952a599af595378">fhmap_xwith_cap</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t cap)</td></tr>
-<tr class="memdesc:aa236daae5a2b83726952a599af595378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
-<tr class="separator:aa236daae5a2b83726952a599af595378"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c486b43002ad5a17e1d5b669e51690a" id="r_a1c486b43002ad5a17e1d5b669e51690a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a">fhmap_init</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
-<tr class="memdesc:a1c486b43002ad5a17e1d5b669e51690a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new hashmap, returns non-zero if a memory allocation failure occurs.  <br /></td></tr>
-<tr class="separator:a1c486b43002ad5a17e1d5b669e51690a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0f62d4b38584c1a3b73fdb90c92f2ef" id="r_ab0f62d4b38584c1a3b73fdb90c92f2ef"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ab0f62d4b38584c1a3b73fdb90c92f2ef">fhmap_xinit</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
-<tr class="memdesc:ab0f62d4b38584c1a3b73fdb90c92f2ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
-<tr class="separator:ab0f62d4b38584c1a3b73fdb90c92f2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fc50a2db7392f4b97532595d02db136" id="r_a2fc50a2db7392f4b97532595d02db136"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a2fc50a2db7392f4b97532595d02db136">fhmap_destroy</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
-<tr class="memdesc:a2fc50a2db7392f4b97532595d02db136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all of the memory allocated by the hashmap.  <br /></td></tr>
-<tr class="separator:a2fc50a2db7392f4b97532595d02db136"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7370d594916646d4daff3d5aeb38e335" id="r_a7370d594916646d4daff3d5aeb38e335"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335">fhmap_gete</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, struct <a class="el" href="structfhmap__entry.html">fhmap_entry</a> *out_entry)</td></tr>
-<tr class="memdesc:a7370d594916646d4daff3d5aeb38e335"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if a matching the key value pair foud, and out_entry set to this pair.  <br /></td></tr>
-<tr class="separator:a7370d594916646d4daff3d5aeb38e335"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a567b92d61039176b475a010a1ab8e7a1" id="r_a567b92d61039176b475a010a1ab8e7a1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a567b92d61039176b475a010a1ab8e7a1">fhmap_get2e</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, struct <a class="el" href="structfhmap__entry.html">fhmap_entry</a> *out_entry)</td></tr>
-<tr class="memdesc:a567b92d61039176b475a010a1ab8e7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335" title="Returns true if a matching the key value pair foud, and out_entry set to this pair.">fhmap_gete()</a>, but the key_len is sizeof(key_type).  <br /></td></tr>
-<tr class="separator:a567b92d61039176b475a010a1ab8e7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0783ae1d11bf95bc3279056a6f54124d" id="r_a0783ae1d11bf95bc3279056a6f54124d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a0783ae1d11bf95bc3279056a6f54124d">fhmap_get3e</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], struct <a class="el" href="structfhmap__entry.html">fhmap_entry</a> *out_entry)</td></tr>
-<tr class="memdesc:a0783ae1d11bf95bc3279056a6f54124d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335" title="Returns true if a matching the key value pair foud, and out_entry set to this pair.">fhmap_gete()</a>, but accepts a null-terminated key.  <br /></td></tr>
-<tr class="separator:a0783ae1d11bf95bc3279056a6f54124d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e8384d83a5024605bf0917a9d32ba54" id="r_a0e8384d83a5024605bf0917a9d32ba54"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a0e8384d83a5024605bf0917a9d32ba54">fhmap_gete_mut</a> (lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len)), struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
-<tr class="memdesc:a0e8384d83a5024605bf0917a9d32ba54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#afde3b039fcebf1e7a5d75eb6e084c3ae">fhmap_get</a> , but returns a mutable * entry.  <br /></td></tr>
-<tr class="separator:a0e8384d83a5024605bf0917a9d32ba54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afde3b039fcebf1e7a5d75eb6e084c3ae" id="r_afde3b039fcebf1e7a5d75eb6e084c3ae"><td class="memItemLeft" align="right" valign="top">static value_type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#afde3b039fcebf1e7a5d75eb6e084c3ae">fhmap_get</a> (const lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len)))</td></tr>
-<tr class="memdesc:afde3b039fcebf1e7a5d75eb6e084c3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335">fhmap_gete</a>, but returns a * pointer to value.  <br /></td></tr>
-<tr class="separator:afde3b039fcebf1e7a5d75eb6e084c3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61ee04b68519c3865a14e2afdc1b6429" id="r_a61ee04b68519c3865a14e2afdc1b6429"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a61ee04b68519c3865a14e2afdc1b6429">fhmap_get_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len)</td></tr>
-<tr class="memdesc:a61ee04b68519c3865a14e2afdc1b6429"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a0e8384d83a5024605bf0917a9d32ba54">fhmap_gete_mut</a>, but returns a * mutable pointer to value.  <br /></td></tr>
-<tr class="separator:a61ee04b68519c3865a14e2afdc1b6429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80f58e127e47fd7a73f3f625e1292daf" id="r_a80f58e127e47fd7a73f3f625e1292daf"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a80f58e127e47fd7a73f3f625e1292daf">fhmap_get2e_mut</a> (lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)), struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
-<tr class="memdesc:a80f58e127e47fd7a73f3f625e1292daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a64a71d64a26168030a608646de8dd042">fhmap_get2</a> , but returns a mutable * entry.  <br /></td></tr>
-<tr class="separator:a80f58e127e47fd7a73f3f625e1292daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64a71d64a26168030a608646de8dd042" id="r_a64a71d64a26168030a608646de8dd042"><td class="memItemLeft" align="right" valign="top">static value_type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a64a71d64a26168030a608646de8dd042">fhmap_get2</a> (const lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)))</td></tr>
-<tr class="memdesc:a64a71d64a26168030a608646de8dd042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a567b92d61039176b475a010a1ab8e7a1">fhmap_get2e</a>, but returns a * pointer to value.  <br /></td></tr>
-<tr class="separator:a64a71d64a26168030a608646de8dd042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dbf499e281ee7d688f40bc075458fd9" id="r_a5dbf499e281ee7d688f40bc075458fd9"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5dbf499e281ee7d688f40bc075458fd9">fhmap_get2_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)</td></tr>
-<tr class="memdesc:a5dbf499e281ee7d688f40bc075458fd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a80f58e127e47fd7a73f3f625e1292daf">fhmap_get2e_mut</a>, but returns a * mutable pointer to value.  <br /></td></tr>
-<tr class="separator:a5dbf499e281ee7d688f40bc075458fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0da5200310c771e0d1fea16d292d3b8" id="r_af0da5200310c771e0d1fea16d292d3b8"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#af0da5200310c771e0d1fea16d292d3b8">fhmap_get3e_mut</a> (lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)), struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
-<tr class="memdesc:af0da5200310c771e0d1fea16d292d3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a194d740d11644fc35a79c1b998cba4c2">fhmap_get3</a> , but returns a mutable * entry.  <br /></td></tr>
-<tr class="separator:af0da5200310c771e0d1fea16d292d3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a194d740d11644fc35a79c1b998cba4c2" id="r_a194d740d11644fc35a79c1b998cba4c2"><td class="memItemLeft" align="right" valign="top">static value_type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a194d740d11644fc35a79c1b998cba4c2">fhmap_get3</a> (const lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)))</td></tr>
-<tr class="memdesc:a194d740d11644fc35a79c1b998cba4c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a0783ae1d11bf95bc3279056a6f54124d">fhmap_get3e</a>, but returns a * pointer to value.  <br /></td></tr>
-<tr class="separator:a194d740d11644fc35a79c1b998cba4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30cc3b0dc6824884994c28b34e9fa732" id="r_a30cc3b0dc6824884994c28b34e9fa732"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a30cc3b0dc6824884994c28b34e9fa732">fhmap_get3_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)</td></tr>
-<tr class="memdesc:a30cc3b0dc6824884994c28b34e9fa732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#af0da5200310c771e0d1fea16d292d3b8">fhmap_get3e_mut</a>, but returns a * mutable pointer to value.  <br /></td></tr>
-<tr class="separator:a30cc3b0dc6824884994c28b34e9fa732"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94436dd1c879d10b9838678ec5b1dbab" id="r_a94436dd1c879d10b9838678ec5b1dbab"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab">fhmap_insert</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type const *value)</td></tr>
-<tr class="memdesc:a94436dd1c879d10b9838678ec5b1dbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a key-value pair into the hmap.  <br /></td></tr>
-<tr class="separator:a94436dd1c879d10b9838678ec5b1dbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62acbd5afc16f640a33152ccd0d7d4d6" id="r_a62acbd5afc16f640a33152ccd0d7d4d6"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6">fhmap_insert2</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value)</td></tr>
-<tr class="memdesc:a62acbd5afc16f640a33152ccd0d7d4d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but the key_len is sizeof(key_type).  <br /></td></tr>
-<tr class="separator:a62acbd5afc16f640a33152ccd0d7d4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8264845a0bab7b399e59202bf7aa25f" id="r_ae8264845a0bab7b399e59202bf7aa25f"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ae8264845a0bab7b399e59202bf7aa25f">fhmap_insert3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], value_type const *value)</td></tr>
-<tr class="memdesc:ae8264845a0bab7b399e59202bf7aa25f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but accepts a null-terminated key.  <br /></td></tr>
-<tr class="separator:ae8264845a0bab7b399e59202bf7aa25f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c405dc53e0cd4c43dcf277e1ba857d0" id="r_a5c405dc53e0cd4c43dcf277e1ba857d0"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5c405dc53e0cd4c43dcf277e1ba857d0">fhmap_xinsert</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type const *value)</td></tr>
-<tr class="memdesc:a5c405dc53e0cd4c43dcf277e1ba857d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idetical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
-<tr class="separator:a5c405dc53e0cd4c43dcf277e1ba857d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0c53516ad90a68cae071f456ba55720" id="r_af0c53516ad90a68cae071f456ba55720"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#af0c53516ad90a68cae071f456ba55720">fhmap_xinsert2</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value)</td></tr>
-<tr class="memdesc:af0c53516ad90a68cae071f456ba55720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idetical to <a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6" title="Identical to fhmap_insert(), but the key_len is sizeof(key_type).">fhmap_insert2()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
-<tr class="separator:af0c53516ad90a68cae071f456ba55720"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90a6cf7dc8cda643e01d84d19691ef45" id="r_a90a6cf7dc8cda643e01d84d19691ef45"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a90a6cf7dc8cda643e01d84d19691ef45">fhmap_xinsert3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], value_type const *value)</td></tr>
-<tr class="memdesc:a90a6cf7dc8cda643e01d84d19691ef45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idetical to <a class="el" href="hmap_8h.html#ae8264845a0bab7b399e59202bf7aa25f" title="Identical to fhmap_insert(), but accepts a null-terminated key.">fhmap_insert3()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
-<tr class="separator:a90a6cf7dc8cda643e01d84d19691ef45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0d93f6500e916cd1b308b6421f2efd7" id="r_aa0d93f6500e916cd1b308b6421f2efd7"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7">fhmap_remove</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type *out_val)</td></tr>
-<tr class="memdesc:aa0d93f6500e916cd1b308b6421f2efd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the key-value pair from the hmap, sets <code>out_value</code> to removed key if exists.  <br /></td></tr>
-<tr class="separator:aa0d93f6500e916cd1b308b6421f2efd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68b423575a1183875259f846d7d879db" id="r_a68b423575a1183875259f846d7d879db"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a68b423575a1183875259f846d7d879db">fhmap_remove2</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type *out_val)</td></tr>
-<tr class="memdesc:a68b423575a1183875259f846d7d879db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but the key_len is sizeof(key_type).  <br /></td></tr>
-<tr class="separator:a68b423575a1183875259f846d7d879db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5e00d11abe7be3b81be3ae9030e9706" id="r_ad5e00d11abe7be3b81be3ae9030e9706"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ad5e00d11abe7be3b81be3ae9030e9706">fhmap_remove3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], value_type *out_val)</td></tr>
-<tr class="memdesc:ad5e00d11abe7be3b81be3ae9030e9706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but accepts a null-terminated key list.  <br /></td></tr>
-<tr class="separator:ad5e00d11abe7be3b81be3ae9030e9706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbaaa3da86676e4bec114668e1850db5" id="r_acbaaa3da86676e4bec114668e1850db5"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#acbaaa3da86676e4bec114668e1850db5">fhmap_used</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
-<tr class="memdesc:acbaaa3da86676e4bec114668e1850db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns total number of the key-value pairs.  <br /></td></tr>
-<tr class="separator:acbaaa3da86676e4bec114668e1850db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a8d3ecad525078377cc79f617ebb540" id="r_a3a8d3ecad525078377cc79f617ebb540"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a3a8d3ecad525078377cc79f617ebb540">fhmap_cap</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
 <tr class="memdesc:a3a8d3ecad525078377cc79f617ebb540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns capacity of the hashmap.  <br /></td></tr>
 <tr class="separator:a3a8d3ecad525078377cc79f617ebb540"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d23bb2a939743e5404d6533c05b0934" id="r_a4d23bb2a939743e5404d6533c05b0934"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a4d23bb2a939743e5404d6533c05b0934">fhmap_clear</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
 <tr class="memdesc:a4d23bb2a939743e5404d6533c05b0934"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears entries of the hashmap.  <br /></td></tr>
 <tr class="separator:a4d23bb2a939743e5404d6533c05b0934"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d54a929ac445c8f15c30673eb22a983" id="r_a5d54a929ac445c8f15c30673eb22a983"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5d54a929ac445c8f15c30673eb22a983">fhmap_shrink_to</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t new_cap)</td></tr>
-<tr class="memdesc:a5d54a929ac445c8f15c30673eb22a983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the map to given capacity.  <br /></td></tr>
-<tr class="separator:a5d54a929ac445c8f15c30673eb22a983"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0024f34013682007ce7ce4d599d3213" id="r_ac0024f34013682007ce7ce4d599d3213"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ac0024f34013682007ce7ce4d599d3213">fhmap_shrink_to_fit</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
-<tr class="memdesc:ac0024f34013682007ce7ce4d599d3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the hashmap to ~133% of its used element count, if its capacity is larger than that.  <br /></td></tr>
-<tr class="separator:ac0024f34013682007ce7ce4d599d3213"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a138aca53b16b7566b82cdd6b3a7015c6" id="r_a138aca53b16b7566b82cdd6b3a7015c6"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a138aca53b16b7566b82cdd6b3a7015c6">fhmap_reserve</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t additional)</td></tr>
-<tr class="memdesc:a138aca53b16b7566b82cdd6b3a7015c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserves capacity for at least <code>additional</code> more elements to be inserted in the hashmap.  <br /></td></tr>
-<tr class="separator:a138aca53b16b7566b82cdd6b3a7015c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fc50a2db7392f4b97532595d02db136" id="r_a2fc50a2db7392f4b97532595d02db136"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a2fc50a2db7392f4b97532595d02db136">fhmap_destroy</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:a2fc50a2db7392f4b97532595d02db136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all of the memory allocated by the hashmap.  <br /></td></tr>
+<tr class="separator:a2fc50a2db7392f4b97532595d02db136"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5255e6225a93ce945b3b8a1cc85fae84" id="r_a5255e6225a93ce945b3b8a1cc85fae84"><td class="memItemLeft" align="right" valign="top">static value_type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84">fhmap_get</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len)</td></tr>
+<tr class="memdesc:a5255e6225a93ce945b3b8a1cc85fae84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335">fhmap_gete</a>, but returns a pointer to value.  <br /></td></tr>
+<tr class="separator:a5255e6225a93ce945b3b8a1cc85fae84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631cabb56bdb25e00cf03ead084e644a" id="r_a631cabb56bdb25e00cf03ead084e644a"><td class="memItemLeft" align="right" valign="top">static value_type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a631cabb56bdb25e00cf03ead084e644a">fhmap_get2</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)</td></tr>
+<tr class="memdesc:a631cabb56bdb25e00cf03ead084e644a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a567b92d61039176b475a010a1ab8e7a1">fhmap_get2e</a>, but returns a pointer to value.  <br /></td></tr>
+<tr class="separator:a631cabb56bdb25e00cf03ead084e644a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dbf499e281ee7d688f40bc075458fd9" id="r_a5dbf499e281ee7d688f40bc075458fd9"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5dbf499e281ee7d688f40bc075458fd9">fhmap_get2_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)</td></tr>
+<tr class="memdesc:a5dbf499e281ee7d688f40bc075458fd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a5609bc10d2227b196b745141259f9503">fhmap_get2e_mut</a>, but returns a mutable pointer to value.  <br /></td></tr>
+<tr class="separator:a5dbf499e281ee7d688f40bc075458fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a567b92d61039176b475a010a1ab8e7a1" id="r_a567b92d61039176b475a010a1ab8e7a1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a567b92d61039176b475a010a1ab8e7a1">fhmap_get2e</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, struct <a class="el" href="structfhmap__entry.html">fhmap_entry</a> *out_entry)</td></tr>
+<tr class="memdesc:a567b92d61039176b475a010a1ab8e7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335" title="Returns true if a matching the key value pair foud, and out_entry set to this pair.">fhmap_gete()</a>, but the key_len is sizeof(key_type).  <br /></td></tr>
+<tr class="separator:a567b92d61039176b475a010a1ab8e7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5609bc10d2227b196b745141259f9503" id="r_a5609bc10d2227b196b745141259f9503"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5609bc10d2227b196b745141259f9503">fhmap_get2e_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:a5609bc10d2227b196b745141259f9503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a631cabb56bdb25e00cf03ead084e644a">fhmap_get2</a> , but returns a mutable entry.  <br /></td></tr>
+<tr class="separator:a5609bc10d2227b196b745141259f9503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bf3ef23a1789c2ab76206415ecb9b18" id="r_a1bf3ef23a1789c2ab76206415ecb9b18"><td class="memItemLeft" align="right" valign="top">static value_type const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1bf3ef23a1789c2ab76206415ecb9b18">fhmap_get3</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)</td></tr>
+<tr class="memdesc:a1bf3ef23a1789c2ab76206415ecb9b18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a0783ae1d11bf95bc3279056a6f54124d">fhmap_get3e</a>, but returns a pointer to value.  <br /></td></tr>
+<tr class="separator:a1bf3ef23a1789c2ab76206415ecb9b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30cc3b0dc6824884994c28b34e9fa732" id="r_a30cc3b0dc6824884994c28b34e9fa732"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a30cc3b0dc6824884994c28b34e9fa732">fhmap_get3_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key)</td></tr>
+<tr class="memdesc:a30cc3b0dc6824884994c28b34e9fa732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#af8ee5be13f53c09c649dd3a4409301c4">fhmap_get3e_mut</a>, but returns a mutable pointer to value.  <br /></td></tr>
+<tr class="separator:a30cc3b0dc6824884994c28b34e9fa732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0783ae1d11bf95bc3279056a6f54124d" id="r_a0783ae1d11bf95bc3279056a6f54124d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a0783ae1d11bf95bc3279056a6f54124d">fhmap_get3e</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], struct <a class="el" href="structfhmap__entry.html">fhmap_entry</a> *out_entry)</td></tr>
+<tr class="memdesc:a0783ae1d11bf95bc3279056a6f54124d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335" title="Returns true if a matching the key value pair foud, and out_entry set to this pair.">fhmap_gete()</a>, but accepts a null-terminated key.  <br /></td></tr>
+<tr class="separator:a0783ae1d11bf95bc3279056a6f54124d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8ee5be13f53c09c649dd3a4409301c4" id="r_af8ee5be13f53c09c649dd3a4409301c4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#af8ee5be13f53c09c649dd3a4409301c4">fhmap_get3e_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:af8ee5be13f53c09c649dd3a4409301c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a1bf3ef23a1789c2ab76206415ecb9b18">fhmap_get3</a> , but returns a mutable entry.  <br /></td></tr>
+<tr class="separator:af8ee5be13f53c09c649dd3a4409301c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ee04b68519c3865a14e2afdc1b6429" id="r_a61ee04b68519c3865a14e2afdc1b6429"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a61ee04b68519c3865a14e2afdc1b6429">fhmap_get_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len)</td></tr>
+<tr class="memdesc:a61ee04b68519c3865a14e2afdc1b6429"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#ab8338488fb1b5c10e041e452ed037fba">fhmap_gete_mut</a>, but returns a mutable pointer to value.  <br /></td></tr>
+<tr class="separator:a61ee04b68519c3865a14e2afdc1b6429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7370d594916646d4daff3d5aeb38e335" id="r_a7370d594916646d4daff3d5aeb38e335"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335">fhmap_gete</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, struct <a class="el" href="structfhmap__entry.html">fhmap_entry</a> *out_entry)</td></tr>
+<tr class="memdesc:a7370d594916646d4daff3d5aeb38e335"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if a matching the key value pair foud, and out_entry set to this pair.  <br /></td></tr>
+<tr class="separator:a7370d594916646d4daff3d5aeb38e335"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8338488fb1b5c10e041e452ed037fba" id="r_ab8338488fb1b5c10e041e452ed037fba"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ab8338488fb1b5c10e041e452ed037fba">fhmap_gete_mut</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:ab8338488fb1b5c10e041e452ed037fba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84">fhmap_get</a> , but returns a mutable entry.  <br /></td></tr>
+<tr class="separator:ab8338488fb1b5c10e041e452ed037fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c486b43002ad5a17e1d5b669e51690a" id="r_a1c486b43002ad5a17e1d5b669e51690a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a">fhmap_init</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:a1c486b43002ad5a17e1d5b669e51690a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new hashmap, returns non-zero if a memory allocation failure occurs.  <br /></td></tr>
+<tr class="separator:a1c486b43002ad5a17e1d5b669e51690a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94436dd1c879d10b9838678ec5b1dbab" id="r_a94436dd1c879d10b9838678ec5b1dbab"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab">fhmap_insert</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type const *value)</td></tr>
+<tr class="memdesc:a94436dd1c879d10b9838678ec5b1dbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#ab370b5b2afcd0a40f28fed8943db65eb">fhmap_inserte</a>, but returns a pointer to the inserted value.  <br /></td></tr>
+<tr class="separator:a94436dd1c879d10b9838678ec5b1dbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62acbd5afc16f640a33152ccd0d7d4d6" id="r_a62acbd5afc16f640a33152ccd0d7d4d6"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6">fhmap_insert2</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value)</td></tr>
+<tr class="memdesc:a62acbd5afc16f640a33152ccd0d7d4d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a386328b01c8d94dc06cacd729430cab4">fhmap_insert2e</a>, but returns a pointer to the inserted value.  <br /></td></tr>
+<tr class="separator:a62acbd5afc16f640a33152ccd0d7d4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a386328b01c8d94dc06cacd729430cab4" id="r_a386328b01c8d94dc06cacd729430cab4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a386328b01c8d94dc06cacd729430cab4">fhmap_insert2e</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:a386328b01c8d94dc06cacd729430cab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Identical to fhmap_inserte, but returns a pointer to the inserted value.">fhmap_insert()</a>, but the key_len is sizeof(key_type).  <br /></td></tr>
+<tr class="separator:a386328b01c8d94dc06cacd729430cab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26958e81099b307e8d30646958ee57a8" id="r_a26958e81099b307e8d30646958ee57a8"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a26958e81099b307e8d30646958ee57a8">fhmap_insert3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value)</td></tr>
+<tr class="memdesc:a26958e81099b307e8d30646958ee57a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#ad54d50ef42da6dda69e284e0546ee932">fhmap_insert3e</a>, but returns a pointer to the inserted value.  <br /></td></tr>
+<tr class="separator:a26958e81099b307e8d30646958ee57a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad54d50ef42da6dda69e284e0546ee932" id="r_ad54d50ef42da6dda69e284e0546ee932"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ad54d50ef42da6dda69e284e0546ee932">fhmap_insert3e</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], value_type const *value, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:ad54d50ef42da6dda69e284e0546ee932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Identical to fhmap_inserte, but returns a pointer to the inserted value.">fhmap_insert()</a>, but accepts a null-terminated key.  <br /></td></tr>
+<tr class="separator:ad54d50ef42da6dda69e284e0546ee932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab370b5b2afcd0a40f28fed8943db65eb" id="r_ab370b5b2afcd0a40f28fed8943db65eb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ab370b5b2afcd0a40f28fed8943db65eb">fhmap_inserte</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type const *value, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:ab370b5b2afcd0a40f28fed8943db65eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a key-value pair into the hmap and sets <code>out_entry</code> to inserted entry.  <br /></td></tr>
+<tr class="separator:ab370b5b2afcd0a40f28fed8943db65eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7ef69b995482a480b078e3b38abe3c5" id="r_af7ef69b995482a480b078e3b38abe3c5"><td class="memItemLeft" align="right" valign="top">static struct <a class="el" href="structfhmap__it.html">fhmap_it</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#af7ef69b995482a480b078e3b38abe3c5">fhmap_iter</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
 <tr class="memdesc:af7ef69b995482a480b078e3b38abe3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new iteration handle.  <br /></td></tr>
 <tr class="separator:af7ef69b995482a480b078e3b38abe3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,6 +184,54 @@ Functions</h2></td></tr>
 <tr class="memitem:a58e27b3baa478a9469373f9c443a0b23" id="r_a58e27b3baa478a9469373f9c443a0b23"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a58e27b3baa478a9469373f9c443a0b23">fhmap_iter_next_mut</a> (struct <a class="el" href="structfhmap__it__mut.html">fhmap_it_mut</a> *it, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out)</td></tr>
 <tr class="memdesc:a58e27b3baa478a9469373f9c443a0b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advances the iterator and sets out to the next value.  <br /></td></tr>
 <tr class="separator:a58e27b3baa478a9469373f9c443a0b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0d93f6500e916cd1b308b6421f2efd7" id="r_aa0d93f6500e916cd1b308b6421f2efd7"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7">fhmap_remove</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type *out_val)</td></tr>
+<tr class="memdesc:aa0d93f6500e916cd1b308b6421f2efd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the key-value pair from the hmap, sets <code>out_value</code> to removed key if exists.  <br /></td></tr>
+<tr class="separator:aa0d93f6500e916cd1b308b6421f2efd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b423575a1183875259f846d7d879db" id="r_a68b423575a1183875259f846d7d879db"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a68b423575a1183875259f846d7d879db">fhmap_remove2</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type *out_val)</td></tr>
+<tr class="memdesc:a68b423575a1183875259f846d7d879db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but the key_len is sizeof(key_type).  <br /></td></tr>
+<tr class="separator:a68b423575a1183875259f846d7d879db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5e00d11abe7be3b81be3ae9030e9706" id="r_ad5e00d11abe7be3b81be3ae9030e9706"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ad5e00d11abe7be3b81be3ae9030e9706">fhmap_remove3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type key[], value_type *out_val)</td></tr>
+<tr class="memdesc:ad5e00d11abe7be3b81be3ae9030e9706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but accepts a null-terminated key list.  <br /></td></tr>
+<tr class="separator:ad5e00d11abe7be3b81be3ae9030e9706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a138aca53b16b7566b82cdd6b3a7015c6" id="r_a138aca53b16b7566b82cdd6b3a7015c6"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a138aca53b16b7566b82cdd6b3a7015c6">fhmap_reserve</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t additional)</td></tr>
+<tr class="memdesc:a138aca53b16b7566b82cdd6b3a7015c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserves capacity for at least <code>additional</code> more elements to be inserted in the hashmap.  <br /></td></tr>
+<tr class="separator:a138aca53b16b7566b82cdd6b3a7015c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d54a929ac445c8f15c30673eb22a983" id="r_a5d54a929ac445c8f15c30673eb22a983"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5d54a929ac445c8f15c30673eb22a983">fhmap_shrink_to</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t new_cap)</td></tr>
+<tr class="memdesc:a5d54a929ac445c8f15c30673eb22a983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the map to given capacity.  <br /></td></tr>
+<tr class="separator:a5d54a929ac445c8f15c30673eb22a983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0024f34013682007ce7ce4d599d3213" id="r_ac0024f34013682007ce7ce4d599d3213"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ac0024f34013682007ce7ce4d599d3213">fhmap_shrink_to_fit</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:ac0024f34013682007ce7ce4d599d3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrinks the hashmap to ~133% of its used element count, if its capacity is larger than that.  <br /></td></tr>
+<tr class="separator:ac0024f34013682007ce7ce4d599d3213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbaaa3da86676e4bec114668e1850db5" id="r_acbaaa3da86676e4bec114668e1850db5"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#acbaaa3da86676e4bec114668e1850db5">fhmap_used</a> (const struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:acbaaa3da86676e4bec114668e1850db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns total number of the key-value pairs.  <br /></td></tr>
+<tr class="separator:acbaaa3da86676e4bec114668e1850db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e7648b44f59ee64a8ea64986b4d4a01" id="r_a1e7648b44f59ee64a8ea64986b4d4a01"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a1e7648b44f59ee64a8ea64986b4d4a01">fhmap_with_cap</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t cap)</td></tr>
+<tr class="memdesc:a1e7648b44f59ee64a8ea64986b4d4a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idetical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but accepts a capacity argument.  <br /></td></tr>
+<tr class="separator:a1e7648b44f59ee64a8ea64986b4d4a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0f62d4b38584c1a3b73fdb90c92f2ef" id="r_ab0f62d4b38584c1a3b73fdb90c92f2ef"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ab0f62d4b38584c1a3b73fdb90c92f2ef">fhmap_xinit</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m)</td></tr>
+<tr class="memdesc:ab0f62d4b38584c1a3b73fdb90c92f2ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:ab0f62d4b38584c1a3b73fdb90c92f2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c405dc53e0cd4c43dcf277e1ba857d0" id="r_a5c405dc53e0cd4c43dcf277e1ba857d0"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a5c405dc53e0cd4c43dcf277e1ba857d0">fhmap_xinsert</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type const *value)</td></tr>
+<tr class="memdesc:a5c405dc53e0cd4c43dcf277e1ba857d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab">fhmap_insert</a> , but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:a5c405dc53e0cd4c43dcf277e1ba857d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0c53516ad90a68cae071f456ba55720" id="r_af0c53516ad90a68cae071f456ba55720"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#af0c53516ad90a68cae071f456ba55720">fhmap_xinsert2</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value)</td></tr>
+<tr class="memdesc:af0c53516ad90a68cae071f456ba55720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6">fhmap_insert2</a> , but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:af0c53516ad90a68cae071f456ba55720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6501c4a15b5468e4c932795cdbf4c230" id="r_a6501c4a15b5468e4c932795cdbf4c230"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a6501c4a15b5468e4c932795cdbf4c230">fhmap_xinsert2e</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:a6501c4a15b5468e4c932795cdbf4c230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a386328b01c8d94dc06cacd729430cab4">fhmap_insert2e</a>, but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:a6501c4a15b5468e4c932795cdbf4c230"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cf63dec73bed5e5e2d456778c7a9cad" id="r_a2cf63dec73bed5e5e2d456778c7a9cad"><td class="memItemLeft" align="right" valign="top">static value_type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a2cf63dec73bed5e5e2d456778c7a9cad">fhmap_xinsert3</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value)</td></tr>
+<tr class="memdesc:a2cf63dec73bed5e5e2d456778c7a9cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a26958e81099b307e8d30646958ee57a8">fhmap_insert3</a> , but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:a2cf63dec73bed5e5e2d456778c7a9cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab60fb51797ea65830dbabe711ea02fe5" id="r_ab60fb51797ea65830dbabe711ea02fe5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#ab60fb51797ea65830dbabe711ea02fe5">fhmap_xinsert3e</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, value_type const *value, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:ab60fb51797ea65830dbabe711ea02fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#ad54d50ef42da6dda69e284e0546ee932">fhmap_insert3e</a>, but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:ab60fb51797ea65830dbabe711ea02fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a687c8d2fa9040fb1a236283d70d9bf3e" id="r_a687c8d2fa9040fb1a236283d70d9bf3e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#a687c8d2fa9040fb1a236283d70d9bf3e">fhmap_xinserte</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len, value_type const *value, struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *out_entry)</td></tr>
+<tr class="memdesc:a687c8d2fa9040fb1a236283d70d9bf3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#ab370b5b2afcd0a40f28fed8943db65eb">fhmap_inserte</a>, but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:a687c8d2fa9040fb1a236283d70d9bf3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa236daae5a2b83726952a599af595378" id="r_aa236daae5a2b83726952a599af595378"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hmap_8h.html#aa236daae5a2b83726952a599af595378">fhmap_xwith_cap</a> (struct <a class="el" href="structfhmap.html">fhmap</a> *m, size_t cap)</td></tr>
+<tr class="memdesc:aa236daae5a2b83726952a599af595378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails.  <br /></td></tr>
+<tr class="separator:aa236daae5a2b83726952a599af595378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic hashmap. </p>
@@ -271,7 +290,7 @@ Functions</h2></td></tr>
 
 <p>Returns capacity of the hashmap. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00519">519</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00534">534</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +320,7 @@ Functions</h2></td></tr>
 
 <p>Clears entries of the hashmap. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00525">525</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00540">540</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -331,12 +350,12 @@ Functions</h2></td></tr>
 
 <p>Clears all of the memory allocated by the hashmap. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00322">322</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00320">320</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="afde3b039fcebf1e7a5d75eb6e084c3ae" name="afde3b039fcebf1e7a5d75eb6e084c3ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afde3b039fcebf1e7a5d75eb6e084c3ae">&#9670;&#160;</a></span>fhmap_get()</h2>
+<a id="a5255e6225a93ce945b3b8a1cc85fae84" name="a5255e6225a93ce945b3b8a1cc85fae84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5255e6225a93ce945b3b8a1cc85fae84">&#9670;&#160;</a></span>fhmap_get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,9 +366,25 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static value_type const  * fhmap_get </td>
           <td>(</td>
-          <td class="paramtype">const &#160;</td>
-          <td class="paramname"><em>lfi_remove_paren</em>(struct fhmap *m, const key_type *key, size_t key_len)</td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>key_len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -359,14 +394,14 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335">fhmap_gete</a>, but returns a * pointer to value. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335">fhmap_gete</a>, but returns a pointer to value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00397">397</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00395">395</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="a64a71d64a26168030a608646de8dd042" name="a64a71d64a26168030a608646de8dd042"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64a71d64a26168030a608646de8dd042">&#9670;&#160;</a></span>fhmap_get2()</h2>
+<a id="a631cabb56bdb25e00cf03ead084e644a" name="a631cabb56bdb25e00cf03ead084e644a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a631cabb56bdb25e00cf03ead084e644a">&#9670;&#160;</a></span>fhmap_get2()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -377,9 +412,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static value_type const  * fhmap_get2 </td>
           <td>(</td>
-          <td class="paramtype">const &#160;</td>
-          <td class="paramname"><em>lfi_remove_paren</em>(struct fhmap *m, const key_type *key)</td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -389,9 +434,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a567b92d61039176b475a010a1ab8e7a1">fhmap_get2e</a>, but returns a * pointer to value. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a567b92d61039176b475a010a1ab8e7a1">fhmap_get2e</a>, but returns a pointer to value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00398">398</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00396">396</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -429,9 +474,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a80f58e127e47fd7a73f3f625e1292daf">fhmap_get2e_mut</a>, but returns a * mutable pointer to value. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a5609bc10d2227b196b745141259f9503">fhmap_get2e_mut</a>, but returns a mutable pointer to value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00398">398</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00396">396</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -477,12 +522,12 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335" title="Returns true if a matching the key value pair foud, and out_entry set to this pair.">fhmap_gete()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00356">356</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00354">354</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="a80f58e127e47fd7a73f3f625e1292daf" name="a80f58e127e47fd7a73f3f625e1292daf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80f58e127e47fd7a73f3f625e1292daf">&#9670;&#160;</a></span>fhmap_get2e_mut()</h2>
+<a id="a5609bc10d2227b196b745141259f9503" name="a5609bc10d2227b196b745141259f9503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5609bc10d2227b196b745141259f9503">&#9670;&#160;</a></span>fhmap_get2e_mut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -493,8 +538,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static bool fhmap_get2e_mut </td>
           <td>(</td>
-          <td class="paramtype">lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key))&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -515,14 +566,14 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a64a71d64a26168030a608646de8dd042">fhmap_get2</a> , but returns a mutable * entry. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a631cabb56bdb25e00cf03ead084e644a">fhmap_get2</a> , but returns a mutable entry. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00398">398</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00396">396</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="a194d740d11644fc35a79c1b998cba4c2" name="a194d740d11644fc35a79c1b998cba4c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a194d740d11644fc35a79c1b998cba4c2">&#9670;&#160;</a></span>fhmap_get3()</h2>
+<a id="a1bf3ef23a1789c2ab76206415ecb9b18" name="a1bf3ef23a1789c2ab76206415ecb9b18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bf3ef23a1789c2ab76206415ecb9b18">&#9670;&#160;</a></span>fhmap_get3()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -533,9 +584,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static value_type const  * fhmap_get3 </td>
           <td>(</td>
-          <td class="paramtype">const &#160;</td>
-          <td class="paramname"><em>lfi_remove_paren</em>(struct fhmap *m, const key_type *key)</td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -545,9 +606,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a0783ae1d11bf95bc3279056a6f54124d">fhmap_get3e</a>, but returns a * pointer to value. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a0783ae1d11bf95bc3279056a6f54124d">fhmap_get3e</a>, but returns a pointer to value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00399">399</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00397">397</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -585,9 +646,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#af0da5200310c771e0d1fea16d292d3b8">fhmap_get3e_mut</a>, but returns a * mutable pointer to value. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#af8ee5be13f53c09c649dd3a4409301c4">fhmap_get3e_mut</a>, but returns a mutable pointer to value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00399">399</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00397">397</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -633,12 +694,12 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a7370d594916646d4daff3d5aeb38e335" title="Returns true if a matching the key value pair foud, and out_entry set to this pair.">fhmap_gete()</a>, but accepts a null-terminated key. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00362">362</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00360">360</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="af0da5200310c771e0d1fea16d292d3b8" name="af0da5200310c771e0d1fea16d292d3b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0da5200310c771e0d1fea16d292d3b8">&#9670;&#160;</a></span>fhmap_get3e_mut()</h2>
+<a id="af8ee5be13f53c09c649dd3a4409301c4" name="af8ee5be13f53c09c649dd3a4409301c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ee5be13f53c09c649dd3a4409301c4">&#9670;&#160;</a></span>fhmap_get3e_mut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -649,8 +710,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static bool fhmap_get3e_mut </td>
           <td>(</td>
-          <td class="paramtype">lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key))&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -671,9 +738,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a194d740d11644fc35a79c1b998cba4c2">fhmap_get3</a> , but returns a mutable * entry. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a1bf3ef23a1789c2ab76206415ecb9b18">fhmap_get3</a> , but returns a mutable entry. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00399">399</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00397">397</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -717,9 +784,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a0e8384d83a5024605bf0917a9d32ba54">fhmap_gete_mut</a>, but returns a * mutable pointer to value. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#ab8338488fb1b5c10e041e452ed037fba">fhmap_gete_mut</a>, but returns a mutable pointer to value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00397">397</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00395">395</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -771,12 +838,12 @@ Functions</h2></td></tr>
 
 <p>Returns true if a matching the key value pair foud, and out_entry set to this pair. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00336">336</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00334">334</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="a0e8384d83a5024605bf0917a9d32ba54" name="a0e8384d83a5024605bf0917a9d32ba54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e8384d83a5024605bf0917a9d32ba54">&#9670;&#160;</a></span>fhmap_gete_mut()</h2>
+<a id="ab8338488fb1b5c10e041e452ed037fba" name="ab8338488fb1b5c10e041e452ed037fba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8338488fb1b5c10e041e452ed037fba">&#9670;&#160;</a></span>fhmap_gete_mut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -787,8 +854,20 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static bool fhmap_gete_mut </td>
           <td>(</td>
-          <td class="paramtype">lfi_remove_paren((struct <a class="el" href="structfhmap.html">fhmap</a> *m, const key_type *key, size_t key_len))&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>key_len</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -809,9 +888,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#afde3b039fcebf1e7a5d75eb6e084c3ae">fhmap_get</a> , but returns a mutable * entry. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a5255e6225a93ce945b3b8a1cc85fae84">fhmap_get</a> , but returns a mutable entry. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00397">397</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00395">395</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -841,7 +920,7 @@ Functions</h2></td></tr>
 
 <p>Creates a new hashmap, returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00309">309</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00307">307</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -891,10 +970,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Inserts a key-value pair into the hmap. </p>
-<dl class="section warning"><dt>Warning</dt><dd>The <code>key</code> must not already exist in the hmap. </dd></dl>
+<p>Identical to <a class="el" href="hmap_8h.html#ab370b5b2afcd0a40f28fed8943db65eb">fhmap_inserte</a>, but returns a pointer to the inserted value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00406">406</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00471">471</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -938,14 +1016,66 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but the key_len is sizeof(key_type). </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a386328b01c8d94dc06cacd729430cab4">fhmap_insert2e</a>, but returns a pointer to the inserted value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00423">423</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00475">475</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="ae8264845a0bab7b399e59202bf7aa25f" name="ae8264845a0bab7b399e59202bf7aa25f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8264845a0bab7b399e59202bf7aa25f">&#9670;&#160;</a></span>fhmap_insert3()</h2>
+<a id="a386328b01c8d94dc06cacd729430cab4" name="a386328b01c8d94dc06cacd729430cab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a386328b01c8d94dc06cacd729430cab4">&#9670;&#160;</a></span>fhmap_insert2e()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_insert2e </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value_type const *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *&#160;</td>
+          <td class="paramname"><em>out_entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Identical to fhmap_inserte, but returns a pointer to the inserted value.">fhmap_insert()</a>, but the key_len is sizeof(key_type). </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00428">428</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="a26958e81099b307e8d30646958ee57a8" name="a26958e81099b307e8d30646958ee57a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26958e81099b307e8d30646958ee57a8">&#9670;&#160;</a></span>fhmap_insert3()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -962,8 +1092,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const key_type&#160;</td>
-          <td class="paramname"><em>key</em>[], </td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -984,9 +1114,121 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but accepts a null-terminated key. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#ad54d50ef42da6dda69e284e0546ee932">fhmap_insert3e</a>, but returns a pointer to the inserted value. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00429">429</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00479">479</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="ad54d50ef42da6dda69e284e0546ee932" name="ad54d50ef42da6dda69e284e0546ee932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad54d50ef42da6dda69e284e0546ee932">&#9670;&#160;</a></span>fhmap_insert3e()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_insert3e </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type&#160;</td>
+          <td class="paramname"><em>key</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value_type const *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *&#160;</td>
+          <td class="paramname"><em>out_entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Identical to fhmap_inserte, but returns a pointer to the inserted value.">fhmap_insert()</a>, but accepts a null-terminated key. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00435">435</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="ab370b5b2afcd0a40f28fed8943db65eb" name="ab370b5b2afcd0a40f28fed8943db65eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab370b5b2afcd0a40f28fed8943db65eb">&#9670;&#160;</a></span>fhmap_inserte()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fhmap_inserte </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>key_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value_type const *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *&#160;</td>
+          <td class="paramname"><em>out_entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inserts a key-value pair into the hmap and sets <code>out_entry</code> to inserted entry. </p>
+<p>Returns non-zero if memory allocation fail occurs.</p>
+<dl class="section warning"><dt>Warning</dt><dd>The <code>key</code> must not already exist in the hmap. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00407">407</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1016,7 +1258,7 @@ Functions</h2></td></tr>
 
 <p>Initializes a new iteration handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00598">598</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00613">613</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1046,7 +1288,7 @@ Functions</h2></td></tr>
 
 <p>Initializes a new mutable iteration handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00604">604</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00619">619</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1328,7 @@ Functions</h2></td></tr>
 
 <p>See <a class="el" href="hmap_8h.html#af15157bbe1daa3a978293f6770382b10" title="See fhmap_iter_next()">fhmap_iter_next()</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00610">610</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00625">625</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1369,7 @@ Functions</h2></td></tr>
 <p>Advances the iterator and sets out to the next value. </p>
 <p>Returns true if out set to an entry. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00629">629</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00644">644</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1180,7 +1422,7 @@ Functions</h2></td></tr>
 <p>Removes the key-value pair from the hmap, sets <code>out_value</code> to removed key if exists. </p>
 <p>Returns true if a pair removed. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00472">472</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00487">487</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1226,7 +1468,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but the key_len is sizeof(key_type). </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00496">496</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00511">511</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1272,7 +1514,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#aa0d93f6500e916cd1b308b6421f2efd7" title="Removes the key-value pair from the hmap, sets out_value to removed key if exists.">fhmap_remove()</a>, but accepts a null-terminated key list. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00504">504</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00519">519</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1315,7 +1557,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This operation is best-effort grow, the capacity may left as-is if a memory allocation failure occur.</dd></dl>
 <p>Returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00584">584</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00599">599</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1358,7 +1600,7 @@ Functions</h2></td></tr>
 <p>See hmap_shrink_to_fit()</p>
 <p>Returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00549">549</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00564">564</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1391,7 +1633,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This operation is best-effort shrink, the capacity may left as-is if a memory allocation error occur.</dd></dl>
 <p>Returns non-zero if a memory allocation failure occurs. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00569">569</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00584">584</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1421,7 +1663,7 @@ Functions</h2></td></tr>
 
 <p>Returns total number of the key-value pairs. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00513">513</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00528">528</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1461,7 +1703,7 @@ Functions</h2></td></tr>
 
 <p>Idetical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but accepts a capacity argument. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00288">288</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00286">286</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1733,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00316">316</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00314">314</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1541,9 +1783,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Idetical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab" title="Inserts a key-value pair into the hmap.">fhmap_insert()</a>, but raises an error if memory allocation fails. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a94436dd1c879d10b9838678ec5b1dbab">fhmap_insert</a> , but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00436">436</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00471">471</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1587,14 +1829,66 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Idetical to <a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6" title="Identical to fhmap_insert(), but the key_len is sizeof(key_type).">fhmap_insert2()</a>, but raises an error if memory allocation fails. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a62acbd5afc16f640a33152ccd0d7d4d6">fhmap_insert2</a> , but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00448">448</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00475">475</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
-<a id="a90a6cf7dc8cda643e01d84d19691ef45" name="a90a6cf7dc8cda643e01d84d19691ef45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90a6cf7dc8cda643e01d84d19691ef45">&#9670;&#160;</a></span>fhmap_xinsert3()</h2>
+<a id="a6501c4a15b5468e4c932795cdbf4c230" name="a6501c4a15b5468e4c932795cdbf4c230"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6501c4a15b5468e4c932795cdbf4c230">&#9670;&#160;</a></span>fhmap_xinsert2e()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fhmap_xinsert2e </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value_type const *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *&#160;</td>
+          <td class="paramname"><em>out_entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="hmap_8h.html#a386328b01c8d94dc06cacd729430cab4">fhmap_insert2e</a>, but raises an error if memory allocation fails. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00475">475</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="a2cf63dec73bed5e5e2d456778c7a9cad" name="a2cf63dec73bed5e5e2d456778c7a9cad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cf63dec73bed5e5e2d456778c7a9cad">&#9670;&#160;</a></span>fhmap_xinsert3()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1611,8 +1905,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const key_type&#160;</td>
-          <td class="paramname"><em>key</em>[], </td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1633,9 +1927,119 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Idetical to <a class="el" href="hmap_8h.html#ae8264845a0bab7b399e59202bf7aa25f" title="Identical to fhmap_insert(), but accepts a null-terminated key.">fhmap_insert3()</a>, but raises an error if memory allocation fails. </p>
+<p>Identical to <a class="el" href="hmap_8h.html#a26958e81099b307e8d30646958ee57a8">fhmap_insert3</a> , but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00459">459</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00479">479</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="ab60fb51797ea65830dbabe711ea02fe5" name="ab60fb51797ea65830dbabe711ea02fe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab60fb51797ea65830dbabe711ea02fe5">&#9670;&#160;</a></span>fhmap_xinsert3e()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fhmap_xinsert3e </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value_type const *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *&#160;</td>
+          <td class="paramname"><em>out_entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="hmap_8h.html#ad54d50ef42da6dda69e284e0546ee932">fhmap_insert3e</a>, but raises an error if memory allocation fails. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00479">479</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+
+</div>
+</div>
+<a id="a687c8d2fa9040fb1a236283d70d9bf3e" name="a687c8d2fa9040fb1a236283d70d9bf3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a687c8d2fa9040fb1a236283d70d9bf3e">&#9670;&#160;</a></span>fhmap_xinserte()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fhmap_xinserte </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structfhmap.html">fhmap</a> *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const key_type *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>key_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value_type const *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structfhmap__entry__mut.html">fhmap_entry_mut</a> *&#160;</td>
+          <td class="paramname"><em>out_entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="hmap_8h.html#ab370b5b2afcd0a40f28fed8943db65eb">fhmap_inserte</a>, but raises an error if memory allocation fails. </p>
+
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00471">471</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
@@ -1675,7 +2079,7 @@ Functions</h2></td></tr>
 
 <p>Identical to <a class="el" href="hmap_8h.html#a1c486b43002ad5a17e1d5b669e51690a" title="Creates a new hashmap, returns non-zero if a memory allocation failure occurs.">fhmap_init()</a>, but raises an error if memory allocation fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00302">302</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hmap_8h_source.html#l00300">300</a> of file <a class="el" href="hmap_8h_source.html">hmap.h</a>.</p>
 
 </div>
 </div>
