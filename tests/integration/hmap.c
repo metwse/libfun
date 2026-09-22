@@ -79,26 +79,66 @@ void test_custom_hash(void)
 	thmap_my_str_xinit(&m_my_str);
 
 	thmap_my_str_xinsert2(&m_my_str,
-			      &(struct my_str) { .len = 4, .chars = "test", },
+			      &(struct my_str) { .len = 4, .chars = "test" },
 			      &(int) { 123 });
 
 	thmap_my_str_xinsert2(&m_my_str,
-			      &(struct my_str) { .len = 4, .chars = "tst2", },
+			      &(struct my_str) { .len = 4, .chars = "tst2" },
 			      &(int) { 321 });
 
 	assert(*thmap_my_str_get2(&m_my_str,
 				  &(struct my_str) {
 					.len = 4,
-					.chars = "tst2",
+					.chars = "tst2"
 				  }) == 321);
 
 	assert(*thmap_my_str_get2(&m_my_str,
 				  &(struct my_str) {
 					.len = 4,
-					.chars = "test",
+					.chars = "test"
 				  }) == 123);
 
 	thmap_my_str_destroy(&m_my_str);
+}
+
+void test_iterators(void)
+{
+	struct thmap_int m;
+	thmap_int_xinit(&m);
+
+	int values[64];
+	int values_sum = 0;
+
+	for (int i = 0; i < 64; i++) {
+		values_sum += (values[i] = rand());
+		thmap_int_xinsert2(&m, &i, &values[i]);
+	}
+
+	bool reached_values[64] = { 0 };
+	int reached_values_sum = 0;
+	struct thmap_int_it it = thmap_int_iter(&m);
+	struct thmap_int_entry e;
+	while (thmap_int_iter_next(&it, &e)) {
+		reached_values[*e.key] = true;
+		reached_values_sum += *e.value;
+		assert(values[*e.key] == *e.value);
+	}
+
+	/* ensure every key is reached */
+	for (int i = 0; i < 64; i++)
+		assert(reached_values[i]);
+	assert(reached_values_sum == values_sum);
+
+	/* set all key-value pairs to (key, key) */
+	struct thmap_int_it_mut it_mut = thmap_int_iter_mut(&m);
+	struct thmap_int_entry_mut e_mut;
+	while (thmap_int_iter_next_mut(&it_mut, &e_mut))
+		*e_mut.value = *e_mut.key;
+
+	for (int i = 0; i < 64; i++)
+		assert(*thmap_int_get2(&m, &i) == i);
+
+	thmap_int_destroy(&m);
 }
 
 void test_fuzz(void)
@@ -116,6 +156,7 @@ void test_fuzz(void)
 
 		int limit = rand() % 4096 + 4;
 		int values[limit];
+		int values_sum = 0;
 
 		/* noop */
 		assert(thmap_int_reserve(&m_int, 0) == 0);
@@ -124,8 +165,11 @@ void test_fuzz(void)
 		assert(thmap_int_reserve(&m_int, limit) == 0);
 		size_t m_int_cap = thmap_int_cap(&m_int);
 
+		/* we already reserved a much bigger additional cap */
+		assert(thmap_int_reserve(&m_int, 1) == 0);
+
 		for (int i = 0; i < limit; i++) {
-			values[i] = rand();
+			values_sum += (values[i] = rand());
 			sprintf(buf, "%d", values[i]);
 
 			// hashmap does not contain the key
@@ -142,6 +186,29 @@ void test_fuzz(void)
 			assert(*thmap_int_get2(&m_int, &i) == values[i]);
 			assert(*thmap_str_get3(&m_str, buf) == values[i]);
 		}
+
+		struct thmap_int_it it = thmap_int_iter(&m_int);
+		struct thmap_int_entry m_int_e;
+		int values_int_sum = 0;
+		while (thmap_int_iter_next(&it, &m_int_e)) {
+			const int *key = m_int_e.key; /* type assertions */
+			const int *value = m_int_e.value;
+			assert(*thmap_int_get2(&m_int, key) == *value);
+			assert(*thmap_int_get2(&m_int, key) == values[*key]);
+			values_int_sum += *value;
+		}
+		assert(values_int_sum == values_sum);
+
+		struct thmap_str_it_mut it_mut = thmap_str_iter_mut(&m_str);
+		struct thmap_str_entry_mut m_str_e;
+		int values_str_sum = 0;
+		while (thmap_str_iter_next_mut(&it_mut, &m_str_e)) {
+			const char *key = m_str_e.key; /* type assertions */
+			int *value = m_str_e.value; /* is mutable */
+			assert(*thmap_str_get3(&m_str, key) == *value);
+			values_str_sum += *value;
+		}
+		assert(values_str_sum == values_sum);
 
 		/* no reallocation should occur as we have reserved cap */
 		assert(thmap_int_cap(&m_int) == m_int_cap);
@@ -177,6 +244,13 @@ void test_fuzz(void)
 			assert(thmap_str_get3(&m_str, buf) == NULL);
 		}
 
+		thmap_int_clear(&m_int);
+		assert(thmap_int_shrink_to_fit(&m_int) == 0);
+		for (int i = 1; i < limit2; i += 2) {
+			assert(thmap_int_get2(&m_int, &i) == NULL);
+			thmap_int_xinsert2(&m_int, &i, &values[i]);
+		}
+
 		thmap_str_destroy(&m_str);
 		thmap_int_destroy(&m_int);
 	}
@@ -187,5 +261,6 @@ int main(void)
 {
 	test_basic();
 	test_custom_hash();
+	test_iterators();
 	test_fuzz();
 }

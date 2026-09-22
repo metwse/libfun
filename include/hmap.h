@@ -1,6 +1,6 @@
 /**
  * @file hmap.h
- * @brief Basic hmap.
+ * @brief Basic hashmap.
  *
  * ```
  * #define T <key-type>, <value-type>, <name>[, (<flags>)]
@@ -30,8 +30,8 @@
  * }
  * ```
  *
- * hmap uses runs in open addressing method. It stores data as key-value
- * pairs and allows variable-length keys while storing fixed-length values.
+ * This implementation uses open addressing method. It allows variable-length
+ * keys while storing fixed-length values.
  */
 
 #ifndef LFI_DOXYGEN
@@ -39,6 +39,7 @@
 #ifndef LF_HASHMAP_H
 #define LF_HASHMAP_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -104,6 +105,22 @@ struct lfi_memb(entry) {
 	lfi_value const *value  /** Value. */;
 };
 
+/** @brief Iteration handle. */
+struct lfi_memb(it) {
+	/* @cond */
+	const lfi_self *lfi(m);
+	size_t lfi(i);
+	/* @endcond */
+};
+
+/** @brief Mutable iteration handle. */
+struct lfi_memb(it_mut) {
+	/* @cond */
+	lfi_self *lfi(m);
+	size_t lfi(i);
+	/* @endcond */
+};
+
 
 /* @cond */
 struct lfi(entry) {
@@ -131,7 +148,7 @@ static uint64_t lfi(hash)(const lfi_key *key, size_t key_len)
 	return hash;
 }
 
-static inline struct lfi(entry) **lfi(get_slot)(lfi_self *m,
+static inline struct lfi(entry) **lfi(get_entry)(lfi_self *m,
 						const lfi_key *key,
 						size_t key_len)
 {
@@ -229,7 +246,7 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 	if (m->lfi(cap) == m->lfi(used))
 		return NULL;
 
-	lfi_assert(lfi(get_slot)(m, key, key_len) == NULL,
+	lfi_assert(lfi(get_entry)(m, key, key_len) == NULL,
 			"hmap contains the element");
 
 	struct lfi(entry) *e = (struct lfi(entry) *)
@@ -248,7 +265,7 @@ static inline struct lfi(entry) *lfi(insert)(lfi_self *m,
 /* @endcond */
 
 
-/** @brief Similar to fmap_init, but accepts an capacity argument */
+/** @brief Idetical to fhmap_init(), but accepts an capacity argument */
 lfi_wur static inline int lfi_memb(with_cap)(lfi_self *m, size_t cap)
 {
 	if (cap == 0)
@@ -268,7 +285,7 @@ static inline void lfi_memb(xwith_cap)(lfi_self *m, size_t cap)
 	lfi_unwrap(lfi_memb(with_cap)(m, cap) == 0);
 }
 
-/** @brief Creates a new hmap, returns non-zero if a memory allocation
+/** @brief Creates a new hashmap, returns non-zero if a memory allocation
  * failure occurs. */
 lfi_wur static inline int lfi_memb(init)(lfi_self *m)
 {
@@ -282,7 +299,7 @@ static inline void lfi_memb(xinit)(lfi_self *m)
 	lfi_unwrap(lfi_memb(init)(m) == 0);
 }
 
-/** @brief Clears the memory allocated by the fhmap. */
+/** @brief Clears all of the memory allocated by the hashmap. */
 static inline void lfi_memb(destroy)(lfi_self *m)
 {
 	for (size_t i = 0; i < m->lfi(cap); i++) {
@@ -305,12 +322,12 @@ static inline lfi_value const *lfi_memb(get)(const lfi_self *m,
 	lfi_debug_assertion(key_len != 0,
 			    "key length cannot be zero");
 
-	struct lfi(entry) **slot = lfi(get_slot)((lfi_self *) m, key, key_len);
+	struct lfi(entry) **e = lfi(get_entry)((lfi_self *) m, key, key_len);
 
-	if (slot == NULL || *slot == LFI_HASHMAP_TOMBSTONE)
+	if (e == NULL)
 		return NULL;
 
-	return (lfi_value const *) &(*slot)->value;
+	return (lfi_value const *) &(*e)->value;
 }
 
 /** @brief Identical to fhmap_get(), but the key_len is sizeof(key_type). */
@@ -320,15 +337,14 @@ static inline lfi_value const *lfi_memb(get2)(const lfi_self *m,
 	return lfi_memb(get)(m, key, sizeof(lfi_key));
 }
 
-/** @brief Identical to fhmap_get(), but accepts a null-terminated key list. */
+/** @brief Identical to fhmap_get(), but accepts a null-terminated key. */
 static inline lfi_value const *lfi_memb(get3)(const lfi_self *m,
 					      const lfi_key key[])
 {
-	return lfi_memb(get)(m, key, strlen((const char *) key));
+	return lfi_memb(get)(m, key, strlen((const char *) key) + 1);
 }
 
-/** @brief Returns a pointer to the value matching the key, returns `NULL` if
- * the key is not found. */
+/** @brief Identical to fhmap_get(), but returns a mutable pointer. */
 static inline lfi_value *lfi_memb(get_mut)(lfi_self *m,
 					   const lfi_key *key,
 					   size_t key_len)
@@ -336,14 +352,14 @@ static inline lfi_value *lfi_memb(get_mut)(lfi_self *m,
 	return (lfi_value *) lfi_memb(get)(m, key, key_len);
 }
 
-/** @brief Identical to fhmap_get(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_get2(), but returns a mutable pointer. */
 static inline lfi_value *lfi_memb(get2_mut)(lfi_self *m,
 					    const lfi_key *key)
 {
 	return (lfi_value *) lfi_memb(get2)(m, key);
 }
 
-/** @brief Identical to fhmap_get(), but accepts a null-terminated key list. */
+/** @brief Identical to fhmap_get3(), but returns a mutable pointer. */
 static inline lfi_value *lfi_memb(get3_mut)(lfi_self *m,
 					    const lfi_key key[])
 {
@@ -379,12 +395,12 @@ static inline lfi_value *lfi_memb(insert2)(lfi_self *m,
 	return lfi_memb(insert)(m, key, sizeof(lfi_key), value);
 }
 
-/** @brief Identical to fhmap_insert(), but the key_len is sizeof(key_type). */
+/** @brief Identical to fhmap_insert(), but accepts a null-terminated key. */
 static inline lfi_value *lfi_memb(insert3)(lfi_self *m,
 					  const lfi_key key[],
 					  lfi_value const *value)
 {
-	return lfi_memb(insert)(m, key, strlen((const char *) key), value);
+	return lfi_memb(insert)(m, key, strlen((const char *) key) + 1, value);
 }
 
 /** @brief Idetical to fhmap_insert(), but raises an error if memory
@@ -434,17 +450,17 @@ static inline int lfi_memb(remove)(lfi_self *m,
 	lfi_debug_assertion(key_len != 0,
 			    "key length cannot be zero");
 
-	struct lfi(entry) **slot = lfi(get_slot)((lfi_self *) m, key, key_len);
+	struct lfi(entry) **e = lfi(get_entry)((lfi_self *) m, key, key_len);
 
-	if (slot == NULL || *slot == LFI_HASHMAP_TOMBSTONE)
+	if (e == NULL)
 		return 0;
 
 	if (out_val)
-		*out_val = (*slot)->value;
+		*out_val = (*e)->value;
 
 	m->lfi(used)--;
-	free(*slot);
-	*slot = LFI_HASHMAP_TOMBSTONE;
+	free(*e);
+	*e = LFI_HASHMAP_TOMBSTONE;
 	return 1;
 }
 
@@ -461,7 +477,7 @@ static inline int lfi_memb(remove3)(lfi_self *m,
 				    const lfi_key key[],
 				    lfi_value *out_val)
 {
-	return lfi_memb(remove)(m, key, strlen((const char *) key), out_val);
+	return lfi_memb(remove)(m, key, strlen((const char *) key) + 1, out_val);
 }
 
 
@@ -477,8 +493,25 @@ static inline size_t lfi_memb(cap)(const lfi_self *m)
 	return m->lfi(cap);
 }
 
-/** @brief Shrinks the map to ~133% of its used element count if its capacity
- * is larger than that.
+/** @brief Clears entries of the hashmap. */
+static inline void lfi_memb(clear)(lfi_self *m)
+{
+	for (size_t i = 0; i < m->lfi(cap); i++) {
+		struct lfi(entry) **slot = &m->lfi(entries)[i];
+
+		if (*slot != NULL) {
+			if (*slot != LFI_HASHMAP_TOMBSTONE)
+				free(*slot);
+
+			*slot = NULL;
+		}
+	}
+
+	m->lfi(used) = 0;
+}
+
+/** @brief Shrinks the hashmap to ~133% of its used element count, if its
+ * capacity is larger than that.
  *
  * Use hmap_shrink_to(&m, 0) if you really want to shrink the capacity of the
  * map as much as possible.
@@ -536,6 +569,62 @@ static inline int lfi_memb(reserve)(lfi_self *m, size_t additional)
 		return lfi(resize)(m, new_cap);
 	else
 		return 0;
+}
+
+/** @brief Initializes a new mutable iteration handle. */
+static inline struct lfi_memb(it_mut) lfi_memb(iter_mut)(lfi_self *m)
+{
+	return (struct lfi_memb(it_mut)) { .lfi(m) = m, .lfi(i) = 0 };
+}
+
+/** @brief Initializes a new iteration handle. */
+static inline struct lfi_memb(it) lfi_memb(iter)(const lfi_self *m)
+{
+	return (struct lfi_memb(it)) { .lfi(m) = m, .lfi(i) = 0 };
+}
+
+/** @brief Advances the iterator and sets out to the next value.
+ *
+ * Returns true if out set to an entry. */
+static inline bool lfi_memb(iter_next_mut)(struct lfi_memb(it_mut) *it,
+				           struct lfi_memb(entry_mut) *out)
+{
+	for (; it->lfi(i) < it->lfi(m)->lfi(cap); it->lfi(i)++) {
+		struct lfi(entry) *e = it->lfi(m)->lfi(entries)[it->lfi(i)];
+
+		if (e != NULL && e != LFI_HASHMAP_TOMBSTONE) {
+			*out = (struct lfi_memb(entry_mut)) {
+				.key = e->key,
+				.key_len = e->key_len,
+				.value = &e->value,
+			};
+			it->lfi(i)++;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/** @brief See fhmap_iter_next_mut() */
+static inline bool lfi_memb(iter_next)(struct lfi_memb(it) *it,
+				       struct lfi_memb(entry) *out)
+{
+	struct lfi_memb(entry_mut) e;
+	struct lfi_memb(it_mut) it_mut = {
+		.lfi(m) = (lfi_self *) it->lfi(m),
+		.lfi(i) = it->lfi(i)
+	};
+	bool res = lfi_memb(iter_next_mut)(&it_mut, &e);
+
+	it->lfi(i) = it_mut.lfi(i);
+	*out = (struct lfi_memb(entry)) {
+		.key = e.key,
+		.key_len = e.key_len,
+		.value = e.value,
+	};
+
+	return res;
 }
 
 
