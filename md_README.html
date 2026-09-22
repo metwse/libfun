@@ -76,17 +76,18 @@ $(function() {
 <p><em>Check out the <a href="https://metwse.github.io/libfun/">online documentation</a> for public API details!</em></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Quick Integration</h1>
-<p>You can easily embed libfun build system inside your own Makefiles by including the <a href="./libfun.mk">libfun.mk</a>.</p>
+<p>You can easily embed libfun build system to your Makefile by including the <a href="./libfun.mk">libfun.mk</a>.</p>
 <div class="fragment"><div class="line"># Set the path to your libfun source folder. (REQUIRED)</div>
 <div class="line">LIBFUN_DIR := vendor/libfun</div>
 <div class="line"> </div>
 <div class="line"># Optionally configure the build variables</div>
 <div class="line">LIBFUN_MODE := debug</div>
-<div class="line">LIBFUN_PREFIX := lf_</div>
+<div class="line">LIBFUN_PREFIX := f</div>
 <div class="line"> </div>
 <div class="line"># You may prefer installing libfun using git</div>
 <div class="line">$(LIBFUN_DIR)/libfun.mk:</div>
-<div class="line">        git clone https://github.com/metwse/libfun.git $(LIBFUN_DIR)</div>
+<div class="line">        git clone https://github.com/metwse/libfun.git $(LIBFUN_DIR) \</div>
+<div class="line">                --depth 1</div>
 <div class="line"> </div>
 <div class="line"># Include the libfun build system</div>
 <div class="line">include $(LIBFUN_DIR)/libfun.mk</div>
@@ -99,7 +100,7 @@ Quick Integration</h1>
 <div class="line">        $(CC) -I$(LIBFUN_INCLUDE_DIR) $&lt; $(LIBFUN) -o $@</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md2"></a>
 Configuration Variables</h2>
-<p>libfun provides an include-based build which uses the following <code>LIBFUN_*</code> configuration variables to control the build process.</p>
+<p>libfun provides an include-based build for Makefiles, and uses the following <code>LIBFUN_*</code> configuration variables to control the build process.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Variable   </th><th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Valid Values    </th></tr>
@@ -110,8 +111,8 @@ Configuration Variables</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>LIBFUN_DIR</code>   </td><td class="markdownTableBodyNone">Path to the root of the libfun source repository.   </td><td class="markdownTableBodyNone"><code>.</code> (<em>do not</em> use the default)   </td><td class="markdownTableBodyNone">libfun path   </td></tr>
 </table>
-<p><code>libfun.mk</code> defines three target variables: <code>LIBFUN</code>, the static library target, <code>LIBFUN_SO</code>, the shared object version and <code>LIBFUN_H</code>, the header-only library. You can set these before including the <code>libfun.mk</code> file to output into desired location, but you can also use the default values that output to libfun's internal build directory.</p>
-<p>A variable named <code>LIBFUN_INCLUDE_DIR</code> is also defined to point to the folder containing the public headers.</p>
+<p><code>libfun.mk</code> defines three target variables: <code>LIBFUN</code>, the static library target and <code>LIBFUN_SO</code>, the shared object version. You can set these before including the <code>libfun.mk</code> file to output into desired location, but you can also use the default values that output to libfun's internal build directory.</p>
+<p>A variable named <code>LIBFUN_INCLUDE_DIR</code> is also defined to point to the folder containing the libfun public headers.</p>
 <h1><a class="anchor" id="autotoc_md3"></a>
 &lt;tt&gt;contribute -Wai-slop&lt;/tt&gt;</h1>
 <p><img src="https://github.com/user-attachments/assets/bca16d5a-a6fe-4cbf-b41f-1176e000cff2" alt="no-ai-slop" width="96" height="96" align="right" class="inline"/></p>
