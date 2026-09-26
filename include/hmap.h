@@ -241,7 +241,7 @@ static inline int lfi(resize)(lfi_self *m, size_t new_cap)
 	for (size_t i = 0; i < old_cap; i++) {
 		struct lfi(entry) *e = old_entries[i];
 
-		if (e != NULL)
+		if (e != NULL && e != LFI_HASHMAP_TOMBSTONE)
 			lfi(insert_entry)(m, e);
 	}
 

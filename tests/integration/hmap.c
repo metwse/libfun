@@ -275,11 +275,42 @@ void test_fuzz(void)
 	}
 }
 
+void test_fuzz_remove(void)
+{
+	struct thmap_int m;
+
+	thmap_int_xinit(&m);
+
+	int i = 0;
+
+	for (int _fuzz = 0; _fuzz < 32; _fuzz++) {
+		int add = rand() % 1024;
+		int remove = add % 512;
+		int add_back = remove % 256;
+
+		for (int j = i; j < i + add; j++)
+			thmap_int_xinsert2(&m, &j, &j);
+
+		for (int j = i; j < i + remove; j++)
+			assert(thmap_int_remove2(&m, &j, NULL));
+
+		for (int j = i; j < i + add_back; j++)
+			thmap_int_xinsert2(&m, &j, &j);
+
+		thmap_int_shrink_to_fit(&m);
+
+		i += add;
+	}
+
+	thmap_int_destroy(&m);
+}
+
 
 int main(void)
 {
 	test_basic();
 	test_custom_hash();
 	test_iterators();
+	test_fuzz_remove();
 	test_fuzz();
 }
